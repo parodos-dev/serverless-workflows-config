@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  labels:
+    app: mta
+  name: mta-props
+data:
+  application.properties: |
+    quarkus.rest-client.simple_service_yaml.url={ .Values.mta.endpoint }
+
