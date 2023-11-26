@@ -19,7 +19,7 @@ jobs:
       id: build-image
       uses: redhat-actions/buildah-build@v2
       with:
-        image: $WORKFLOW_ID
+        image: ${{ env.WORKFLOW_ID }}
         tags: ${{ github.sha }}
         containerfiles: |
           pipeline/Builder-Dockerfile
