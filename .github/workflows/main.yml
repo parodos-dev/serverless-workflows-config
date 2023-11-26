@@ -20,7 +20,7 @@ jobs:
       uses: redhat-actions/buildah-build@v2
       with:
         image: $WORKFLOW_ID
-        tags: v1 ${{ github.sha }}
+        tags: ${{ github.sha }}
         containerfiles: |
           pipeline/Builder-Dockerfile
     # - name: Push To quay.io
