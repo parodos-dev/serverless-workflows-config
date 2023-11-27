@@ -11,6 +11,8 @@ jobs:
         
     runs-on: ubuntu-latest
     steps:
+    - name: ulimit
+      run: ulimit
     - uses: actions/checkout@v3
     - name: Buildah Action
       id: build-image
