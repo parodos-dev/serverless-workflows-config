@@ -11,7 +11,12 @@ env:
     
 jobs:
   
+    
   build:
+    strategy:
+      matrix:
+        workflow: [mta]
+        
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
@@ -19,7 +24,7 @@ jobs:
       id: build-image
       uses: redhat-actions/buildah-build@v2
       with:
-        image: ${{ env.WORKFLOW_ID }}
+        image: ${{ matrix.workflow }}
         tags: ${{ github.sha }}
         containerfiles: |
           pipeline/Builder-Dockerfile
