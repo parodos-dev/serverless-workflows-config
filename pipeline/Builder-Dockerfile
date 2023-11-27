@@ -14,7 +14,7 @@ COPY --chmod=644 ${WF_RESOURCES} ./resources/
 
 # Build the app
 RUN /home/kogito/launch/build-app.sh ./resources
-oo many open files
+
 #=============================
 # Runtime Run
 #=============================
