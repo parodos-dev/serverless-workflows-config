@@ -7,11 +7,9 @@ ARG QUARKUS_EXTENSIONS
 # add extension command
 ARG QUARKUS_ADD_EXTENSION_ARGS
 
-ARG WF_FILE=workflow.sw.json
 ARG WF_RESOURCES
 
 # Copy from build context to skeleton resources project
-COPY --chmod=644 ${WF_FILE} ./resources/
 COPY --chmod=644 ${WF_RESOURCES} ./resources/
 
 # Build the app
