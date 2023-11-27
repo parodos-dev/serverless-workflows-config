@@ -3,11 +3,11 @@ name: Container Images
 on:
   push:
     branches: [ "main" ]
+env:
+  workflow_id: mta
+  workflow_version: "0.0.1"
 jobs:
   build:
-    strategy:
-      matrix:
-        workflow: [mta]
         
     runs-on: ubuntu-latest
     steps:
@@ -16,12 +16,12 @@ jobs:
       id: build-image
       uses: redhat-actions/buildah-build@v2
       with:
-        image: ${{ matrix.workflow }}
+        image: ${{ env.workflow_id }}
         tags: ${{ github.sha }}
         containerfiles: |
           pipeline/Builder-Dockerfile
         build-args: |
-          WF_RESOURCES=charts/workflows/charts/${{ matrix.workflow }}/${{ matrix.workflow }}.sw.yaml
+          WF_RESOURCES=charts/workflows/charts/${{ env.workflow_id }}/${{ env.workflow_id }}.sw.yaml
     # - name: Push To quay.io
     #   id: push-to-quay
     #   uses: redhat-actions/push-to-registry@v2
