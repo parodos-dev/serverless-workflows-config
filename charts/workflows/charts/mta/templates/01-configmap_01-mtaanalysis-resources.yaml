@@ -7,6 +7,9 @@ data:
       "properties": {
         "repositoryURL": {
           "type": "string"
+        },
+        "repositoryName": {
+          "type": "string"
         }
       },
       "required": [
