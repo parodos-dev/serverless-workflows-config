@@ -173,7 +173,7 @@ spec:
           nextState: checkReportDone
         type: operation
       - dataConditions:
-          - condition: (.taskgroup.state == "Ready" and .taskgroup.tasks[0].state == "Succeeded")
+          - condition: true && (.taskgroup.state == "Ready" and .taskgroup.tasks[0].state == "Succeeded")
             transition:
               nextState: report
         defaultCondition:
@@ -195,7 +195,7 @@ spec:
   podTemplate:
     container:
       resources: {}
-      image: quay.io/orchestrator/serverless-workflow-mta:35dc409fda70e019d2c4a100dfc0abd0aa4aa13e
+      image: quay.io/orchestrator/serverless-workflow-mta:9e5ba8dd8df1efaace87619b3bde9a010f652eba
   resources:
     configMaps:
       - configMap:
