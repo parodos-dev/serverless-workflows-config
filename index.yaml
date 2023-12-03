@@ -3,6 +3,16 @@ entries:
   workflows:
   - apiVersion: v2
     appVersion: 1.16.0
+    created: "2023-12-03T14:36:53.914086036Z"
+    description: A Helm chart for Kubernetes
+    digest: fc3038b91d20615e76d857ba151c86869147d65500b145851d522e991b77119a
+    name: workflows
+    type: application
+    urls:
+    - https://github.com/rgolangh/serverless-workflows-helm/releases/download/workflows-0.1.3/workflows-0.1.3.tgz
+    version: 0.1.3
+  - apiVersion: v2
+    appVersion: 1.16.0
     created: "2023-12-01T06:57:42.279323501Z"
     description: A Helm chart for Kubernetes
     digest: 7ae77b0be3bdafa50f4a0ccfa900bd4896402c2108fd983dd90aa3bfd5b90830
@@ -31,4 +41,4 @@ entries:
     urls:
     - https://github.com/rgolangh/serverless-workflows-helm/releases/download/workflows-0.1.0/workflows-0.1.0.tgz
     version: 0.1.0
-generated: "2023-12-01T06:57:42.279339251Z"
+generated: "2023-12-03T14:36:53.914231909Z"
