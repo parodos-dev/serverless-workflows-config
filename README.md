@@ -29,5 +29,9 @@ Consider this chart as a meta chart or template chart for other workflows or sub
 Notice that workflow-1 has the code embedded while workflow-2 and 3 is a dependency resolved from the root Chat.yaml
 
 
-      
+# Usage      
+
+```
+helm install parodos-serverles-workflows charts/workflows
+```
       
