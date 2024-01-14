@@ -1,0 +1,17 @@
+apiVersion: v1
+data:
+  greeting.sw.input-schema.json: |-
+    {
+      "$schema": "http://json-schema.org/draft-04/schema#",
+      "type": "object",
+      "properties": {
+        "language": {
+          "type": "string"
+        }
+      }
+    }
+kind: ConfigMap
+metadata:
+  creationTimestamp: null
+  name: 01-greeting-resources
+  namespace: default
