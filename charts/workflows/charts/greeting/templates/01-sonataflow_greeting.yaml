@@ -61,14 +61,15 @@ spec:
           terminate: true
         name: GreetPerson
         type: operation
+  podTemplate:
+    container:
+      resources: {}
+      image: quay.io/orchestrator/serverless-workflow-greeting:8dc7224f47325e380e72ac4555f4b2aa1d129e8a
   resources:
     configMaps:
       - configMap:
           name: 01-greeting-resources
         workflowPath: specs
-  podTemplate:
-    container:
-      image: quay.io/orchestrator/serverless-workflow-greeting:8dc7224f47325e380e72ac4555f4b2aa1d129e8a
 status:
   address: {}
   lastTimeRecoverAttempt: null
