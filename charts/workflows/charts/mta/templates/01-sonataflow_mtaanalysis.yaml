@@ -19,9 +19,6 @@ spec:
       failOnValidationErrors: false
       schema: specs/mta-input.json
     functions:
-      - name: debug
-        operation: sysout
-        type: custom
       - name: filterApplication
         operation: '{application: .applications|map(select(.repository.url == .repositoryURL))[0]}'
         type: expression
@@ -39,6 +36,9 @@ spec:
         type: rest
       - name: getTaskgroup
         operation: specs/mta.json#getTaskgroup
+        type: rest
+      - name: createNotification
+        operation: specs/notifications.yaml#createNotification
         type: rest
     start:
       stateName: GetApplication
@@ -175,19 +175,39 @@ spec:
       - dataConditions:
           - condition: (.taskgroup.state == "Ready" and .taskgroup.tasks[0].state == "Succeeded")
             transition:
-              nextState: report
+              nextState: NotifyBackstage
         defaultCondition:
           transition:
             nextState: poll
         name: checkReportDone
         type: switch
       - actionMode: sequential
+        actions:
+          - actionDataFilter:
+              useResults: true
+            condition: .backstageUserOrGroup != null
+            functionRef:
+              arguments:
+                message: '"<a href=\"" + $SECRET.mta_url+ "/hub/applications/" + (.application.id|tostring)+ "/bucket/" + .data.output + "\">MTA Analysis Rerport</a>"'
+                origin: MTA Analysis Workflow
+                targetGroups:
+                  - .backstageUserOrGroup
+                targetUsers:
+                  - .backstageUserOrGroup
+                title: '"MTA analysis report for " + .application.repository.url'
+              invoke: sync
+              refName: createNotification
+        name: NotifyBackstage
+        transition:
+          nextState: report
+        type: operation
+      - actionMode: sequential
         actions: null
         end:
           terminate: true
         name: report
         stateDataFilter:
-          output: '{result: (.taskgroup.tasks[0]| "report will be ready here -> " + $SECRET.mta_url + "/hub/applications" + "/" + (.application.id|tostring) + "/bucket" + .data.output)}'
+          output: '{result: (.taskgroup.tasks[0]| "report will be ready here -> " + $SECRET.mta_url + "/hub/applications/" + (.application.id|tostring) + "/bucket" + .data.output)}'
         type: operation
     timeouts:
       workflowExecTimeout:
@@ -195,7 +215,7 @@ spec:
   podTemplate:
     container:
       resources: {}
-      image: quay.io/orchestrator/serverless-workflow-mta:6bd8b5d7650139053fa8cdcc83dd8045bfcb7d2a
+      image: quay.io/orchestrator/serverless-workflow-mta:b82fbb767785ca548cf818710af45ad16047d30f
   resources:
     configMaps:
       - configMap:
