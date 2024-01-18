@@ -1,0 +1,263 @@
+apiVersion: sonataflow.org/v1alpha08
+kind: SonataFlow
+metadata:
+  annotations:
+    sonataflow.org/description: Workflow to execute Move2Kube
+    sonataflow.org/expressionLang: jq
+    sonataflow.org/version: "1.0"
+  creationTimestamp: null
+  labels:
+    app: m2k
+    sonataflow.org/workflow-app: m2k
+  name: m2k
+  namespace: default
+spec:
+  flow:
+    dataInputSchema:
+      failOnValidationErrors: true
+      schema: schemas/input.json
+    events:
+      - dataOnly: true
+        kind: consumed
+        name: errorEvent
+        type: error
+      - dataOnly: true
+        kind: consumed
+        name: transformationSavedEvent
+        type: transformation_saved
+    functions:
+      - name: systemOut
+        operation: sysout
+        type: custom
+      - name: startPlanning
+        operation: specs/move2kube.yaml#start-planning
+        type: rest
+      - name: getPlanning
+        operation: specs/move2kube.yaml#get-plan
+        type: rest
+      - name: startTransformation
+        operation: specs/move2kube.yaml#start-transformation
+        type: rest
+      - name: sendCloudEvent
+        operation: rest:post:http://broker-ingress.knative-eventing.svc.cluster.local/sonataflow-infra/default
+        type: custom
+      - name: createNotification
+        operation: specs/notifications.yaml#createNotification
+        type: rest
+    start:
+      stateName: StartPlanning
+    states:
+      - actionMode: sequential
+        actions:
+          - actionDataFilter:
+              useResults: true
+            functionRef:
+              arguments:
+                project-id: .projectId
+                remote-source: '"git+" + (.repositoryURL|sub("http(s)://?";"ssh://")) + "@" + .sourceBranch'
+                workspace-id: .workspaceId
+              invoke: sync
+              refName: startPlanning
+        name: StartPlanning
+        transition:
+          nextState: GetPlanning
+        type: operation
+      - actionMode: sequential
+        actions:
+          - actionDataFilter:
+              toStateData: .
+              useResults: true
+            functionRef:
+              arguments:
+                project-id: .projectId
+                workspace-id: .workspaceId
+              invoke: sync
+              refName: getPlanning
+            sleep:
+              before: PT2S
+        name: GetPlanning
+        transition:
+          nextState: PlanRetrievedCheck
+        type: operation
+      - dataConditions:
+          - condition: (has("plan") and .plan != "")
+            transition:
+              nextState: StartTransformation
+        defaultCondition:
+          transition:
+            nextState: GetPlanning
+        name: PlanRetrievedCheck
+        type: switch
+      - actionMode: sequential
+        actions:
+          - actionDataFilter:
+              results: .id
+              toStateData: .transformId
+              useResults: true
+            functionRef:
+              arguments:
+                plan: .plan
+                project-id: .projectId
+                workspace-id: .workspaceId
+              invoke: sync
+              refName: startTransformation
+        name: StartTransformation
+        transition:
+          nextState: PrintTransformationIdMessage
+        type: operation
+      - actionMode: sequential
+        actions:
+          - actionDataFilter:
+              useResults: true
+            functionRef:
+              arguments:
+                message: '${"m2k workflow: " + $WORKFLOW.instanceId + " transformation ID: " + .transformId }'
+              invoke: sync
+              refName: systemOut
+            name: printSystemOut
+        name: PrintTransformationIdMessage
+        transition:
+          nextState: NotifyTransformationWaiting
+        type: operation
+      - actionMode: sequential
+        actions:
+          - actionDataFilter:
+              useResults: true
+            condition: ((has("notificationsDisabled") and .notificationsDisabled != null and .notificationsDisabled == true)|not)
+            functionRef:
+              arguments:
+                message: '"Please go to your <a href=\"" + $SECRET.move2kube_url + "/workspaces/"+ .workspaceId + "/projects/" + .projectId + "/outputs/"+ .transformId + "\">Move2Kube instance</a> and answers to questions in order to continue the Move2Kube workflow"'
+                origin: Move2Kube Workflow
+                title: ' "Transformation " + .transformationId + " waiting for Q&A" '
+                topic: Move2Kube Workflow
+              invoke: sync
+              refName: createNotification
+            name: create
+        name: NotifyTransformationWaiting
+        transition:
+          nextState: SaveTransformationOutput
+        type: operation
+      - actionMode: sequential
+        actions:
+          - actionDataFilter:
+              useResults: true
+            functionRef:
+              arguments:
+                HEADER_Ce-Id: $WORKFLOW.instanceId
+                HEADER_Ce-Source: m2k_swf
+                HEADER_Ce-Specversion: "1.0"
+                HEADER_Ce-Type: save-transformation
+                HEADER_Content-Type: application/json
+                branch: .targetBranch
+                gitRepo: (.repositoryURL|sub("http(s)?://";"ssh://"))
+                projectId: .projectId
+                token: .token
+                transformId: .transformId
+                workflowCallerId: $WORKFLOW.instanceId
+                workspaceId: .workspaceId
+              invoke: sync
+              refName: sendCloudEvent
+        name: SaveTransformationOutput
+        transition:
+          nextState: WaitForSaveTransformationCompletion
+        type: operation
+      - defaultCondition:
+          transition:
+            nextState: TransformationError
+        eventConditions:
+          - eventRef: transformationSavedEvent
+            transition:
+              nextState: TransformationSaved
+          - eventRef: errorEvent
+            transition:
+              nextState: TransformationError
+        name: WaitForSaveTransformationCompletion
+        timeouts:
+          eventTimeout: PT3M
+        type: switch
+      - data:
+          exitMessage: Transformation successful.
+        name: TransformationSaved
+        transition:
+          nextState: PrintExitSuccessMessage
+        type: inject
+      - data:
+          exitMessage: '"Error while saving transformation output. If no context, it was due to timeout expiration"'
+        name: TransformationError
+        transition:
+          nextState: PrintExitErrorMessage
+        type: inject
+      - branches:
+          - actions:
+              - actionDataFilter:
+                  useResults: true
+                functionRef:
+                  arguments:
+                    message: '${"m2k workflow: " + $WORKFLOW.instanceId + " has finalized with error. Exit message: " + .exitMessage + " -- Context: "  + .error }'
+                  invoke: sync
+                  refName: systemOut
+                name: printSystemOut
+            name: printSystemOut
+          - actions:
+              - actionDataFilter:
+                  useResults: true
+                condition: ((has("notificationsDisabled") and .notificationsDisabled != null and .notificationsDisabled == true)|not)
+                functionRef:
+                  arguments:
+                    message: '"Move2Kube workflow  " + $WORKFLOW.instanceId + " on workspace " + .workspaceId + " and project " + .projectId + " failed with exit message: "+ .exitMessage + " <br><br>Error: "  + .error'
+                    origin: Move2Kube Workflow
+                    title: '"Move2Kube workflow " + $WORKFLOW.instanceId + " failed"'
+                    topic: Move2Kube Workflow
+                  invoke: sync
+                  refName: createNotification
+                name: createNotification
+            name: createNotification
+        completionType: allOf
+        end:
+          terminate: true
+        name: PrintExitErrorMessage
+        numCompleted: 0
+        type: parallel
+      - branches:
+          - actions:
+              - actionDataFilter:
+                  useResults: true
+                functionRef:
+                  arguments:
+                    message: '${"m2k workflow: " + $WORKFLOW.instanceId + " has finalized successfully}"'
+                  invoke: sync
+                  refName: systemOut
+                name: printSystemOut
+            name: printSystemOut
+          - actions:
+              - actionDataFilter:
+                  useResults: true
+                condition: ((has("notificationsDisabled") and .notificationsDisabled != null and .notificationsDisabled == true)|not)
+                functionRef:
+                  arguments:
+                    message: '"Move2Kube workflow  " + $WORKFLOW.instanceId + " on workspace " + .workspaceId + " and project " + .projectId + " was successful"'
+                    origin: Move2Kube Worflow
+                    title: '"Move2Kube workflow " + $WORKFLOW.instanceId + " success"'
+                    topic: Move2Kube Workflow
+                  invoke: sync
+                  refName: createNotification
+                name: createNotification
+            name: createNotification
+        completionType: allOf
+        end:
+          terminate: true
+        name: PrintExitSuccessMessage
+        numCompleted: 0
+        type: parallel
+  podTemplate:
+    container:
+      resources: {}
+      image: quay.io/orchestrator/serverless-workflow-move2kube:77184aa640d1ff82972415f76044446bd88fc524
+  resources:
+    configMaps:
+      - configMap:
+          name: 01-m2k-resources
+        workflowPath: specs
+status:
+  address: {}
+  lastTimeRecoverAttempt: null
