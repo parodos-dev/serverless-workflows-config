@@ -10,7 +10,6 @@ data:
     #quarkus.rest-client.mta_json.auth.basicAuth.password = password
 
     #quarkus.log.category.\"org.apache.http\".level = DEBUG
-    quarkus.kubernetes-client.devservices.enabled = false
 kind: ConfigMap
 metadata:
   creationTimestamp: null
