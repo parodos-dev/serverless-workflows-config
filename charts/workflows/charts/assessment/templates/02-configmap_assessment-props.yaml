@@ -1,0 +1,16 @@
+apiVersion: v1
+data:
+  application.properties: |
+    quarkus.http.port=8080
+    kogito.service.url=http://127.0.0.1:8080
+
+    # precheck validation
+    quarkus.rest-client.dataindex_yaml.url=${kogito.data-index.url:${kogito.service.url}}
+kind: ConfigMap
+metadata:
+  creationTimestamp: null
+  labels:
+    app: assessment
+    sonataflow.org/workflow-app: assessment
+  name: assessment-props
+  namespace: default
