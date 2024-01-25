@@ -1,0 +1,76 @@
+apiVersion: sonataflow.org/v1alpha08
+kind: SonataFlow
+metadata:
+  annotations:
+    sonataflow.org/description: ""
+    sonataflow.org/expressionLang: jq
+    sonataflow.org/version: 0.0.1
+  creationTimestamp: null
+  labels:
+    app: assessment
+    sonataflow.org/workflow-app: assessment
+  name: assessment
+  namespace: default
+spec:
+  flow:
+    annotations:
+      - workflow-type/assessment
+    dataInputSchema:
+      failOnValidationErrors: true
+      schema: schema/input-schema.json
+    functions:
+      - name: execute
+        operation: service:java:com.redhat.parodos.workflow.assessment.BasicAssessment::execute
+        type: custom
+      - name: logOuput
+        operation: sysout:INFO
+        type: custom
+    start:
+      stateName: AssessRepository
+    states:
+      - actionMode: sequential
+        actions:
+          - actionDataFilter:
+              toStateData: .result
+              useResults: true
+            functionRef:
+              arguments:
+                repositoryUrl: .repositoryUrl
+              invoke: sync
+              refName: execute
+            name: executeAction
+          - actionDataFilter:
+              toStateData: .preCheck
+              useResults: true
+            name: preCheck
+            subFlowRef:
+              invoke: sync
+              onParentComplete: terminate
+              version: 0.0.1
+              workflowId: preCheck
+          - actionDataFilter:
+              useResults: true
+            functionRef:
+              arguments:
+                message: .preCheck
+              invoke: sync
+              refName: logOuput
+            name: printAction
+        end:
+          terminate: true
+        name: AssessRepository
+        stateDataFilter:
+          output: '. +={workflowOptions: .preCheck.workflowdata.validatedResult}'
+        type: operation
+  podTemplate:
+    container:
+      resources: {}
+      image: quay.io/ricwang/serverless-workflow-assessment:2dedd3db92965943338d202c8b0f1c9adc22c0ba
+  resources:
+    configMaps:
+      - configMap:
+          name: 01-assessment-resources
+        workflowPath: specs
+status:
+  address: {}
+  lastTimeRecoverAttempt: null
