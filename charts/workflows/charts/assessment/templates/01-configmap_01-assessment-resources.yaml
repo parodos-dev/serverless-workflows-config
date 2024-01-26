@@ -1,0 +1,74 @@
+apiVersion: v1
+data:
+  dataindex.yaml: |
+    openapi: 3.1.0
+    info:
+      title: The Data Index Graphql API
+      version: 1.0.0-SNAPSHOT
+    paths:
+      /graphql:
+        post:
+          operationId: reactiveGraphQLHandlerPost
+          summary: GraphQL
+          description: ""
+          requestBody:
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/GraphQLQuery'
+          responses:
+            "200":
+              description: OK
+              content:
+                application/json:
+                  schema:
+                    type: object
+                    properties:
+                      data:
+                        type: object
+    components:
+      schemas:
+        GraphQLQuery:
+          type: object
+          properties:
+            query:
+              type: string
+            variables:
+              type: object
+            operationName:
+              type: string
+  precheck.sw.yaml: "id: preCheck\nname: PreCheck\nversion: \"0.0.1\"\nstart: ExtractWorkflows\nfunctions:\n
+    \ - name: logOuput\n    type: custom\n    operation: \"sysout:ERROR\"\n  - name:
+    extract\n    type: expression\n    operation: \".result | flatten | map(.id)\"\n
+    \ - name: checkProcessDefinitionExistence\n    operation: specs/dataindex.yaml#reactiveGraphQLHandlerPost\n
+    \ - name: removeMissingWorkflowsFromOptions\n    type: expression\n    operation:
+    '.missingWorkflows as $f | .result | walk( if type == \"object\" then select(all($f[]
+    != .id; .)) else . end )'\nstates:\n  - name: ExtractWorkflows\n    type: operation\n
+    \   actions:\n      - name: ExtractWorkflowsAction\n        functionRef:\n          refName:
+    extract\n        actionDataFilter:\n          toStateData: \".infrasWorkflows\"\n
+    \   transition: QueryWorkflow\n  - name: QueryWorkflow\n    type: foreach\n    inputCollection:
+    \"${ .infrasWorkflows }\"\n    outputCollection: \"${ .fetchResults }\"\n    iterationParam:
+    infrasWorkflow\n    actions:\n    - name: checkAction\n      functionRef:\n        refName:
+    checkProcessDefinitionExistence\n        arguments:\n          query: \"query
+    CheckProcessDefQuery($id: String) { ProcessDefinitions  ( where: {id: { equal:
+    $id} } ) { id } }\"\n          variables: \n            id: \"${ .infrasWorkflow
+    }\"\n          operationName: \"CheckProcessDefQuery\"\n      actionDataFilter:\n
+    \       results: \"${ .data.ProcessDefinitions[0].id }\"\n    transition: Check\n
+    \ - name: Check\n    type: switch\n    dataConditions:\n      - condition: (.infrasWorkflows-.fetchResults
+    | length > 0)\n        transition: PrintError\n    defaultCondition:\n      transition:
+    HandleNoError\n  - name: PrintError\n    type: operation\n    actions:\n    -
+    name: error\n      functionRef:\n        refName: logOuput\n        arguments:\n
+    \         message: \"\\\"workflows: \\\\(.infrasWorkflows-.fetchResults) are not
+    found\\\"\"\n    stateDataFilter:\n      output: \". += { missingWorkflows: (.infrasWorkflows
+    - .fetchResults) } | del(.infrasWorkflows, .fetchResults)\"\n    transition: HandleError\n
+    \ - name: HandleError\n    type: operation\n    actions:\n    - name: error\n
+    \     functionRef:\n        refName: removeMissingWorkflowsFromOptions\n      actionDataFilter:\n
+    \       toStateData: \"${ .validatedResult }\"\n    stateDataFilter:\n      output:
+    \".originalResult = .result | del(.result)\"\n    end: true\n  - name: HandleNoError\n
+    \   type: operation\n    actions: []\n    stateDataFilter:\n      output: \".validatedResult
+    = .result | del(.infrasWorkflows, .fetchResults)\"\n    end: true\n"
+kind: ConfigMap
+metadata:
+  creationTimestamp: null
+  name: 01-assessment-resources
+  namespace: default
