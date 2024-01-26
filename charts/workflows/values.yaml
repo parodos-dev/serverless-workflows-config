@@ -2,3 +2,6 @@ mta:
   enabled: true
 greeting:
   enabled: true
+move2kube:
+  enabled: true
+
