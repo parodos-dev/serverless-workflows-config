@@ -36,3 +36,12 @@ helm repo add serverless-workflows https://parodos.dev/serverless-workflows-helm
 helm install serverless-workflows serverless-workflows/workflows
 ```
       
+To generate `values.schema.json`, next to you `values.yaml` file, run: 
+```
+npx @socialgouv/helm-schema -f values.yaml
+```
+
+To generate `README.md`, run:
+```
+frigate gen <path to the chart folder> README.md
+```
