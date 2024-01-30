@@ -7,7 +7,6 @@
   "required": [
       "sshSecretName",
       "brokerName",
-      "namespace",
       "workflow",
       "kfunction",
       "instance"
@@ -29,21 +28,12 @@
               "default"
           ]
       },
-      "namespace": {
-          "type": "string",
-          "default": "",
-          "title": "The namespace Schema",
-          "examples": [
-              "sonataflow-infra"
-          ]
-      },
       "workflow": {
           "type": "object",
           "default": {},
           "title": "The workflow Schema",
           "required": [
               "name",
-              "image",
               "move2kubeURL",
               "backstageNotificationURL"
           ],
@@ -54,14 +44,6 @@
                   "title": "The name Schema",
                   "examples": [
                       "serverless-workflow-m2k"
-                  ]
-              },
-              "image": {
-                  "type": "string",
-                  "default": "",
-                  "title": "The image Schema",
-                  "examples": [
-                      "quay.io/orchestrator/serverless-workflow-move2kube:latest"
                   ]
               },
               "move2kubeURL": {
@@ -83,7 +65,6 @@
           },
           "examples": [{
               "name": "serverless-workflow-m2k",
-              "image": "quay.io/orchestrator/serverless-workflow-move2kube:latest",
               "move2kubeURL": "https://move2kube-route-sonataflow-infra.apps.cluster-8xfw.redhatworkshops.io",
               "backstageNotificationURL": "http://orchestrator-backstage.orchestrator/api/notifications/"
           }]
