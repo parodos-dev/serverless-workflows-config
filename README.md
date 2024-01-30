@@ -26,12 +26,13 @@ Consider this chart as a meta chart or template chart for other workflows or sub
         workflow-3-0.1.1.tgz
 ```
 
-Notice that workflow-1 has the code embedded while workflow-2 and 3 is a dependency resolved from the root Chat.yaml
+Notice that workflow-1 has the code embedded while workflow-2 and 3 is a dependency resolved from the root Chart.yaml
 
 
 # Usage      
 
 ```
-helm install parodos-serverles-workflows charts/workflows
+helm repo add serverless-workflows https://parodos.dev/serverless-workflows-helm
+helm install serverless-workflows serverless-workflows/workflows
 ```
       
