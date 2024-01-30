@@ -7,14 +7,17 @@ data:
     mp.messaging.incoming.kogito_incoming_stream.path=/
     mp.messaging.incoming.kogito_incoming_stream.method=POST
 
-
-    move2kube_url={{ .Values.workflow.move2kubeURL }}
-    quarkus.rest-client.move2kube_yaml.url={{ .Values.workflow.move2kubeURL }}
-    quarkus.rest-client.notifications_yaml.url={{ .Values.workflow.backstageNotificationURL }}
+    # This property is used when sending the notification while waiting for Q&A
+    move2kube_url=${MOVE2KUBE_URL:http://move2kube-svc.default.svc.cluster.local:8080}
+    # This property is used to send requests to the move2kube instance
+    quarkus.rest-client.move2kube_yaml.url=${MOVE2KUBE_URL:http://move2kube-svc.default.svc.cluster.local:8080}
+    # This property is used to send requests to the backstage notification plugin
+    quarkus.rest-client.notifications_yaml.url=${BACKSTAGE_NOTIFICATIONS_URL:http://orchestrator-backstage.orchestrator/api/notifications/}
 kind: ConfigMap
 metadata:
+  creationTimestamp: null
   labels:
-    app: {{ .Values.workflow.name }}
-    sonataflow.org/workflow-app: {{ .Values.workflow.name }}
-  name: {{ .Values.workflow.name }}-props
-  namespace: {{ .Values.namespace }}
+    app: m2k
+    sonataflow.org/workflow-app: m2k
+  name: m2k-props
+  namespace: default

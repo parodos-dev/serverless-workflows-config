@@ -2,15 +2,15 @@ apiVersion: sonataflow.org/v1alpha08
 kind: SonataFlow
 metadata:
   annotations:
-    sonataflow.org/description: Workflow to execute {{ .Values.workflow.name }}
+    sonataflow.org/description: Workflow to execute Move2Kube
     sonataflow.org/expressionLang: jq
     sonataflow.org/version: "1.0"
   creationTimestamp: null
   labels:
-    app: {{ .Values.workflow.name }}
-    sonataflow.org/workflow-app: {{ .Values.workflow.name }}
-  name: {{ .Values.workflow.name }}
-  namespace: {{ .Values.namespace }}
+    app: m2k
+    sonataflow.org/workflow-app: m2k
+  name: m2k
+  namespace: default
 spec:
   flow:
     dataInputSchema:
@@ -123,10 +123,13 @@ spec:
         actions:
           - actionDataFilter:
               useResults: true
-            condition: ((has("notifications_disabled") and .notifications_disabled != null and .notifications_disabled == true)|not)
+            condition: ((has("notificationsDisabled") and .notificationsDisabled != null and .notificationsDisabled == true)|not)
             functionRef:
               arguments:
-                message: '"Please go to your <a href=\"" + $SECRET.move2kube_url + "/workspaces/"+ .workspaceId + "/projects/" + .projectId + "/outputs/"+ .transformId + "\">Move2Kube instance</a> and answers to questions in order to continue the Move2Kube workflow"'
+                actions:
+                  - title: Move2Kube waiting Q&A
+                    url: '$SECRET.move2kube_url + "/workspaces/"+ .workspaceId + "/projects/" + .projectId + "/outputs/"+ .transformId '
+                message: '"Please go to your move2kube instance and answer the questions in order to continue the Move2Kube workflow"'
                 origin: Move2Kube Workflow
                 title: ' "Transformation " + .transformationId + " waiting for Q&A" '
                 topic: Move2Kube Workflow
@@ -149,7 +152,7 @@ spec:
                 HEADER_Ce-Type: save-transformation
                 HEADER_Content-Type: application/json
                 branch: .targetBranch
-                gitRepo: (.repositoryURL|sub(\"http(s)?://\";\"ssh://\"))
+                gitRepo: (.repositoryURL|sub("http(s)?://";"ssh://"))
                 projectId: .projectId
                 token: .token
                 transformId: .transformId
@@ -201,10 +204,10 @@ spec:
           - actions:
               - actionDataFilter:
                   useResults: true
-                condition: ((has("notifications_disabled") and .notifications_disabled != null and .notifications_disabled == true)|not)
+                condition: ((has("notificationsDisabled") and .notificationsDisabled != null and .notificationsDisabled == true)|not)
                 functionRef:
                   arguments:
-                    message: '"Move2Kube workflow  " + $WORKFLOW.instanceId + " on workspace " + .workspaceId + " and project " + .projectId + " failed with exit message: "+ .exitMessage + " <br><br>Error: "  + .error'
+                    message: '"Move2Kube workflow  " + $WORKFLOW.instanceId + " on workspace " + .workspaceId + " and project " + .projectId + " failed with exit message: "+ .exitMessage + "\n\nError: "  + .error'
                     origin: Move2Kube Workflow
                     title: '"Move2Kube workflow " + $WORKFLOW.instanceId + " failed"'
                     topic: Move2Kube Workflow
@@ -232,11 +235,11 @@ spec:
           - actions:
               - actionDataFilter:
                   useResults: true
-                condition: ((has("notifications_disabled") and .notifications_disabled != null and .notifications_disabled == true)|not)
+                condition: ((has("notificationsDisabled") and .notificationsDisabled != null and .notificationsDisabled == true)|not)
                 functionRef:
                   arguments:
-                    message: '"Move2Kube workflow  " + $WORKFLOW.instanceId + " on workspace " + .workspaceId + " and project " + .projectId + " was successful"'
-                    origin: Move2Kube Worflow
+                    message: '"Move2Kube workflow  " + $WORKFLOW.instanceId + " on workspace " + .workspaceId + " and project " + .projectId + " was successful; the output is available in the branch " + .targetBranch + " of your git repository "+ .repositoryURL"'
+                    origin: Move2Kube Workflow
                     title: '"Move2Kube workflow " + $WORKFLOW.instanceId + " success"'
                     topic: Move2Kube Workflow
                   invoke: sync
@@ -252,9 +255,12 @@ spec:
   podTemplate:
     container:
       resources: {}
-      image: {{ .Values.workflow.image }}
+      image: quay.io/orchestrator/serverless-workflow-move2kube:4fae4bd85a48f4091f5c67a83fbcc94dcd29f1f2
   resources:
     configMaps:
       - configMap:
-          name: 01-{{ .Values.workflow.name }}-resources
+          name: 01-m2k-resources
         workflowPath: specs
+status:
+  address: {}
+  lastTimeRecoverAttempt: null
