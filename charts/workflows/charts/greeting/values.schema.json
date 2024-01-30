@@ -1,0 +1,387 @@
+{
+  "type": "object",
+  "$schema": "http://json-schema.org/draft-07/schema",
+  "required": [
+    "volumes",
+    "volumeMounts"
+  ],
+  "properties": {
+    "replicaCount": {
+      "type": [
+        "string",
+        "boolean",
+        "number",
+        "object",
+        "array"
+      ],
+      "default": "1"
+    },
+    "image": {
+      "type": "object",
+      "required": [
+        "tag"
+      ],
+      "properties": {
+        "repository": {
+          "type": [
+            "string",
+            "boolean",
+            "number",
+            "object",
+            "array"
+          ],
+          "default": "nginx"
+        },
+        "pullPolicy": {
+          "type": [
+            "string",
+            "boolean",
+            "number",
+            "object",
+            "array"
+          ],
+          "default": "IfNotPresent"
+        },
+        "tag": {
+          "type": [
+            "string",
+            "boolean",
+            "number",
+            "object",
+            "array"
+          ],
+          "description": "Overrides the image tag whose default is the chart appVersion."
+        }
+      }
+    },
+    "imagePullSecrets": {
+      "type": [
+        "string",
+        "boolean",
+        "number",
+        "object",
+        "array"
+      ]
+    },
+    "nameOverride": {
+      "type": [
+        "string",
+        "boolean",
+        "number",
+        "object",
+        "array"
+      ]
+    },
+    "fullnameOverride": {
+      "type": [
+        "string",
+        "boolean",
+        "number",
+        "object",
+        "array"
+      ]
+    },
+    "serviceAccount": {
+      "type": "object",
+      "required": [
+        "create",
+        "automount",
+        "annotations",
+        "name"
+      ],
+      "properties": {
+        "create": {
+          "type": [
+            "string",
+            "boolean",
+            "number",
+            "object",
+            "array"
+          ],
+          "description": "Specifies whether a service account should be created",
+          "default": "true"
+        },
+        "automount": {
+          "type": [
+            "string",
+            "boolean",
+            "number",
+            "object",
+            "array"
+          ],
+          "description": "Automatically mount a ServiceAccount's API credentials?",
+          "default": "true"
+        },
+        "annotations": {
+          "type": [
+            "string",
+            "boolean",
+            "number",
+            "object",
+            "array"
+          ],
+          "description": "Annotations to add to the service account"
+        },
+        "name": {
+          "type": [
+            "string",
+            "boolean",
+            "number",
+            "object",
+            "array"
+          ],
+          "description": "The name of the service account to use.\nIf not set and create is true, a name is generated using the fullname template"
+        }
+      }
+    },
+    "podAnnotations": {
+      "type": [
+        "string",
+        "boolean",
+        "number",
+        "object",
+        "array"
+      ]
+    },
+    "podLabels": {
+      "type": [
+        "string",
+        "boolean",
+        "number",
+        "object",
+        "array"
+      ]
+    },
+    "podSecurityContext": {
+      "type": [
+        "string",
+        "boolean",
+        "number",
+        "object",
+        "array"
+      ]
+    },
+    "securityContext": {
+      "type": [
+        "string",
+        "boolean",
+        "number",
+        "object",
+        "array"
+      ]
+    },
+    "service": {
+      "type": "object",
+      "required": [],
+      "properties": {
+        "type": {
+          "type": [
+            "string",
+            "boolean",
+            "number",
+            "object",
+            "array"
+          ],
+          "default": "ClusterIP"
+        },
+        "port": {
+          "type": [
+            "string",
+            "boolean",
+            "number",
+            "object",
+            "array"
+          ],
+          "default": "80"
+        }
+      }
+    },
+    "ingress": {
+      "type": "object",
+      "required": [],
+      "properties": {
+        "enabled": {
+          "type": [
+            "string",
+            "boolean",
+            "number",
+            "object",
+            "array"
+          ],
+          "default": "false"
+        },
+        "className": {
+          "type": [
+            "string",
+            "boolean",
+            "number",
+            "object",
+            "array"
+          ]
+        },
+        "annotations": {
+          "type": [
+            "string",
+            "boolean",
+            "number",
+            "object",
+            "array"
+          ]
+        },
+        "hosts": {
+          "type": "object",
+          "required": [],
+          "properties": {
+            "host": {
+              "type": [
+                "string",
+                "boolean",
+                "number",
+                "object",
+                "array"
+              ],
+              "default": "chart-example.local"
+            },
+            "paths": {
+              "type": "object",
+              "required": [],
+              "properties": {
+                "path": {
+                  "type": [
+                    "string",
+                    "boolean",
+                    "number",
+                    "object",
+                    "array"
+                  ],
+                  "default": "/"
+                },
+                "pathType": {
+                  "type": [
+                    "string",
+                    "boolean",
+                    "number",
+                    "object",
+                    "array"
+                  ],
+                  "default": "ImplementationSpecific"
+                }
+              }
+            }
+          }
+        },
+        "tls": {
+          "type": [
+            "string",
+            "boolean",
+            "number",
+            "object",
+            "array"
+          ]
+        }
+      }
+    },
+    "resources": {
+      "type": [
+        "string",
+        "boolean",
+        "number",
+        "object",
+        "array"
+      ]
+    },
+    "autoscaling": {
+      "type": "object",
+      "required": [],
+      "properties": {
+        "enabled": {
+          "type": [
+            "string",
+            "boolean",
+            "number",
+            "object",
+            "array"
+          ],
+          "default": "false"
+        },
+        "minReplicas": {
+          "type": [
+            "string",
+            "boolean",
+            "number",
+            "object",
+            "array"
+          ],
+          "default": "1"
+        },
+        "maxReplicas": {
+          "type": [
+            "string",
+            "boolean",
+            "number",
+            "object",
+            "array"
+          ],
+          "default": "100"
+        },
+        "targetCPUUtilizationPercentage": {
+          "type": [
+            "string",
+            "boolean",
+            "number",
+            "object",
+            "array"
+          ],
+          "default": "80"
+        }
+      }
+    },
+    "volumes": {
+      "type": [
+        "string",
+        "boolean",
+        "number",
+        "object",
+        "array"
+      ],
+      "description": "Additional volumes on the output Deployment definition."
+    },
+    "volumeMounts": {
+      "type": [
+        "string",
+        "boolean",
+        "number",
+        "object",
+        "array"
+      ],
+      "description": "Additional volumeMounts on the output Deployment definition."
+    },
+    "nodeSelector": {
+      "type": [
+        "string",
+        "boolean",
+        "number",
+        "object",
+        "array"
+      ]
+    },
+    "tolerations": {
+      "type": [
+        "string",
+        "boolean",
+        "number",
+        "object",
+        "array"
+      ]
+    },
+    "affinity": {
+      "type": [
+        "string",
+        "boolean",
+        "number",
+        "object",
+        "array"
+      ]
+    }
+  }
+}

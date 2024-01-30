@@ -1,0 +1,42 @@
+{
+  "type": "object",
+  "$schema": "http://json-schema.org/draft-07/schema",
+  "required": [],
+  "properties": {
+    "mta": {
+      "type": "object",
+      "required": [
+        "endpoint"
+      ],
+      "properties": {
+        "endpoint": {
+          "type": [
+            "string",
+            "boolean",
+            "number",
+            "object",
+            "array"
+          ],
+          "description": "specify the port because of rest client bug in sonata (TODO check when is this solved)",
+          "default": "https://mta-openshift-mta.apps.parodos-dev.projects.ecosystem.sysdeseng.com:443/hub/"
+        }
+      }
+    },
+    "labels": {
+      "type": "object",
+      "required": [],
+      "properties": {
+        "app": {
+          "type": [
+            "string",
+            "boolean",
+            "number",
+            "object",
+            "array"
+          ],
+          "default": "mta"
+        }
+      }
+    }
+  }
+}
