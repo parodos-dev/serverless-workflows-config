@@ -38,7 +38,7 @@ spec:
         operation: specs/mta.json#getTaskgroup
         type: rest
       - name: createNotification
-        operation: specs/notifications.yaml#createNotification
+        operation: notifications#createNotification
         type: rest
     start:
       stateName: GetApplication
@@ -225,7 +225,7 @@ spec:
   podTemplate:
     container:
       resources: {}
-      image: quay.io/orchestrator/serverless-workflow-mta:ff5932bd129ca62057596d28584fa43c7212b687
+      image: quay.io/orchestrator/serverless-workflow-mta:0c7c9b0f4bc711dc1474a313ef50ca29506d71ce
   resources:
     configMaps:
       - configMap:
