@@ -255,6 +255,9 @@ spec:
     container:
       resources: {}
       image: quay.io/orchestrator/serverless-workflow-move2kube:f6fbb19dd531f5bcb612b28862a2303dfae87bd7
+      env:
+        - name: K_SINK
+          value: {{ .Values.brokerURL}}
   resources:
     configMaps:
       - configMap:
