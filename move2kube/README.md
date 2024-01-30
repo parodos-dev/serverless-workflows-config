@@ -40,7 +40,7 @@ helm install move2kube workflows/move2kube
 ```
 Run the following command to apply it to the `move2kubeURL` parameter:
 ```console
-M2K_ROUTE=$(oc -n sonataflow-infra get routes move2kube-route -o yaml | yq .spec.host)
+M2K_ROUTE=$(oc -n sonataflow-infra get routes move2kube-route -o yaml | yq -r .spec.host)
 oc -n sonataflow-infra delete ksvc m2k-save-transformation-func &&
 helm upgrade move2kube move2kube --set workflow.move2kubeURL=$M2K_ROUTE &&
 oc -n sonataflow-infra scale deployment serverless-workflow-m2k --replicas=0 &&
