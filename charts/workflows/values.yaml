@@ -1,2 +1,4 @@
 mta:
   enabled: true
+greeting:
+  enabled: true

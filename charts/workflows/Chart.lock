@@ -1,0 +1,9 @@
+dependencies:
+- name: mta
+  repository: file://charts/mta
+  version: 0.2.1
+- name: greeting
+  repository: file://charts/greeting
+  version: 0.2.1
+digest: sha256:dcb311aadb9425b4dade8e250ee4bb54b50a480598adddbbe2a22e8b09396aec
+generated: "2024-01-30T09:12:32.196378562+02:00"
