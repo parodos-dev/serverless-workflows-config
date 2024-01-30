@@ -23,4 +23,8 @@ dependencies:
     repository: "file://charts/greeting"
     version: "0.2.1"
     condition: greeting.enabled
+  - name: move2kube
+    repository: "file://charts/move2kube"
+    version: "0.2.1"
+    condition: move2kube.enabled
 

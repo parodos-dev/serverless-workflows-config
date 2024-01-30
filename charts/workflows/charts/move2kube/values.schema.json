@@ -1,0 +1,159 @@
+{
+  "type": "object",
+  "$schema": "http://json-schema.org/draft-07/schema",
+  "required": [
+    "brokerName",
+    "namespace",
+    "workflow",
+    "kfunction",
+    "instance"
+  ],
+  "properties": {
+    "sshSecretName": {
+      "type": [
+        "string",
+        "boolean",
+        "number",
+        "object",
+        "array"
+      ],
+      "default": "sshkeys"
+    },
+    "brokerName": {
+      "type": [
+        "string",
+        "boolean",
+        "number",
+        "object",
+        "array"
+      ],
+      "description": "name of the secret holding the ssh keys that will be used by move2kube resources",
+      "default": "default"
+    },
+    "namespace": {
+      "type": [
+        "string",
+        "boolean",
+        "number",
+        "object",
+        "array"
+      ],
+      "description": "name of the broker used by Knative eventing resources",
+      "default": "sonataflow-infra"
+    },
+    "workflow": {
+      "type": "object",
+      "description": "name where install the resources",
+      "required": [
+        "image",
+        "move2kubeURL",
+        "backstageNotificationURL"
+      ],
+      "properties": {
+        "name": {
+          "type": [
+            "string",
+            "boolean",
+            "number",
+            "object",
+            "array"
+          ],
+          "default": "serverless-workflow-m2k"
+        },
+        "image": {
+          "type": [
+            "string",
+            "boolean",
+            "number",
+            "object",
+            "array"
+          ],
+          "description": "name of the workflow",
+          "default": "quay.io/orchestrator/serverless-workflow-move2kube:latest"
+        },
+        "move2kubeURL": {
+          "type": [
+            "string",
+            "boolean",
+            "number",
+            "object",
+            "array"
+          ],
+          "description": "image containing the workflow",
+          "default": "https://move2kube-route-sonataflow-infra.apps.cluster-8xfw.redhatworkshops.io"
+        },
+        "backstageNotificationURL": {
+          "type": [
+            "string",
+            "boolean",
+            "number",
+            "object",
+            "array"
+          ],
+          "description": "URL for move2kube instace",
+          "default": "http://orchestrator-backstage.orchestrator/api/notifications/"
+        }
+      }
+    },
+    "kfunction": {
+      "type": "object",
+      "description": "URL for backstage notification plugin",
+      "required": [
+        "image"
+      ],
+      "properties": {
+        "name": {
+          "type": [
+            "string",
+            "boolean",
+            "number",
+            "object",
+            "array"
+          ],
+          "default": "m2k-save-transformation-func"
+        },
+        "image": {
+          "type": [
+            "string",
+            "boolean",
+            "number",
+            "object",
+            "array"
+          ],
+          "description": "name of the Knative function that save the transformation output to git",
+          "default": "quay.io/orchestrator/serverless-workflow-m2k-kfunc:latest"
+        }
+      }
+    },
+    "instance": {
+      "type": "object",
+      "description": "image of the knative function",
+      "required": [
+        "image"
+      ],
+      "properties": {
+        "name": {
+          "type": [
+            "string",
+            "boolean",
+            "number",
+            "object",
+            "array"
+          ],
+          "default": "move2kube"
+        },
+        "image": {
+          "type": [
+            "string",
+            "boolean",
+            "number",
+            "object",
+            "array"
+          ],
+          "description": "name of the move2kube instance deployment",
+          "default": "quay.io/orchestrator/move2kube-ui:latest"
+        }
+      }
+    }
+  }
+}
