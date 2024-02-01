@@ -10,7 +10,6 @@ metadata:
     app: greeting
     sonataflow.org/workflow-app: greeting
   name: greeting
-  namespace: default
 spec:
   flow:
     dataInputSchema:
@@ -64,7 +63,7 @@ spec:
   podTemplate:
     container:
       resources: {}
-      image: quay.io/orchestrator/serverless-workflow-greeting:8d13ff0400cfa3bfee76a2975357dd3d5160a4fa
+      image: quay.io/orchestrator/serverless-workflow-greeting:cc43bcae9e65d99bce64b7ab23f3665ab243a2d3
   resources:
     configMaps:
       - configMap:
