@@ -1,42 +1,63 @@
 {
+  "$schema": "https://json-schema.org/draft/2019-09/schema",
+  "$id": "http://example.com/example.json",
   "type": "object",
-  "$schema": "http://json-schema.org/draft-07/schema",
-  "required": [],
+  "default": {},
+  "title": "Root Schema",
+  "required": [
+      "mta",
+      "labels"
+  ],
   "properties": {
-    "mta": {
-      "type": "object",
-      "required": [
-        "endpoint"
-      ],
-      "properties": {
-        "endpoint": {
-          "type": [
-            "string",
-            "boolean",
-            "number",
-            "object",
-            "array"
+      "mta": {
+          "type": "object",
+          "default": {},
+          "title": "The mta Schema",
+          "required": [
+              "endpoint"
           ],
-          "description": "specify the port because of rest client bug in sonata (TODO check when is this solved)",
-          "default": "https://mta-openshift-mta.apps.parodos-dev.projects.ecosystem.sysdeseng.com:443/hub/"
-        }
-      }
-    },
-    "labels": {
-      "type": "object",
-      "required": [],
-      "properties": {
-        "app": {
-          "type": [
-            "string",
-            "boolean",
-            "number",
-            "object",
-            "array"
+          "properties": {
+              "endpoint": {
+                  "type": "string",
+                  "default": "",
+                  "title": "The endpoint Schema",
+                  "examples": [
+                      "https://mta-openshift-mta.apps.parodos-dev.projects.ecosystem.sysdeseng.com:443/hub/"
+                  ]
+              }
+          },
+          "examples": [{
+              "endpoint": "https://mta-openshift-mta.apps.parodos-dev.projects.ecosystem.sysdeseng.com:443/hub/"
+          }]
+      },
+      "labels": {
+          "type": "object",
+          "default": {},
+          "title": "The labels Schema",
+          "required": [
+              "app"
           ],
-          "default": "mta"
-        }
+          "properties": {
+              "app": {
+                  "type": "string",
+                  "default": "",
+                  "title": "The app Schema",
+                  "examples": [
+                      "mta"
+                  ]
+              }
+          },
+          "examples": [{
+              "app": "mta"
+          }]
       }
-    }
-  }
+  },
+  "examples": [{
+      "mta": {
+          "endpoint": "https://mta-openshift-mta.apps.parodos-dev.projects.ecosystem.sysdeseng.com:443/hub/"
+      },
+      "labels": {
+          "app": "mta"
+      }
+  }]
 }
