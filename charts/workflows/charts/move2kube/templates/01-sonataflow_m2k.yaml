@@ -10,7 +10,6 @@ metadata:
     app: m2k
     sonataflow.org/workflow-app: m2k
   name: m2k
-  namespace: default
 spec:
   flow:
     dataInputSchema:
@@ -42,7 +41,7 @@ spec:
         operation: rest:post:http://broker-ingress.knative-eventing.svc.cluster.local/sonataflow-infra/default
         type: custom
       - name: createNotification
-        operation: specs/notifications.yaml#createNotification
+        operation: notifications#createNotification
         type: rest
     start:
       stateName: StartPlanning
@@ -255,7 +254,7 @@ spec:
   podTemplate:
     container:
       resources: {}
-      image: quay.io/orchestrator/serverless-workflow-move2kube:4fae4bd85a48f4091f5c67a83fbcc94dcd29f1f2
+      image: quay.io/orchestrator/serverless-workflow-move2kube:6d54d44a0c036a2924de61347d7ae0f7f59c7e43
   resources:
     configMaps:
       - configMap:
