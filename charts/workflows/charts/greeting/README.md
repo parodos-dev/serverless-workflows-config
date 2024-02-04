@@ -11,38 +11,7 @@ The following table lists the configurable parameters of the Greeting chart and 
 
 | Parameter                | Description             | Default        |
 | ------------------------ | ----------------------- | -------------- |
-| `replicaCount` |  | `1` |
-| `image.repository` |  | `"nginx"` |
-| `image.pullPolicy` |  | `"IfNotPresent"` |
-| `image.tag` |  | `""` |
-| `imagePullSecrets` |  | `[]` |
-| `nameOverride` |  | `""` |
-| `fullnameOverride` |  | `""` |
-| `serviceAccount.create` |  | `true` |
-| `serviceAccount.automount` |  | `true` |
-| `serviceAccount.annotations` |  | `{}` |
-| `serviceAccount.name` |  | `""` |
-| `podAnnotations` |  | `{}` |
-| `podLabels` |  | `{}` |
-| `podSecurityContext` |  | `{}` |
-| `securityContext` |  | `{}` |
-| `service.type` |  | `"ClusterIP"` |
-| `service.port` |  | `80` |
-| `ingress.enabled` |  | `false` |
-| `ingress.className` |  | `""` |
-| `ingress.annotations` |  | `{}` |
-| `ingress.hosts` |  | `[{"host": "chart-example.local", "paths": [{"path": "/", "pathType": "ImplementationSpecific"}]}]` |
-| `ingress.tls` |  | `[]` |
-| `resources` |  | `{}` |
-| `autoscaling.enabled` |  | `false` |
-| `autoscaling.minReplicas` |  | `1` |
-| `autoscaling.maxReplicas` |  | `100` |
-| `autoscaling.targetCPUUtilizationPercentage` |  | `80` |
-| `volumes` |  | `[]` |
-| `volumeMounts` |  | `[]` |
-| `nodeSelector` |  | `{}` |
-| `tolerations` |  | `[]` |
-| `affinity` |  | `{}` |
+|                          |                         |                |
 
 
 

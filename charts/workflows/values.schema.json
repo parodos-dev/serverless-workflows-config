@@ -1,50 +1,88 @@
 {
+  "$schema": "https://json-schema.org/draft/2019-09/schema",
+  "$id": "http://example.com/example.json",
   "type": "object",
-  "$schema": "http://json-schema.org/draft-07/schema",
+  "default": {},
+  "title": "Root Schema",
   "required": [
-    "mta",
-    "greeting",
-    "move2kube"
+      "mta",
+      "greeting",
+      "move2kube"
   ],
   "properties": {
-    "mta": {
-      "type": "object",
-      "description": "Indicates that mta workflow is enabled",
-      "required": [],
-      "properties": {
-        "enabled": {
-          "type": [
-            "boolean"
+      "mta": {
+          "type": "object",
+          "default": {},
+          "title": "The mta Schema",
+          "required": [
+              "enabled"
           ],
-          "default": "true"
-        }
+          "properties": {
+              "enabled": {
+                  "type": "boolean",
+                  "default": false,
+                  "title": "The enabled Schema",
+                  "examples": [
+                      true
+                  ]
+              }
+          },
+          "examples": [{
+              "enabled": true
+          }]
+      },
+      "greeting": {
+          "type": "object",
+          "default": {},
+          "title": "The greeting Schema",
+          "required": [
+              "enabled"
+          ],
+          "properties": {
+              "enabled": {
+                  "type": "boolean",
+                  "default": false,
+                  "title": "The enabled Schema",
+                  "examples": [
+                      true
+                  ]
+              }
+          },
+          "examples": [{
+              "enabled": true
+          }]
+      },
+      "move2kube": {
+          "type": "object",
+          "default": {},
+          "title": "The move2kube Schema",
+          "required": [
+              "enabled"
+          ],
+          "properties": {
+              "enabled": {
+                  "type": "boolean",
+                  "default": false,
+                  "title": "The enabled Schema",
+                  "examples": [
+                      true
+                  ]
+              }
+          },
+          "examples": [{
+              "enabled": true
+          }]
       }
-    },
-    "greeting": {
-      "type": "object",
-      "description": "Indicates that mta workflow is enabled",
-      "required": [],
-      "properties": {
-        "enabled": {
-            "type": [
-                "boolean"
-              ],
-          "default": "true"
-        }
+  },
+  "examples": [{
+      "mta": {
+          "enabled": true
+      },
+      "greeting": {
+          "enabled": true
+      },
+      "move2kube": {
+          "enabled": true
       }
-    },
-    "move2kube": {
-      "type": "object",
-      "description": "Indicates that greeting workflow is enabled",
-      "required": [],
-      "properties": {
-        "enabled": {
-            "type": [
-                "boolean"
-                ],
-          "default": "true"
-        }
-      }
-    }
-  }
+  }]
 }
