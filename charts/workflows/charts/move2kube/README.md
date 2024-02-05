@@ -2,7 +2,7 @@
 Move2kube
 ===========
 
-Helm chart to deploy the move2kube workflow. #magic___^_^___line
+Helm chart to deploy the move2kube workflow.
 
 
 
