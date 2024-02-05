@@ -5,8 +5,7 @@
   "default": {},
   "title": "Root Schema",
   "required": [
-      "mta",
-      "labels"
+      "mta"
   ],
   "properties": {
       "mta": {
@@ -29,35 +28,11 @@
           "examples": [{
               "endpoint": "https://mta-openshift-mta.apps.parodos-dev.projects.ecosystem.sysdeseng.com:443/hub/"
           }]
-      },
-      "labels": {
-          "type": "object",
-          "default": {},
-          "title": "The labels Schema",
-          "required": [
-              "app"
-          ],
-          "properties": {
-              "app": {
-                  "type": "string",
-                  "default": "",
-                  "title": "The app Schema",
-                  "examples": [
-                      "mta"
-                  ]
-              }
-          },
-          "examples": [{
-              "app": "mta"
-          }]
       }
   },
   "examples": [{
       "mta": {
           "endpoint": "https://mta-openshift-mta.apps.parodos-dev.projects.ecosystem.sysdeseng.com:443/hub/"
-      },
-      "labels": {
-          "app": "mta"
       }
   }]
 }
