@@ -1,33 +1,37 @@
-# serverless-workflows-helm
+## Orchestrator Workflows Helm Repository
 
-*UNDER DEVELOPMENT*
+This repository serves as a Helm chart repository for deploying serverless workflows with the Sonataflow Operator. It encompasses a collection of pre-defined workflows, each tailored to specific use cases. These workflows have undergone thorough testing and validation through Continuous Integration (CI) processes and are organized according to their chart versions.
 
-serverless workflows helm charts 
+The repository includes a variety of serverless workflows, such as:
 
-This is a chart repo for serverless workflows to be deployed using Sonataflow Operator.
-All the workflows address defined use-cases, tested and validated using CI, and versioned by the chart version.
+* Greeting: A basic example workflow to demonstrate functionality.
+* Migration Toolkit for Application Analysis (MTA): This workflow performs an evaluation of applications to determine potential risks and the associated costs of containerizing the applications.
+* Move2Kube: Designed to facilitate the transition of an application to Kubernetes (K8s) environments.
 
-The chart contains the workflows and all their needed dependencies and it may reference other workflows chart repo 
-by dependency resolution, meaning we don't have to have all the worlflows definition here. 
-Consider this chart as a meta chart or template chart for other workflows or sub-workflows:
+## Usage
 
+### Pre-requisites
+o utilize the workflows contained in this repository, the Orchestrator Deployment must be installed on your OpenShift Container Platform (OCP) cluster. For detailed instructions on installing the Orchestrator, please visit the [Orchestrator Helm Repository](https://www.parodos.dev/orchestrator-helm-chart/)
+
+Visit workflows pre-requisites before installing the workflows:
+* [Greeting](./greeting/README.md)
+* [MTA](./mta/README.md)
+* [Move2Kube](./move2kube/README.md)
+
+## Installation
 ```
-/
-  charts/              
-    workflows/
-      Chart.yaml
-      values.yaml
-      charts/
-        workflow-1/
-          Chart.yaml
-          values.yaml
-          templates/
-        workflow-2-0.1.0.tgz
-        workflow-3-0.1.1.tgz
+$ helm repo add orchestrator-workflows https://parodos.dev/serverless-workflows-helm
+"orchestrator-workflows" has been added to your repositories
+
+$ helm install orchestrator-workflows orchestrator-workflows/workflows
 ```
 
-Notice that workflow-1 has the code embedded while workflow-2 and 3 is a dependency resolved from the root Chat.yaml
+## Configuration
 
+The following table lists the configurable parameters of the Workflows chart and their default values.
 
-      
-      
+| Parameter                | Description             | Default        |
+| ------------------------ | ----------------------- | -------------- |
+| `mta.enabled` | Indicates that mta workflow is enabled | `true` |
+| `greeting.enabled` | Indicates that greeting workflow is enabled | `true` |
+| `move2kube.enabled` | Indicates that move2kube workflow is enabled | `true` |

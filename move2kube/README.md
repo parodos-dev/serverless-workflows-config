@@ -1,7 +1,6 @@
-Move2kube
-===========
+# Move2kube Workflow
 
-# Configuration
+## Configuration
 
 We need to use `initContainers` and `securityContext` in our Knative services to allow SSH key exchange in move2kube workflow, we have to tell Knative to enable that feature:
 ```bash
@@ -31,8 +30,7 @@ If you do not have ssh keys, you can generate them with `ssh-keygen` command. Yo
 
 Note that those ssh keys needs to be added in your git repository as well. For bitbucket it should be on the [account level](https://bitbucket.org/account/settings/ssh-keys/)
 
-# Installation
-
+## Installation
 
 Run 
 ```console
