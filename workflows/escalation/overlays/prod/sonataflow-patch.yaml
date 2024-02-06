@@ -1,0 +1,12 @@
+apiVersion: sonataflow.org/v1alpha08
+kind: SonataFlow
+metadata:
+  name: ticketescalation
+spec:
+  podTemplate:
+    container:
+      envFrom:
+      - configMapRef:
+          name: escalation-config
+      - secretRef:
+          name: escalation-secret

@@ -1,0 +1,22 @@
+apiVersion: v1
+data:
+  application.properties: "# The ID of the Jira issue type to be created (mandatory)\njira_issue_type=${JIRA_ISSUE_TYPE}\n#
+    The key of the Jira project where the escalation issue is created (mandatory)\njira_project=${JIRA_PROJECT}\n#
+    The name part of the Jira ticket label that contains the ID of the related SWF
+    instance (e.g. `workflowInstanceId=123`)\njira_label_workflowInstanceId=${JIRA_WORKFLOW_INSTANCE_ID_LABEL:workflowInstanceId}\n#
+    The whole Jira ticket label that contains the name of the SWF (e.g. `workflowInstanceId=escalation`)\njira_label_workflowName=${JIRA_WORKFLOW_NAME_LABEL:workflowName=escalation}\n\n#
+    Jira\nquarkus.rest-client.jira_yaml.url=${JIRA_URL}\nquarkus.openapi-generator.jira_yaml.auth.basicAuth.username=${JIRA_USERNAME}\n#
+    See https://id.atlassian.com/manage-profile/security/api-tokens\nquarkus.openapi-generator.jira_yaml.auth.basicAuth.password=${JIRA_API_TOKEN}\n\n#
+    The ISO 8601 duration format to wait before triggering the escalation request,
+    after the issue has been created\ntimeout_seconds=${ESCALATION_TIMEOUT_SECONDS:PT60S}\n\n#
+    OpenShift API Server\nquarkus.rest-client.kube_yaml.url=${OCP_API_SERVER_URL}\nquarkus.openapi-generator.kube_yaml.auth.BearerToken.bearer-token=${OCP_API_SERVER_TOKEN}\nquarkus.tls.trust-all=true\nquarkus.kubernetes-client.trust-certs=true\n\n#
+    Notifications service\nquarkus.rest-client.notifications.url=${BACKSTAGE_NOTIFICATIONS_URL:http://orchestrator-backstage.orchestrator/api/notifications/}\n\n#
+    This is to enable debugging of HTTP request \nquarkus.log.category.\\\"org.apache.http\\\".level=INFO\n\n#
+    Knative eventing configuration\nmp.messaging.incoming.kogito_incoming_stream.connector=quarkus-http\nmp.messaging.incoming.kogito_incoming_stream.path=/\nmp.messaging.incoming.kogito_incoming_stream.method=POST"
+kind: ConfigMap
+metadata:
+  creationTimestamp: null
+  labels:
+    app: ticketescalation
+    sonataflow.org/workflow-app: ticketescalation
+  name: ticketescalation-props
