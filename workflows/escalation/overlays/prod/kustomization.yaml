@@ -1,0 +1,23 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+  - ../../base
+
+generatorOptions:
+ disableNameSuffixHash: true
+
+secretGenerator:
+  - name: escalation-secret
+    envs:
+    - secret.properties
+configMapGenerator:
+  - name: escalation-config
+    envs:
+      - config.properties
+patches:
+  - target:
+      kind: SonataFlow
+      name: ticketescalation
+    path: sonataflow-patch.yaml
+      
