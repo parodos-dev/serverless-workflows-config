@@ -27,7 +27,7 @@ The workflows can be installed by the meta chart or individually. Visit workflow
 
 To install workflows by the meta-chart, run:
 ```
-$ helm install orchestrator-workflows orchestrator-workflows/workflows
+$ helm install orchestrator-workflows orchestrator-workflows/workflows --namespace=sonataflow-infra
 ```
 
 ## Configuration

@@ -9,7 +9,7 @@ There is no configuration required for the greeting workflow to run.
 ## Installation
 
 ```console
-helm install greeting workflows/greeting
+helm install greeting workflows/greeting --namespace=sonataflow-infra
 ```
 
 Verify the greeting workflow is ready:
