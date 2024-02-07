@@ -13,16 +13,20 @@ The repository includes a variety of serverless workflows, such as:
 ### Pre-requisites
 o utilize the workflows contained in this repository, the Orchestrator Deployment must be installed on your OpenShift Container Platform (OCP) cluster. For detailed instructions on installing the Orchestrator, please visit the [Orchestrator Helm Repository](https://www.parodos.dev/orchestrator-helm-chart/)
 
-Visit workflows pre-requisites before installing the workflows:
-* [Greeting](./greeting/README.md)
-* [MTA](./mta/README.md)
-* [Move2Kube](./move2kube/README.md)
 
 ## Installation
 ```
 $ helm repo add orchestrator-workflows https://parodos.dev/serverless-workflows-helm
 "orchestrator-workflows" has been added to your repositories
+```
 
+The workflows can be installed by the meta chart or individually. Visit workflows for specific details:
+* [Greeting](./greeting/README.md)
+* [MTA](./mta/README.md)
+* [Move2Kube](./move2kube/README.md)
+
+To install workflows by the meta-chart, run:
+```
 $ helm install orchestrator-workflows orchestrator-workflows/workflows
 ```
 
