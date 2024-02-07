@@ -1,181 +1,5 @@
 apiVersion: v1
 data:
-  jira.yaml: "openapi: 3.0.3\ninfo:\n  title: The Jira Cloud platform REST API\n  description:
-    Jira Cloud platform REST API documentation\n  termsOfService: http://atlassian.com/terms/\n
-    \ contact:\n    email: ecosystem@atlassian.com\n  license:\n    name: Apache 2.0\n
-    \   url: http://www.apache.org/licenses/LICENSE-2.0.html\n  version: 1001.0.0-SNAPSHOT\nexternalDocs:\n
-    \ description: Find out more about Atlassian products and services.\n  url: http://www.atlassian.com\nservers:\n
-    \ - url: https://your-domain.atlassian.net\npaths:\n  /rest/api/latest/issue:\n
-    \   post:\n      tags:\n        - Issues\n      summary: Create issue\n      description:
-    |-\n        Creates an issue or, where the option to create subtasks is enabled
-    in Jira, a subtask. A transition may be applied, to move the issue or subtask
-    to a workflow step other than the default start step, and issue properties set.\n\n
-    \       The content of the issue or subtask is defined using `update` and `fields`.
-    The fields that can be set in the issue or subtask are determined using the [
-    Get create issue metadata](#api-rest-api-3-issue-createmeta-get). These are the
-    same fields that appear on the issue's create screen. Note that the `description`,
-    `environment`, and any `textarea` type custom fields (multi-line text fields)
-    take Atlassian Document Format content. Single line custom fields (`textfield`)
-    accept a string and don't handle Atlassian Document Format content.\n\n        Creating
-    a subtask differs from creating an issue as follows:\n\n         *  `issueType`
-    must be set to a subtask issue type (use [ Get create issue metadata](#api-rest-api-3-issue-createmeta-get)
-    to find subtask issue types).\n         *  `parent` must contain the ID or key
-    of the parent issue.\n\n        In a next-gen project any issue may be made a
-    child providing that the parent and child are members of the same project.\n\n
-    \       **[Permissions](#permissions) required:** *Browse projects* and *Create
-    issues* [project permissions](https://confluence.atlassian.com/x/yodKLg) for the
-    project in which the issue or subtask is created.\n      operationId: createIssue\n
-    \     requestBody:\n        content:\n          application/json:\n            schema:\n
-    \             $ref: '#/components/schemas/IssueUpdateDetails'\n            example:\n
-    \             fields:\n                assignee:\n                  id: 5b109f2e9729b51b54dc274d\n
-    \               components:\n                  - id: \"10000\"\n                customfield_10000:
-    09/Jun/19\n                customfield_20000: 06/Jul/19 3:25 PM\n                customfield_30000:\n
-    \                 - \"10000\"\n                  - \"10002\"\n                customfield_40000:\n
-    \                 content:\n                    - content:\n                        -
-    text: Occurs on all orders\n                          type: text\n                      type:
-    paragraph\n                  type: doc\n                  version: 1\n                customfield_50000:\n
-    \                 content:\n                    - content:\n                        -
-    text: Could impact day-to-day work.\n                          type: text\n                      type:
-    paragraph\n                  type: doc\n                  version: 1\n                customfield_60000:
-    jira-software-users\n                customfield_70000:\n                  - jira-administrators\n
-    \                 - jira-software-users\n                customfield_80000:\n
-    \                 value: red\n                description:\n                  content:\n
-    \                   - content:\n                        - text: Order entry fails
-    when selecting supplier.\n                          type: text\n                      type:
-    paragraph\n                  type: doc\n                  version: 1\n                duedate:
-    2019-05-11\n                environment:\n                  content:\n                    -
-    content:\n                        - text: UAT\n                          type:
-    text\n                      type: paragraph\n                  type: doc\n                  version:
-    1\n                fixVersions:\n                  - id: \"10001\"\n                issuetype:\n
-    \                 id: \"10000\"\n                labels:\n                  -
-    bugfix\n                  - blitz_test\n                parent:\n                  key:
-    PROJ-123\n                priority:\n                  id: \"20000\"\n                project:\n
-    \                 id: \"10000\"\n                reporter:\n                  id:
-    5b10a2844c20165700ede21g\n                security:\n                  id: \"10000\"\n
-    \               summary: Main order flow broken\n                timetracking:\n
-    \                 originalEstimate: \"10\"\n                  remainingEstimate:
-    \"5\"\n                versions:\n                  - id: \"10000\"\n              update:
-    { }\n        required: true\n      responses:\n        \"201\":\n          description:
-    Returned if the request is successful.\n          content:\n            application/json:\n
-    \             schema:\n                $ref: '#/components/schemas/CreatedIssue'\n
-    \             example: \"{\\\"id\\\":\\\"10000\\\",\\\"key\\\":\\\"ED-24\\\",\\\"self\\\":\\\"https://your-domain.atlassian.net/rest/api/3/issue/10000\\\",\\\"transition\\\":{\\\"status\\\":200,\\\"errorCollection\\\":{\\\"errorMessages\\\":[],\\\"errors\\\":{}}}}\"\n
-    \       \"400\":\n          description: |-\n            Returned if the request:\n\n
-    \            *  is missing required fields.\n             *  contains invalid
-    field values.\n             *  contains fields that cannot be set for the issue
-    type.\n             *  is by a user who does not have the necessary permission.\n
-    \            *  is to create a subtype in a project different that of the parent
-    issue.\n             *  is for a subtask when the option to create subtasks is
-    disabled.\n             *  is invalid for any other reason.\n          content:\n
-    \           application/json:\n              schema:\n                $ref: '#/components/schemas/ErrorCollection'\n
-    \             example: \"{\\\"errorMessages\\\":[\\\"Field 'priority' is required\\\"],\\\"errors\\\":{}}\"\n
-    \       \"401\":\n          description: Returned if the authentication credentials
-    are incorrect or missing.\n          content:\n            application/json:\n
-    \             schema:\n                $ref: '#/components/schemas/ErrorCollection'\n
-    \       \"403\":\n          description: Returned if the user does not have the
-    necessary permission.\n          content:\n            application/json:\n              schema:\n
-    \               $ref: '#/components/schemas/ErrorCollection'\n      deprecated:
-    false\n      security:\n        - basicAuth: [ ]\n\n  /rest/api/3/issue/{issueIdOrKey}:\n
-    \   get:\n      tags:\n        - Issues\n      summary: Get issue\n      description:
-    |-\n        Returns the details for an issue.\n\n        The issue is identified
-    by its ID or key, however, if the identifier doesn't match an issue, a case-insensitive
-    search and check for moved issues is performed. If a matching issue is found its
-    details are returned, a 302 or other redirect is **not** returned. The issue key
-    returned in the response is the key of the issue found.\n\n        This operation
-    can be accessed anonymously.\n\n        **[Permissions](#permissions) required:**\n\n
-    \        *  *Browse projects* [project permission](https://confluence.atlassian.com/x/yodKLg)
-    for the project that the issue is in.\n         *  If [issue-level security](https://confluence.atlassian.com/x/J4lKLg)
-    is configured, issue-level security permission to view the issue.\n      operationId:
-    getIssue\n      parameters:\n        - name: issueIdOrKey\n          in: path\n
-    \         description: The ID or key of the issue.\n          required: true\n
-    \         style: simple\n          explode: false\n          schema:\n            type:
-    string\n        - name: fields\n          in: query\n          description: The
-    ID or key of the issue.\n          required: false\n          schema:\n            type:
-    string\n            default: status\n        - name: fieldsByKeys\n          in:
-    query\n          description: Whether fields in `fields` are referenced by keys
-    rather than IDs. This parameter is useful where fields have been added by a connect
-    app and a field's key may differ from its ID.\n          required: false\n          style:
-    form\n          explode: true\n          schema:\n            type: boolean\n
-    \           default: false\n        - name: expand\n          in: query\n          description:
-    |-\n            Use [expand](#expansion) to include additional information about
-    the issues in the response. This parameter accepts a comma-separated list. Expand
-    options include:\n            \n             *  `renderedFields` Returns field
-    values rendered in HTML format.\n             *  `names` Returns the display name
-    of each field.\n             *  `schema` Returns the schema describing a field
-    type.\n             *  `transitions` Returns all possible transitions for the
-    issue.\n             *  `editmeta` Returns information about how each field can
-    be edited.\n             *  `changelog` Returns a list of recent updates to an
-    issue, sorted by date, starting from the most recent.\n             *  `versionedRepresentations`
-    Returns a JSON array for each version of a field's value, with the highest number
-    representing the most recent version. Note: When included in the request, the
-    `fields` parameter is ignored.\n          required: false\n          style: form\n
-    \         explode: true\n          schema:\n            type: string\n        -
-    name: updateHistory\n          in: query\n          description: \"Whether the
-    project in which the issue is created is added to the user's **Recently viewed**
-    project list, as shown under **Projects** in Jira. This also populates the [JQL
-    issues search](#api-rest-api-3-search-get) `lastViewed` field.\"\n          required:
-    false\n          style: form\n          explode: true\n          schema:\n            type:
-    boolean\n            default: false\n      responses:\n        \"200\":\n          description:
-    Returned if the request is successful.\n          content:\n            application/json:\n
-    \             schema:\n                $ref: '#/components/schemas/IssueBean'\n
-    \             example: \"{\\\"id\\\":\\\"10002\\\",\\\"self\\\":\\\"https://your-domain.atlassian.net/rest/api/3/issue/10002\\\",\\\"key\\\":\\\"ED-1\\\",\\\"fields\\\":{\\\"watcher\\\":{\\\"self\\\":\\\"https://your-domain.atlassian.net/rest/api/3/issue/EX-1/watchers\\\",\\\"isWatching\\\":false,\\\"watchCount\\\":1,\\\"watchers\\\":[{\\\"self\\\":\\\"https://your-domain.atlassian.net/rest/api/3/user?accountId=5b10a2844c20165700ede21g\\\",\\\"accountId\\\":\\\"5b10a2844c20165700ede21g\\\",\\\"displayName\\\":\\\"Mia
-    Krystof\\\",\\\"active\\\":false}]},\\\"attachment\\\":[{\\\"id\\\":10000,\\\"self\\\":\\\"https://your-domain.atlassian.net/rest/api/3/attachments/10000\\\",\\\"filename\\\":\\\"picture.jpg\\\",\\\"author\\\":{\\\"self\\\":\\\"https://your-domain.atlassian.net/rest/api/3/user?accountId=5b10a2844c20165700ede21g\\\",\\\"key\\\":\\\"\\\",\\\"accountId\\\":\\\"5b10a2844c20165700ede21g\\\",\\\"accountType\\\":\\\"atlassian\\\",\\\"name\\\":\\\"\\\",\\\"avatarUrls\\\":{\\\"48x48\\\":\\\"https://avatar-management--avatars.server-location.prod.public.atl-paas.net/initials/MK-5.png?size=48&s=48\\\",\\\"24x24\\\":\\\"https://avatar-management--avatars.server-location.prod.public.atl-paas.net/initials/MK-5.png?size=24&s=24\\\",\\\"16x16\\\":\\\"https://avatar-management--avatars.server-location.prod.public.atl-paas.net/initials/MK-5.png?size=16&s=16\\\",\\\"32x32\\\":\\\"https://avatar-management--avatars.server-location.prod.public.atl-paas.net/initials/MK-5.png?size=32&s=32\\\"},\\\"displayName\\\":\\\"Mia
-    Krystof\\\",\\\"active\\\":false},\\\"created\\\":\\\"2023-06-06T06:40:34.248+0000\\\",\\\"size\\\":23123,\\\"mimeType\\\":\\\"image/jpeg\\\",\\\"content\\\":\\\"https://your-domain.atlassian.net/jira/rest/api/3/attachment/content/10000\\\",\\\"thumbnail\\\":\\\"https://your-domain.atlassian.net/jira/rest/api/3/attachment/thumbnail/10000\\\"}],\\\"sub-tasks\\\":[{\\\"id\\\":\\\"10000\\\",\\\"type\\\":{\\\"id\\\":\\\"10000\\\",\\\"name\\\":\\\"\\\",\\\"inward\\\":\\\"Parent\\\",\\\"outward\\\":\\\"Sub-task\\\"},\\\"outwardIssue\\\":{\\\"id\\\":\\\"10003\\\",\\\"key\\\":\\\"ED-2\\\",\\\"self\\\":\\\"https://your-domain.atlassian.net/rest/api/3/issue/ED-2\\\",\\\"fields\\\":{\\\"status\\\":{\\\"iconUrl\\\":\\\"https://your-domain.atlassian.net/images/icons/statuses/open.png\\\",\\\"name\\\":\\\"Open\\\"}}}}],\\\"description\\\":{\\\"type\\\":\\\"doc\\\",\\\"version\\\":1,\\\"content\\\":[{\\\"type\\\":\\\"paragraph\\\",\\\"content\\\":[{\\\"type\\\":\\\"text\\\",\\\"text\\\":\\\"Main
-    order flow broken\\\"}]}]},\\\"project\\\":{\\\"self\\\":\\\"https://your-domain.atlassian.net/rest/api/3/project/EX\\\",\\\"id\\\":\\\"10000\\\",\\\"key\\\":\\\"EX\\\",\\\"name\\\":\\\"Example\\\",\\\"avatarUrls\\\":{\\\"48x48\\\":\\\"https://your-domain.atlassian.net/secure/projectavatar?size=large&pid=10000\\\",\\\"24x24\\\":\\\"https://your-domain.atlassian.net/secure/projectavatar?size=small&pid=10000\\\",\\\"16x16\\\":\\\"https://your-domain.atlassian.net/secure/projectavatar?size=xsmall&pid=10000\\\",\\\"32x32\\\":\\\"https://your-domain.atlassian.net/secure/projectavatar?size=medium&pid=10000\\\"},\\\"projectCategory\\\":{\\\"self\\\":\\\"https://your-domain.atlassian.net/rest/api/3/projectCategory/10000\\\",\\\"id\\\":\\\"10000\\\",\\\"name\\\":\\\"FIRST\\\",\\\"description\\\":\\\"First
-    Project Category\\\"},\\\"simplified\\\":false,\\\"style\\\":\\\"classic\\\",\\\"insight\\\":{\\\"totalIssueCount\\\":100,\\\"lastIssueUpdateTime\\\":\\\"2023-06-06T06:40:28.659+0000\\\"}},\\\"comment\\\":[{\\\"self\\\":\\\"https://your-domain.atlassian.net/rest/api/3/issue/10010/comment/10000\\\",\\\"id\\\":\\\"10000\\\",\\\"author\\\":{\\\"self\\\":\\\"https://your-domain.atlassian.net/rest/api/3/user?accountId=5b10a2844c20165700ede21g\\\",\\\"accountId\\\":\\\"5b10a2844c20165700ede21g\\\",\\\"displayName\\\":\\\"Mia
-    Krystof\\\",\\\"active\\\":false},\\\"body\\\":{\\\"type\\\":\\\"doc\\\",\\\"version\\\":1,\\\"content\\\":[{\\\"type\\\":\\\"paragraph\\\",\\\"content\\\":[{\\\"type\\\":\\\"text\\\",\\\"text\\\":\\\"Lorem
-    ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque eget venenatis
-    elit. Duis eu justo eget augue iaculis fermentum. Sed semper quam laoreet nisi
-    egestas at posuere augue semper.\\\"}]}]},\\\"updateAuthor\\\":{\\\"self\\\":\\\"https://your-domain.atlassian.net/rest/api/3/user?accountId=5b10a2844c20165700ede21g\\\",\\\"accountId\\\":\\\"5b10a2844c20165700ede21g\\\",\\\"displayName\\\":\\\"Mia
-    Krystof\\\",\\\"active\\\":false},\\\"created\\\":\\\"2021-01-17T12:34:00.000+0000\\\",\\\"updated\\\":\\\"2021-01-18T23:45:00.000+0000\\\",\\\"visibility\\\":{\\\"type\\\":\\\"role\\\",\\\"value\\\":\\\"Administrators\\\",\\\"identifier\\\":\\\"Administrators\\\"}}],\\\"issuelinks\\\":[{\\\"id\\\":\\\"10001\\\",\\\"type\\\":{\\\"id\\\":\\\"10000\\\",\\\"name\\\":\\\"Dependent\\\",\\\"inward\\\":\\\"depends
-    on\\\",\\\"outward\\\":\\\"is depended by\\\"},\\\"outwardIssue\\\":{\\\"id\\\":\\\"10004L\\\",\\\"key\\\":\\\"PR-2\\\",\\\"self\\\":\\\"https://your-domain.atlassian.net/rest/api/3/issue/PR-2\\\",\\\"fields\\\":{\\\"status\\\":{\\\"iconUrl\\\":\\\"https://your-domain.atlassian.net/images/icons/statuses/open.png\\\",\\\"name\\\":\\\"Open\\\"}}}},{\\\"id\\\":\\\"10002\\\",\\\"type\\\":{\\\"id\\\":\\\"10000\\\",\\\"name\\\":\\\"Dependent\\\",\\\"inward\\\":\\\"depends
-    on\\\",\\\"outward\\\":\\\"is depended by\\\"},\\\"inwardIssue\\\":{\\\"id\\\":\\\"10004\\\",\\\"key\\\":\\\"PR-3\\\",\\\"self\\\":\\\"https://your-domain.atlassian.net/rest/api/3/issue/PR-3\\\",\\\"fields\\\":{\\\"status\\\":{\\\"iconUrl\\\":\\\"https://your-domain.atlassian.net/images/icons/statuses/open.png\\\",\\\"name\\\":\\\"Open\\\"}}}}],\\\"worklog\\\":[{\\\"self\\\":\\\"https://your-domain.atlassian.net/rest/api/3/issue/10010/worklog/10000\\\",\\\"author\\\":{\\\"self\\\":\\\"https://your-domain.atlassian.net/rest/api/3/user?accountId=5b10a2844c20165700ede21g\\\",\\\"accountId\\\":\\\"5b10a2844c20165700ede21g\\\",\\\"displayName\\\":\\\"Mia
-    Krystof\\\",\\\"active\\\":false},\\\"updateAuthor\\\":{\\\"self\\\":\\\"https://your-domain.atlassian.net/rest/api/3/user?accountId=5b10a2844c20165700ede21g\\\",\\\"accountId\\\":\\\"5b10a2844c20165700ede21g\\\",\\\"displayName\\\":\\\"Mia
-    Krystof\\\",\\\"active\\\":false},\\\"comment\\\":{\\\"type\\\":\\\"doc\\\",\\\"version\\\":1,\\\"content\\\":[{\\\"type\\\":\\\"paragraph\\\",\\\"content\\\":[{\\\"type\\\":\\\"text\\\",\\\"text\\\":\\\"I
-    did some work here.\\\"}]}]},\\\"updated\\\":\\\"2021-01-18T23:45:00.000+0000\\\",\\\"visibility\\\":{\\\"type\\\":\\\"group\\\",\\\"value\\\":\\\"jira-developers\\\",\\\"identifier\\\":\\\"276f955c-63d7-42c8-9520-92d01dca0625\\\"},\\\"started\\\":\\\"2021-01-17T12:34:00.000+0000\\\",\\\"timeSpent\\\":\\\"3h
-    20m\\\",\\\"timeSpentSeconds\\\":12000,\\\"id\\\":\\\"100028\\\",\\\"issueId\\\":\\\"10002\\\"}],\\\"updated\\\":1,\\\"timetracking\\\":{\\\"originalEstimate\\\":\\\"10m\\\",\\\"remainingEstimate\\\":\\\"3m\\\",\\\"timeSpent\\\":\\\"6m\\\",\\\"originalEstimateSeconds\\\":600,\\\"remainingEstimateSeconds\\\":200,\\\"timeSpentSeconds\\\":400}}}\"\n
-    \       \"401\":\n          description: Returned if the authentication credentials
-    are incorrect or missing.\n        \"404\":\n          description: Returned if
-    the issue is not found or the user does not have permission to view it.\n      deprecated:
-    false\n      security:\n        - basicAuth: [ ]\n\ncomponents:\n  schemas:\n
-    \   CreatedIssue:\n      type: object\n      properties:\n        id:\n          type:
-    string\n          description: The ID of the created issue or subtask.\n          readOnly:
-    true\n        key:\n          type: string\n          description: The key of
-    the created issue or subtask.\n          readOnly: true\n        self:\n          type:
-    string\n          description: The URL of the created issue or subtask.\n          readOnly:
-    true\n      additionalProperties: false\n      description: Details about a created
-    issue or subtask.\n    EntityProperty:\n      type: object\n      properties:\n
-    \       key:\n          type: string\n          description: The key of the property.
-    Required on create and update.\n        value:\n          description: The value
-    of the property. Required on create and update.\n      additionalProperties: false\n
-    \     description: >-\n        An entity property, for more information see [Entity\n
-    \       properties](https://developer.atlassian.com/cloud/jira/platform/jira-entity-properties/).\n
-    \   ErrorCollection:\n      type: object\n      properties:\n        errorMessages:\n
-    \         type: array\n          description: \"The list of error messages produced
-    by this operation. For example, \\\"input parameter 'key' must be provided\\\"\"\n
-    \         items:\n            type: string\n        errors:\n          type: object\n
-    \         additionalProperties:\n            type: string\n          description:
-    \"The list of errors by parameter returned by the operation. For example,\\\"projectKey\\\":
-    \\\"Project keys must start with an uppercase letter, followed by one or more
-    uppercase alphanumeric characters.\\\"\"\n        status:\n          type: integer\n
-    \         format: int32\n      additionalProperties: false\n      description:
-    Error messages from an operation.\n    IssueBean:\n      type: object\n      properties:\n
-    \       expand:\n          type: string\n          description: Expand options
-    that include additional issue details in the response.\n          readOnly: true\n
-    \         xml:\n            attribute: true\n        fields:\n          type:
-    object\n          additionalProperties: { }\n        id:\n          type: string\n
-    \         description: The ID of the issue.\n          readOnly: true\n        key:\n
-    \         type: string\n          description: The key of the issue.\n          readOnly:
-    true\n\n      additionalProperties: false\n      description: Details about an
-    issue.\n      xml:\n        name: issue\n\n    IssueUpdateDetails:\n      type:
-    object\n      properties:\n        fields:\n          type: object\n          additionalProperties:
-    { }\n          description: \"List of issue screen fields to update, specifying
-    the sub-field to update and its value for each field. This field provides a straightforward
-    option when setting a sub-field. When multiple sub-fields or other operations
-    are required, use `update`. Fields included in here cannot be included in `update`.\"\n
-    \       properties:\n          type: array\n          description: Details of
-    issue properties to be add or update.\n          items:\n            $ref: '#/components/schemas/EntityProperty'\n
-    \ securitySchemes:\n    basicAuth:\n      type: http\n      description: You can
-    access this resource via basic auth.\n      scheme: basic\n"
   jiraSwf.sw.yaml: "specVersion: \"0.8\"\nid: ticketingService\nname: Jira Ticketing
     Service\nannotations:\n  - \"workflow-type/infrastructure\"\nversion: 0.0.1\ntimeouts:\n
     \ workflowExecTimeout:\n    duration: PT24H\nstart: Setup\ndataInputSchema:\n
@@ -652,19 +476,14 @@ data:
       "$schema": "http://json-schema.org/draft-07/schema#",
       "type": "object",
       "properties": {
-        "target": {
-          "$ref": "ticket-escalation_sub_schema.json",
-          "type": "object"
+        "namespace": {
+          "type": "string",
+          "description": "Name of the requested namespace"
         }
       },
-      "required": [
-        "target"
-      ],
       "examples": [
         {
-          "target": {
-            "namespace": "a-namespace"
-          }
+          "namespace": "a-namespace"
         }
       ]
     }
@@ -682,72 +501,6 @@ data:
       },
       "required": [
         "namespace"
-      ]
-    }
-  ticketing-service-schema.json: |-
-    {
-      "$id": "classpath:/schemas/ticketing-service-schema.json",
-      "title": "Ticketing Service: Data Input Schema",
-      "$schema": "http://json-schema.org/draft-07/schema#",
-      "type": "object",
-      "properties": {
-        "request": {
-          "$ref": "ticketing-service_sub_schema.json",
-          "type": "object"
-        }
-      },
-      "required": [
-        "request"
-      ],
-      "examples": [
-        {
-          "request": {
-            "type": "create",
-            "namespace": "a-namespace>",
-            "parentId": "111-222-333-444"
-          }
-        },
-        {
-          "request": {
-            "type": "get",
-            "ticketId": "AAA-BBB-CCC-DDD",
-            "ticket": {
-              "field1": "ticketing-service specific fields"
-            }
-          }
-        }
-      ]
-    }
-  ticketing-service_sub_schema.json: |-
-    {
-      "$id": "classpath:/schemas/ticketing-service_sub_schema.json",
-      "title": "Ticketing Service: Input Section",
-      "$schema": "http://json-schema.org/draft-07/schema#",
-      "type": "object",
-      "properties": {
-        "type": {
-          "type": "string",
-          "description": "The request type, one og 'create' or 'get'."
-        },
-        "namespace": {
-          "type": "string",
-          "description": "The name of the namespace being requested. Only for 'create' requests."
-        },
-        "ticketId": {
-          "type": "string",
-          "description": "The service specific ticket ID used to fetch the ticket status. Only for 'get' requests."
-        },
-        "ticket": {
-          "type": "object",
-          "description": "The service specific ticket description, used when the general purpose fields are not sufficient. Only for 'get' requests."
-        },
-        "parentId": {
-          "type": "string",
-          "description": "The ID of the parent workflow that executed this service and will be be part of the approval event. Only for 'create' requests."
-        }
-      },
-      "required": [
-        "type"
       ]
     }
 kind: ConfigMap
