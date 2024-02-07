@@ -36,7 +36,7 @@ Note that those ssh keys needs to be added in your git repository as well. For b
 
 Run 
 ```console
-helm install move2kube workflows/move2kube
+helm install move2kube workflows/move2kube --namespace=sonataflow-infra
 ```
 
 Run the following command to apply it to the `move2kubeURL` parameter:
