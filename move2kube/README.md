@@ -30,12 +30,15 @@ If you do not have ssh keys, you can generate them with `ssh-keygen` command. Yo
 
 Note that those ssh keys needs to be added in your git repository as well. For bitbucket it should be on the [account level](https://bitbucket.org/account/settings/ssh-keys/)
 
+[View the Move2Kube README on GitHub](https://github.com/parodos-dev/serverless-workflows-helm/blob/main/charts/workflows/charts/move2kube/README.md)
+
 ## Installation
 
 Run 
 ```console
 helm install move2kube workflows/move2kube
 ```
+
 Run the following command to apply it to the `move2kubeURL` parameter:
 ```console
 M2K_ROUTE=$(oc -n sonataflow-infra get routes move2kube-route -o yaml | yq -r .spec.host)
