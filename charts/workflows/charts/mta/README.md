@@ -11,7 +11,6 @@ The following table lists the configurable parameters of the Mta chart and their
 
 | Parameter                | Description             | Default        |
 | ------------------------ | ----------------------- | -------------- |
-| `mta.endpoint` |  | `"https://mta-openshift-mta.apps.parodos-dev.projects.ecosystem.sysdeseng.com:443/hub/"` |
 
 
 

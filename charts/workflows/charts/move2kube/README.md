@@ -16,9 +16,7 @@ The following table lists the configurable parameters of the Move2kube chart and
 | `brokerName` | name of the broker used by Knative eventing resources | `"default"` |
 | `namespace` | name where install the resources | `"sonataflow-infra"` |
 | `workflow.name` | name of the workflow | `"serverless-workflow-m2k"` |
-| `workflow.image` | image containing the workflow | `"quay.io/orchestrator/serverless-workflow-move2kube:latest"` |
 | `workflow.move2kubeURL` | URL for move2kube instace | `"https://move2kube-route-sonataflow-infra.apps.cluster-8xfw.redhatworkshops.io"` |
-| `workflow.backstageNotificationURL` | URL for backstage notification plugin | `"http://orchestrator-backstage.orchestrator/api/notifications/"` |
 | `kfunction.name` | name of the Knative function that save the transformation output to git | `"m2k-save-transformation-func"` |
 | `kfunction.image` | image of the knative function | `"quay.io/orchestrator/serverless-workflow-m2k-kfunc:latest"` |
 | `instance.name` | name of the move2kube instance deployment | `"move2kube"` |
