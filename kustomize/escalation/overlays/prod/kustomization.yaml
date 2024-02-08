@@ -2,27 +2,26 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
 resources:
-  - ../../base
+- ../../base
 
 generatorOptions:
- disableNameSuffixHash: true
+  disableNameSuffixHash: true
 
 secretGenerator:
-  - name: escalation-secret
-    envs:
-    - secret.properties
+- envs:
+  - secret.properties
+  name: escalation-secret
 configMapGenerator:
-  - name: escalation-config
-    envs:
-      - config.properties
+- envs:
+  - config.properties
+  name: escalation-config
 patches:
-  - target:
-      kind: SonataFlow
-      name: ticketescalation
-    path: sonataflow-patch.yaml
+- path: sonataflow-patch.yaml
+  target:
+    kind: SonataFlow
+    name: ticketescalation
 
 images:
-- digest: "8a241f14075a539a97e065163398f9a54dba6b65"
+- digest: 8a241f14075a539a97e065163398f9a54dba6b65
   name: serverless-workflow-escalation
   newName: quay.io/orchestrator/serverless-workflow-escalation
-      
