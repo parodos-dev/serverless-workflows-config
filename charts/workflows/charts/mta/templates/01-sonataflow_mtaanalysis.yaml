@@ -2,7 +2,7 @@ apiVersion: sonataflow.org/v1alpha08
 kind: SonataFlow
 metadata:
   annotations:
-    sonataflow.org/description: ""
+    sonataflow.org/description: Workflow to execute MTA Analysis
     sonataflow.org/expressionLang: jq
     sonataflow.org/version: "1.0"
   creationTimestamp: null
@@ -189,13 +189,17 @@ spec:
             condition: .backstageUserOrGroup != null
             functionRef:
               arguments:
-                message: '"<a href=\"" + $SECRET.mta_url+ "/hub/applications/" + (.application.id|tostring)+ "/bucket/" + .data.output + "\">MTA Analysis Rerport</a>"'
+                actions:
+                  - title: View report
+                    url: $SECRET.mta_url + "/hub/applications/" + (.application.id|tostring) + "/bucket/" + .data.output
+                message: '"MTA analysis is completed and the report for " + .application.repository.url + " is ready."'
                 origin: MTA Analysis Workflow
                 targetGroups:
                   - .backstageUserOrGroup
                 targetUsers:
                   - .backstageUserOrGroup
-                title: '"MTA analysis report for " + .application.repository.url'
+                title: MTA analysis completed
+                topic: MTA Analysis Workflow
               invoke: sync
               refName: createNotification
         name: NotifyBackstage
@@ -224,7 +228,7 @@ spec:
   podTemplate:
     container:
       resources: {}
-      image: quay.io/orchestrator/serverless-workflow-mta:6d54d44a0c036a2924de61347d7ae0f7f59c7e43
+      image: quay.io/orchestrator/serverless-workflow-mta:bb75ed0587fee551f13406e0aec6cecfae1a6701
   resources:
     configMaps:
       - configMap:

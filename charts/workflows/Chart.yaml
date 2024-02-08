@@ -6,7 +6,7 @@ type: application
 # This is the chart version. This version number should be incremented each time you make changes
 # to the chart and its templates, including the app version.
 # Versions are expected to follow Semantic Versioning (https://semver.org/)
-version: 0.2.2
+version: 0.2.5
 
 # This is the version number of the application being deployed. This version number should be
 # incremented each time you make changes to the application. Versions are not expected to
@@ -17,15 +17,15 @@ appVersion: "1.16.0"
 dependencies:
   - name: mta
     repository: "file://charts/mta"
-    version: "0.2.1"
+    version: "0.2.4"
     condition: mta.enabled
   - name: greeting
     repository: "file://charts/greeting"
-    version: "0.2.1"
+    version: "0.2.2"
     condition: greeting.enabled
   - name: move2kube
     repository: "file://charts/move2kube"
-    version: "0.2.1"
+    version: "0.2.3"
     condition: move2kube.enabled
 
 icon: https://raw.githubusercontent.com/parodos-dev/parodos-dev.github.io/main/assets/images/WO_black.svg
