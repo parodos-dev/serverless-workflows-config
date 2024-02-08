@@ -16,7 +16,3 @@ patches:
       path: /metadata/annotations/sonataflow.org~1profile
   target:
     kind: SonataFlow
-images:
-- digest: "8a241f14075a539a97e065163398f9a54dba6b65"
-  name: serverless-workflow-escalation
-  newName: quay.io/orchestrator/serverless-workflow-escalation

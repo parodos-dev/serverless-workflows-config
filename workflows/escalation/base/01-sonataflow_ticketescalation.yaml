@@ -158,7 +158,6 @@ spec:
         duration: PT24H
   podTemplate:
     container:
-      image: serverless-workflow-escalation
       resources: {}
   resources:
     configMaps:
