@@ -20,4 +20,9 @@ patches:
       kind: SonataFlow
       name: ticketescalation
     path: sonataflow-patch.yaml
+
+images:
+- digest: "8a241f14075a539a97e065163398f9a54dba6b65"
+  name: serverless-workflow-escalation
+  newName: quay.io/orchestrator/serverless-workflow-escalation
       
