@@ -24,4 +24,4 @@ patches:
 images:
 - name: serverless-workflow-escalation
   newName: quay.io/orchestrator/serverless-workflow-escalation
-  newTag: 1234
+  newTag: ABCD
