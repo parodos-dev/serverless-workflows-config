@@ -10,7 +10,8 @@ cd overlays/prod && kustomize edit set image serverless-workflow-escalation=quay
 ```
 
 ## Configure properties
-Edit configuration in [config.properties](./overlays/prod/config.properties) and [secret.properties](./overlays/prod/secret.properties).
+Edit configuration in [config.properties](./overlays/prod/config.properties) and [secret.properties](./overlays/prod/secret.properties)
+to match your environment configuration.
 
 ## Deploy to the cluster
 Apply the deployment to the target namespace with:
