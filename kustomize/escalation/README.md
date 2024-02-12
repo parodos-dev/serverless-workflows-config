@@ -11,7 +11,9 @@ cd overlays/prod && kustomize edit set image serverless-workflow-escalation=quay
 
 ## Configure properties
 Edit configuration in [config.properties](./overlays/prod/config.properties) and [secret.properties](./overlays/prod/secret.properties).
-Apply the deployment to the target namespace:
+
+## Deploy to the cluster
+Apply the deployment to the target namespace with:
 ```bash
 TARGET_NS=sonataflow-infra
 kustomize build  overlays/prod | oc apply -n ${TARGET_NS} -f -
