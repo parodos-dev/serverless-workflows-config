@@ -24,4 +24,7 @@ patches:
 images:
 - name: serverless-workflow-escalation
   newName: quay.io/orchestrator/serverless-workflow-escalation
-  newTag: abcdef
+  newTag: 9a320174
+- name: jira-listener-image
+  newName: quay.io/orchestrator/serverless-workflow-jira-listener
+  newTag: jdk17

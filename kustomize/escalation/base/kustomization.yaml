@@ -3,16 +3,27 @@ kind: Kustomization
 
 resources:
 - 01-configmap_01-ticketescalation-resources.yaml
-- 01-sonataflow_ticketescalation.yaml
 - 02-configmap_ticketescalation-props.yaml
+- 01-sonataflow_ticketescalation.yaml
+- jira-listener.yaml
+- knative.yaml
+
+# This can be later on replaced by the CD tool like ArgoCD, editing the `spec.source.kustomize.namespace` field
+# https://argo-cd.readthedocs.io/en/stable/user-guide/kustomize/#kustomize
+namespace: sonataflow-infra
 
 configurations:
 - config/image-configuration.yaml
 
-  # Remove dev profile from SonataFlow instance(s)
 patches:
-- patch: |
-    - op: remove
-      path: /metadata/annotations/sonataflow.org~1profile
-  target:
-    kind: SonataFlow
+# Replace dev profile in SonataFlow instance(s)
+  - path: sonataflow-patch.yaml
+    target:
+      kind: SonataFlow
+      name: ticketescalation
+# Required because other patches make the null value an invalid "null" string
+  - patch: |
+      - op: remove
+        path: /metadata/creationTimestamp
+    target:
+      kind: SonataFlow
