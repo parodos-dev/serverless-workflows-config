@@ -1,0 +1,32 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+- ../prod
+- route.yaml
+
+configMapGenerator:
+- envs:
+  - route.properties
+  name: letsencrypt-config
+
+patches:
+- path: jira-listener-patch.yaml
+  target:
+    group: serving.knative.dev
+    version: v1
+    kind: Service
+    name: jira-listener
+
+replacements:
+- source:
+    kind: ConfigMap
+    name: letsencrypt-config
+    fieldPath: data.host
+  targets:
+  - select:
+      kind: Route
+      name: jira-listener
+    fieldPaths:
+    - spec.host
+

@@ -1,0 +1,17 @@
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  annotations:
+    haproxy.router.openshift.io/timeout: 600s 
+    kubernetes.io/tls-acme: "true"
+  name: jira-listener
+  namespace: knative-serving-ingress 
+spec:
+  host: kustomized
+  port:
+    targetPort: http2
+  to:
+    kind: Service
+    name: kourier
+    weight: 100
+  wildcardPolicy: None
