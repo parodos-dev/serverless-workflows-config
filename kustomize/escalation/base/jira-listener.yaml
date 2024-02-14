@@ -13,7 +13,7 @@ spec:
         autoscaling.knative.dev/min-scale: "1"
     spec:
       containers:
-        - image: jira-listener-image
+        - image: serverless-workflow-jira-listener
           imagePullPolicy: Always
           name: jira-listener
           resources:
