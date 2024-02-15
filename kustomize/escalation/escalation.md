@@ -6,7 +6,7 @@ As described by the following architectural diagram, the system is made of the f
 4. `newsletter-postgres` is a regular OpensShift Deployment which implements the subscription data store with a PosgreSQL database
 
 ## System architecture: application layer
-``mermaid
+```mermaid
 graph LR
     ticketescalation-sf(<b>SonataFlow</b><br/>ticketescalation-flow)
     ticketescalation(<b>Deployment</b><br/>ticketescalation-flow)
