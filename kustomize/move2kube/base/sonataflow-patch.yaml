@@ -1,0 +1,16 @@
+apiVersion: sonataflow.org/v1alpha08
+kind: SonataFlow
+metadata:
+  name: m2k
+  annotations:
+    sonataflow.org/profile: prod
+spec:
+  podTemplate:
+    container:
+      image: serverless-workflow-move2kube
+      envFrom:
+      - configMapRef:
+          name: move2kube-config
+      - secretRef:
+          name: move2kube-secret
+      resources: {}

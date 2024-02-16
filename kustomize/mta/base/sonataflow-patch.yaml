@@ -1,0 +1,16 @@
+apiVersion: sonataflow.org/v1alpha08
+kind: SonataFlow
+metadata:
+  name: mtaanalysis
+  annotations:
+    sonataflow.org/profile: prod
+spec:
+  podTemplate:
+    container:
+      image: serverless-workflow-mta
+      envFrom:
+      - configMapRef:
+          name: mta-config
+      - secretRef:
+          name: mta-secret
+      resources: {}
