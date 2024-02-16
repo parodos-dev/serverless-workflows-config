@@ -1,0 +1,42 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+  - 01-configmap_01-mtaanalysis-resources.yaml
+  - 02-configmap_mtaanalysis-props.yaml
+  - 01-sonataflow_mtaanalysis.yaml
+
+namespace: sonataflow-infra
+
+configurations :
+  - config/image-configuration.yaml
+
+generatorOptions:
+  disableNameSuffixHash: true
+
+secretGenerator:
+  - envs:
+      - secret.properties
+    name: mta-secret
+configMapGenerator:
+  - envs:
+      - config.properties
+    name: mta-config
+
+patches:
+  # Replace dev profile in SonataFlow instance(s), add image and envFrom
+  - path: sonataflow-patch.yaml
+    target:
+      kind: SonataFlow
+      name: mtaanalysis
+  # Required because other patches make the null value an invalid "null" string
+  - patch: |
+      - op: remove
+        path: /metadata/creationTimestamp
+    target:
+      kind: SonataFlow
+
+images:
+  - name: serverless-workflow-mta
+    newName: quay.io/orchestrator/serverless-workflow-mta
+    newTag: latest

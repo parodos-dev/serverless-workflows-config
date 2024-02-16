@@ -8,7 +8,7 @@ A brief explanation of the system architecture is provided in the related [docum
 ### Image update
 Run the following to update the default image to a custom configuration
 ```
-cd overlays/prod && kustomize edit set image serverless-workflow-escalation=quay.io/orchestrator/serverless-workflow-escalation@1234
+cd overlays/prod && kustomize edit set image serverless-workflow-escalation=quay.io/orchestrator/serverless-workflow-escalation:1234
 ```
 
 ## Configure properties

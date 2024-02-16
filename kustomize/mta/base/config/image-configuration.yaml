@@ -1,0 +1,4 @@
+# This is to configure where the image is defined in the resources of kind SonataFlow
+images:
+- path: spec/podTemplate/container/image
+  kind: SonataFlow
