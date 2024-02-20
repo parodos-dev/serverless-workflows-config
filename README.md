@@ -32,8 +32,8 @@ Notice that workflow-1 has the code embedded while workflow-2 and 3 is a depende
 # Usage      
 
 ```
-helm repo add serverless-workflows https://parodos.dev/serverless-workflows-helm
-helm install serverless-workflows serverless-workflows/workflows
+helm repo add orchestrator-workflows https://parodos.dev/serverless-workflows-helm
+helm install orchestrator-workflows serverless-workflows/workflows
 ```
       
 To generate `values.schema.json`, next to you `values.yaml` file, run: 
