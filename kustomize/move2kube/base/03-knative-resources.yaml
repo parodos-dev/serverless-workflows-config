@@ -8,7 +8,6 @@ spec:
     attributes:
       type: error
   subscriber:
-
     ref:
       apiVersion: v1
       kind: Service
