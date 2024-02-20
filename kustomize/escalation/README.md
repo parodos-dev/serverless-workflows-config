@@ -8,11 +8,11 @@ A brief explanation of the system architecture is provided in the related [docum
 ### Image update
 Run the following to update the default image to a custom configuration
 ```
-cd overlays/prod && kustomize edit set image serverless-workflow-escalation=quay.io/orchestrator/serverless-workflow-escalation:1234
+cd base && kustomize edit set image serverless-workflow-escalation=quay.io/orchestrator/serverless-workflow-escalation:1234
 ```
 
 ## Configure properties
-Edit configuration in [config.properties](./overlays/prod/config.properties) and [secret.properties](./overlays/prod/secret.properties)
+Edit configuration in [config.properties](./base/config.properties) and [secret.properties](./base/secret.properties)
 to match your environment configuration.
 
 ## Deploy to the cluster
@@ -34,8 +34,19 @@ cd base && kustomize edit set namespace $TARGET_NS && cd ..
 
 Once the configuration is set, apply the deployment to the configured namespace with:
 ```bash
-kustomize build overlays/prod | oc apply -f -
+kustomize build base | oc apply -f -
 ```
+
+You can monitor the deployment status with:
+```bash
+oc get sonataflow ticketescalation  -n ${TARGET_NS} -owide
+```
+
+And finally view the logs with:
+```bash
+oc logs -f  -n ${TARGET_NS} -l app=ticketescalation
+```
+
 ### Deploy the letsencrypt environment
 See [Deploying with Let's Encrypt certificates](./letsencrypt.md) for a detailed description of this use case. 
 
@@ -47,7 +58,7 @@ kustomize build overlays/letsencrypt | oc apply -f -
 ## Configuring the Jira server
 ### API token
 To interact with Jira server using the [REST APIs])https://developer.atlassian.com/server/jira/platform/rest-apis/, you need an API Token.
-Follow these instructions to generate one and use it as the `JIRA_API_TOKEN` in [secret.properties](./overlays/prod/secret.properties):
+Follow these instructions to generate one and use it as the `JIRA_API_TOKEN` in [secret.properties](./base/secret.properties):
 * [API Tokens](https://id.atlassian.com/manage-profile/security/api-tokens)
 * [Basic auth for REST APIs](https://developer.atlassian.com/cloud/jira/platform/basic-auth-for-rest-apis/)
 

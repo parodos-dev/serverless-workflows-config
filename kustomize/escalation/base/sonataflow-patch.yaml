@@ -4,3 +4,13 @@ metadata:
   name: ticketescalation
   annotations:
     sonataflow.org/profile: prod
+spec:
+  podTemplate:
+    container:
+      image: serverless-workflow-escalation
+      envFrom:
+      - configMapRef:
+          name: escalation-config
+      - secretRef:
+          name: escalation-secret
+      resources: {}
