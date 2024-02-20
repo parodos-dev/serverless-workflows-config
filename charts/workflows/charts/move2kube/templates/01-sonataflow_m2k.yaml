@@ -24,6 +24,10 @@ spec:
         kind: consumed
         name: transformationSavedEvent
         type: transformation_saved
+      - dataOnly: true
+        kind: consumed
+        name: saveTransformationEvent
+        type: save-transformation
     functions:
       - name: systemOut
         operation: sysout
@@ -37,9 +41,6 @@ spec:
       - name: startTransformation
         operation: specs/move2kube.yaml#start-transformation
         type: rest
-      - name: sendCloudEvent
-        operation: rest:post:http://broker-ingress.knative-eventing.svc.cluster.local/sonataflow-infra/default
-        type: custom
       - name: createNotification
         operation: notifications#createNotification
         type: rest
@@ -137,45 +138,24 @@ spec:
             name: create
         name: NotifyTransformationWaiting
         transition:
-          nextState: SaveTransformationOutput
-        type: operation
-      - actionMode: sequential
-        actions:
-          - actionDataFilter:
-              useResults: true
-            functionRef:
-              arguments:
-                HEADER_Ce-Id: $WORKFLOW.instanceId
-                HEADER_Ce-Source: m2k_swf
-                HEADER_Ce-Specversion: "1.0"
-                HEADER_Ce-Type: save-transformation
-                HEADER_Content-Type: application/json
-                branch: .targetBranch
-                gitRepo: (.repositoryURL|sub("http(s)?://";"ssh://"))
-                projectId: .projectId
-                token: .token
-                transformId: .transformId
-                workflowCallerId: $WORKFLOW.instanceId
-                workspaceId: .workspaceId
-              invoke: sync
-              refName: sendCloudEvent
-        name: SaveTransformationOutput
-        transition:
-          nextState: WaitForSaveTransformationCompletion
+          nextState: WaitForSaveTransformationCompletionEvent
+          produceEvents:
+            - data: '{gitRepo:.repositoryURL|sub("http(s)?://";"ssh://"), branch: .targetBranch, token: .token, workspaceId: .workspaceId, projectId: .projectId, transformId: .transformId, workflowCallerId: $WORKFLOW.instanceId}'
+              eventRef: saveTransformationEvent
         type: operation
       - defaultCondition:
           transition:
             nextState: TransformationError
         eventConditions:
-          - eventRef: transformationSavedEvent
-            transition:
-              nextState: TransformationSaved
           - eventRef: errorEvent
             transition:
               nextState: TransformationError
-        name: WaitForSaveTransformationCompletion
+          - eventRef: transformationSavedEvent
+            transition:
+              nextState: TransformationSaved
+        name: WaitForSaveTransformationCompletionEvent
         timeouts:
-          eventTimeout: PT3M
+          eventTimeout: P90D
         type: switch
       - data:
           exitMessage: Transformation successful.
@@ -254,10 +234,7 @@ spec:
   podTemplate:
     container:
       resources: {}
-      image: quay.io/orchestrator/serverless-workflow-move2kube:f6fbb19dd531f5bcb612b28862a2303dfae87bd7
-      env:
-        - name: K_SINK
-          value: {{ .Values.brokerURL}}
+      image: quay.io/orchestrator/serverless-workflow-move2kube:93dc5df9e6c98f4c61082d5dd18da89198a40fb2
   resources:
     configMaps:
       - configMap:
