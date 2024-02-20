@@ -18,10 +18,13 @@ This environment applies the generated manifests with minimal customizations to:
 * Force the `prod` profile for the SonataFlow instance
 * Deploy by default on the `sonataflow-infra` namespace
 
-The default namespace can be customized with:
+The default namespace can be customized by running the following:
 ```bash
 TARGET_NS=YOUR-NS
-cd base && kustomize edit set namespace=$TARGET_NS && cd ..
+```
+Then apply the changes with:
+```bash
+cd base && kustomize edit set namespace $TARGET_NS && cd ..
 ```
 
 Once the configuration is set, apply the deployment to the configured namespace with:
@@ -31,10 +34,10 @@ kustomize build base | oc apply -f -
 
 You can monitor the deployment status with:
 ```bash
-oc get sonataflow greeting  -n sonataflow-infra -owide
+oc get sonataflow greeting  -n ${TARGET_NS} -owide
 ```
 
 And finally view the logs with:
 ```bash
-oc logs -f  -n sonataflow-infra -l app=greeting
+oc logs -f  -n ${TARGET_NS} -l app=greeting
 ```

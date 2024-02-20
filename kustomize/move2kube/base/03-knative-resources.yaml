@@ -61,11 +61,6 @@ spec:
       containers:
         - image: serverless-workflow-m2k-kfunc
           imagePullPolicy: Always
-          env:
-            - name: EXPORTED_FUNC
-              value: saveTransformation
-            - name: SSH_PRIV_KEY_PATH
-              value: /home/jboss/.ssh/id_rsa
           envFrom:
           - configMapRef:
               name: move2kube-config # defines BROKER_URL and MOVE2KUBE_API         

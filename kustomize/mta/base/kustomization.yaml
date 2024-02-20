@@ -39,4 +39,4 @@ patches:
 images:
   - name: serverless-workflow-mta
     newName: quay.io/orchestrator/serverless-workflow-mta
-    newTag: latest
+    newTag: 93dc5df9e6c98f4c61082d5dd18da89198a40fb2

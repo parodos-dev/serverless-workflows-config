@@ -17,10 +17,13 @@ configuration.
 
 ## Deploy to the cluster
 ### Deploy the operator
-The default `operator-mta` namespace can be customized with:
+The default namespace can be customized by running the following:
 ```bash
 TARGET_NS=YOUR-NS
-cd operator && kustomize edit set namespace=$TARGET_NS && cd ..
+```
+Then apply the changes with:
+```bash
+cd operator && kustomize edit set namespace $TARGET_NS && cd ..
 ```
 
 Apply the deployment to the configured namespace with:
@@ -44,10 +47,13 @@ This environment applies the generated manifests with minimal customizations to:
 * Deploy by default on the `sonataflow-infra` namespace
 * Mount the configurations defined in [Configure properties](#configure-properties) as environment variables
 
-The default namespace can be customized with:
+The default namespace can be customized by running the following:
 ```bash
 TARGET_NS=YOUR-NS
-cd base && kustomize edit set namespace=$TARGET_NS && cd ..
+```
+Then apply the changes with:
+```bash
+cd base && kustomize edit set namespace $TARGET_NS && cd ..
 ```
 
 Once the configuration is set, apply the deployment to the configured namespace with:
@@ -57,10 +63,10 @@ kustomize build base | oc apply -f -
 
 You can monitor the deployment status with:
 ```bash
-oc get sonataflow mtaanalysis -n sonataflow-infra -owide
+oc get sonataflow mtaanalysis -n ${TARGET_NS} -owide
 ```
 
 And finally view the logs with:
 ```bash
-oc logs -f -n sonataflow-infra -l app=mtaanalysis
+oc logs -f -n ${TARGET_NS} -l app=mtaanalysis
 ```

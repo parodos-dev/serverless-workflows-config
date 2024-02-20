@@ -2,54 +2,54 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
 resources:
-  - 01-move2kube-instance.yaml
-  - 01-configmap_01-m2k-resources.yaml
-  - 02-configmap_m2k-props.yaml
-  - 01-sonataflow_m2k.yaml
-  - 03-knative-resources.yaml
+- 01-move2kube-instance.yaml
+- 01-configmap_01-m2k-resources.yaml
+- 02-configmap_m2k-props.yaml
+- 01-sonataflow_m2k.yaml
+- 03-knative-resources.yaml
 
 # This can be later on replaced by the CD tool like ArgoCD, editing the `spec.source.kustomize.namespace` field
 # https://argo-cd.readthedocs.io/en/stable/user-guide/kustomize/#kustomize
 namespace: sonataflow-infra
 
 configurations:
-  - config/image-configuration.yaml
+- config/image-configuration.yaml
 
 generatorOptions:
   disableNameSuffixHash: true
 
 secretGenerator:
-  - envs:
-      - secret.properties
-    name: move2kube-secret
+- envs:
+  - secret.properties
+  name: move2kube-secret
 configMapGenerator:
-  - envs:
-      - values.properties
-    name: move2kube-values
-  - envs:
-      - config.properties
-    name: move2kube-config
+- envs:
+  - values.properties
+  name: move2kube-values
+- envs:
+  - config.properties
+  name: move2kube-config
 
-patches:
   # Replace dev profile in SonataFlow instance(s), add image and envFrom
-  - path: sonataflow-patch.yaml
-    target:
-      kind: SonataFlow
-      name: m2k
   # Required because other patches make the null value an invalid "null" string
-  - patch: |
-      - op: remove
-        path: /metadata/creationTimestamp
-    target:
-      kind: SonataFlow
+patches:
+- path: sonataflow-patch.yaml
+  target:
+    kind: SonataFlow
+    name: m2k
+- patch: |
+    - op: remove
+      path: /metadata/creationTimestamp
+  target:
+    kind: SonataFlow
 
 transformers:
-  - replace-config.yaml
+- replace-config.yaml
 
 images:
-  - name: serverless-workflow-m2k-kfunc
-    newName: quay.io/orchestrator/serverless-workflow-m2k-kfunc
-    newTag: f6fbb19dd531f5bcb612b28862a2303dfae87bd7
-  - name: serverless-workflow-move2kube
-    newName: quay.io/orchestrator/serverless-workflow-move2kube
-    newTag: f6fbb19dd531f5bcb612b28862a2303dfae87bd7
+- name: serverless-workflow-m2k-kfunc
+  newName: quay.io/orchestrator/serverless-workflow-m2k-kfunc
+  newTag: 93dc5df9e6c98f4c61082d5dd18da89198a40fb2
+- name: serverless-workflow-move2kube
+  newName: quay.io/orchestrator/serverless-workflow-move2kube
+  newTag: 93dc5df9e6c98f4c61082d5dd18da89198a40fb2
