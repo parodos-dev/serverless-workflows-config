@@ -1,7 +1,8 @@
 ## Prerequisites
 * The manifests are generated without the `namespace` configuration
 * Manifest names reflect the `resources` section of [kustomization.yaml](./base/kustomization.yaml)
-
+* Apply the required configuration described in the Configuration section of [INSTALL.md](../../charts/workflows/charts/move2kube/INSTALL.md#configuration) 
+ 
 A brief explanation of the system architecture is provided in the related [document](./move2kube.md).
 
 ## Kustomization options
@@ -13,7 +14,7 @@ cd base && kustomize edit set image serverless-workflow-m2k-kfunc=quay.io/orches
 ```
 
 ## Configure properties
-Edit configuration in [replace-config.yaml](./base/replace-config.yaml), [config.properties](./base/config.properties) and 
+Edit configuration in [values.properties](./base/values.properties), [config.properties](./base/config.properties) and 
 [secret.properties](./base/secret.properties) to match your environment configuration.
 
 ## Deploy to the cluster
@@ -24,10 +25,13 @@ This environment applies the generated manifests with minimal customizations to:
 * Deploy by default on the `sonataflow-infra` namespace
 * Mount the configurations defined in [Configure properties](#configure-properties) as environment variables
 
-The default namespace can be customized with:
+The default namespace can be customized by running the following:
 ```bash
 TARGET_NS=YOUR-NS
-cd base && kustomize edit set namespace=$TARGET_NS && cd ..
+```
+Then apply the changes with:
+```bash
+cd base && kustomize edit set namespace $TARGET_NS && cd ..
 ```
 
 Once the configuration is set, apply the deployment to the configured namespace with:
@@ -37,12 +41,12 @@ kustomize build base | oc apply -f -
 
 You can monitor the deployment status with:
 ```bash
-oc get sonataflow m2k -n sonataflow-infra -owide
+oc get sonataflow m2k -n ${TARGET_NS} -owide
 ```
 
 And finally view the logs with:
 ```bash
-oc logs -f -n sonataflow-infra -l app=m2k
+oc logs -f -n ${TARGET_NS} -l app=m2k
 ```
 
 ### Notes about transformation from Helm chart

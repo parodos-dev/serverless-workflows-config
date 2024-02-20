@@ -23,10 +23,13 @@ This environment applies the generated manifests with minimal customizations to:
 * Deploy by default on the `sonataflow-infra` namespace
 * Mount the configurations defined in [Configure properties](#configure-properties) as environment variables
 
-The default namespace can be customized with:
+The default namespace can be customized by running the following:
 ```bash
 TARGET_NS=YOUR-NS
-cd base && kustomize edit set namespace=$TARGET_NS && cd ..
+```
+Then apply the changes with:
+```bash
+cd base && kustomize edit set namespace $TARGET_NS && cd ..
 ```
 
 Once the configuration is set, apply the deployment to the configured namespace with:
@@ -53,7 +56,7 @@ First, initialize the `JIRA_WEBHOOK_URL` variable according to the selected envi
 
 In case of `production` environment:
 ```bash
-JIRA_LISTENER_URL=$(oc get ksvc -n sonataflow-infra jira-listener -oyaml | yq '.status.address.url')
+JIRA_LISTENER_URL=$(oc get ksvc -n ${TARGET_NS} jira-listener -oyaml | yq '.status.address.url')
 JIRA_WEBHOOK_URL="https://${JIRA_LISTENER_URL//\"/}/webhook/jira"
 ```
 
