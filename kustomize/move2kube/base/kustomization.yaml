@@ -31,17 +31,11 @@ configMapGenerator:
   name: move2kube-config
 
   # Replace dev profile in SonataFlow instance(s), add image and envFrom
-  # Required because other patches make the null value an invalid "null" string
 patches:
 - path: sonataflow-patch.yaml
   target:
     kind: SonataFlow
     name: m2k
-- patch: |
-    - op: remove
-      path: /metadata/creationTimestamp
-  target:
-    kind: SonataFlow
 
 transformers:
 - replace-config.yaml
