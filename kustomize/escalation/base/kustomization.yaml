@@ -33,12 +33,6 @@ patches:
     target:
       kind: SonataFlow
       name: ticketescalation
-# Required because other patches make the null value an invalid "null" string
-  - patch: |
-      - op: remove
-        path: /metadata/creationTimestamp
-    target:
-      kind: SonataFlow
 
 images:
 - name: serverless-workflow-escalation
