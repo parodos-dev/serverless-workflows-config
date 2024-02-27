@@ -1,7 +1,7 @@
 ## Prerequisites
 * The manifests are generated without the `namespace` configuration
 * Manifest names reflect the `resources` section of [kustomization.yaml](./base/kustomization.yaml)
-* Apply the required configuration described in the Configuration section of [INSTALL.md](../../charts/workflows/charts/move2kube/INSTALL.md#configuration) 
+* Apply the required configuration described in the Configuration section of [INSTALL.md](../../charts/workflows/charts/move2kube/INSTALL.md#configuration)
  
 A brief explanation of the system architecture is provided in the related [document](./move2kube.md).
 
@@ -16,6 +16,9 @@ cd base && kustomize edit set image serverless-workflow-m2k-kfunc=quay.io/orches
 ## Configure properties
 Edit configuration in [values.properties](./base/values.properties), [config.properties](./base/config.properties) and 
 [secret.properties](./base/secret.properties) to match your environment configuration.
+
+**Note**: in particular, please update the value of `MOVE2KUBE_URL` and `MOVE2KUBE_API` to match the URL of the route exposed by
+the `move2kube` instance (e.g. `https://move2kube-sonataflow-infra.apps.<CLUSTER DOMAIN>/`)
 
 ## Deploy to the cluster
 ### Deploy the production environment
