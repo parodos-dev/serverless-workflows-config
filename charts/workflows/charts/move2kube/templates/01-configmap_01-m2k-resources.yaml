@@ -1872,4 +1872,3 @@ kind: ConfigMap
 metadata:
   creationTimestamp: null
   name: 01-m2k-resources
-  namespace: default
