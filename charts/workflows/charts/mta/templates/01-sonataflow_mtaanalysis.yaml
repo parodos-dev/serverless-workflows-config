@@ -53,7 +53,7 @@ spec:
             name: getApp
         name: GetApplication
         stateDataFilter:
-          output: '{repositoryURL: .repositoryURL, application: .repositoryURL as $r| if .applications == null then null else .applications|map(select(.repository.url == $r))[0] end}'
+          output: '{backstageUser: .backstageUser, backstageGroup: .backstageGroup, repositoryURL: .repositoryURL, application: .repositoryURL as $r| if .applications == null then null else .applications|map(select(.repository.url == $r))[0] end}'
         transition:
           nextState: AppExist
         type: operation
@@ -186,7 +186,23 @@ spec:
         actions:
           - actionDataFilter:
               useResults: true
-            condition: .backstageUserOrGroup != null
+            condition: .backstageUser != null
+            functionRef:
+              arguments:
+                actions:
+                  - title: View report
+                    url: $SECRET.mta_url + "/hub/applications/" + (.application.id|tostring) + "/bucket/" + .data.output
+                message: '"MTA analysis is completed and the report for " + .application.repository.url + " is ready."'
+                origin: MTA Analysis Workflow
+                targetUsers:
+                  - .backstageUser
+                title: MTA analysis completed
+                topic: MTA Analysis Workflow
+              invoke: sync
+              refName: createNotification
+          - actionDataFilter:
+              useResults: true
+            condition: .backstageGroup != null
             functionRef:
               arguments:
                 actions:
@@ -195,9 +211,7 @@ spec:
                 message: '"MTA analysis is completed and the report for " + .application.repository.url + " is ready."'
                 origin: MTA Analysis Workflow
                 targetGroups:
-                  - .backstageUserOrGroup
-                targetUsers:
-                  - .backstageUserOrGroup
+                  - .backstageGroup
                 title: MTA analysis completed
                 topic: MTA Analysis Workflow
               invoke: sync
@@ -228,7 +242,7 @@ spec:
   podTemplate:
     container:
       resources: {}
-      image: quay.io/orchestrator/serverless-workflow-mta:f6fbb19dd531f5bcb612b28862a2303dfae87bd7
+      image: quay.io/orchestrator/serverless-workflow-mta:de1dbc09be3cdeb697fa0ea626956de7ef5631e7
   resources:
     configMaps:
       - configMap:

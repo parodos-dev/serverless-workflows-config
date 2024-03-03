@@ -8,7 +8,10 @@ data:
         "repositoryURL": {
           "type": "string"
         },
-        "backstageUserOrGroup": {
+        "backstageUser": {
+          "type": "string"
+        },
+        "backstageGroup": {
           "type": "string"
         }
       },
