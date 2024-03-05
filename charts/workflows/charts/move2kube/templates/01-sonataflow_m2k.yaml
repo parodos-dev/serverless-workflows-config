@@ -140,7 +140,7 @@ spec:
         transition:
           nextState: WaitForSaveTransformationCompletionEvent
           produceEvents:
-            - data: '{gitRepo:.repositoryURL|sub("http(s)?://";"ssh://"), branch: .targetBranch, token: .token, workspaceId: .workspaceId, projectId: .projectId, transformId: .transformId, workflowCallerId: $WORKFLOW.instanceId}'
+            - data: '{gitRepo:.repositoryURL|sub("http(s)?://";"ssh://"), branch: .targetBranch, workspaceId: .workspaceId, projectId: .projectId, transformId: .transformId, workflowCallerId: $WORKFLOW.instanceId}'
               eventRef: saveTransformationEvent
         type: operation
       - defaultCondition:
@@ -234,7 +234,7 @@ spec:
   podTemplate:
     container:
       resources: {}
-      image: quay.io/orchestrator/serverless-workflow-move2kube:de1dbc09be3cdeb697fa0ea626956de7ef5631e7
+      image: quay.io/orchestrator/serverless-workflow-move2kube:461344f60b29fe64958b0041641a33d764c0771c
   resources:
     configMaps:
       - configMap:
