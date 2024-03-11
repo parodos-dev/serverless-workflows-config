@@ -12,8 +12,11 @@ cd base && kustomize edit set image serverless-workflow-mta=quay.io/orchestrator
 ```
 
 ## Configure properties
-Edit configuration in [config.properties](./base/config.properties) and [secret.properties](./base/secret.properties) to match your environment
-configuration.
+Edit configuration in [values.properties](./base/values.properties), [config.properties](./base/config.properties) and 
+[secret.properties](./base/secret.properties) to match your environment configuration.
+
+**Note**: in particular, please update the value of `MTA_URL` to match the URL of the route exposed by
+the `mta` instance (e.g. `https://mta-openshift-mta.apps.<CLUSTER DOMAIN>/`)
 
 ## Deploy to the cluster
 ### Deploy the operator
