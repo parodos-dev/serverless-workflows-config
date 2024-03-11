@@ -7,8 +7,7 @@ From `charts` folder run
 helm install mta workflows/mta --namespace=sonataflow-infra
 ```
 
-Edit the `mtaanalysis-props` confimap to set the `mta.endpoint` and `mta.protocol` parameters.
-If you are using a route, the `mta.protocol` should be set to `https`, by default is it set to `http` You shall also set `mta.endpoint` with the value of the following command:
+Edit the `mtaanalysis-props` confimap to set the `mta.url` with the value of the following command:
 ```console
 oc -n openshift-mta get route mta -o yaml | yq -r .spec.host
 ```
