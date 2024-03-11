@@ -224,7 +224,7 @@ spec:
         actions: null
         name: report
         stateDataFilter:
-          output: '{result: (.taskgroup.tasks[0]| "report will be ready here -> " + $SECRET.mta_url + "/hub/applications/" + (.application.id|tostring) + "/bucket" + .data.output), repositoryURL: .repositoryURL}'
+          output: '{result: (.taskgroup.tasks[0]| "report will be ready here -> " + $SECRET.mta.url + "/hub/applications/" + (.application.id|tostring) + "/bucket" + .data.output), repositoryURL: .repositoryURL}'
         transition:
           nextState: GetWorkflowOptions
         type: operation
@@ -242,7 +242,7 @@ spec:
   podTemplate:
     container:
       resources: {}
-      image: quay.io/orchestrator/serverless-workflow-mta:de1dbc09be3cdeb697fa0ea626956de7ef5631e7
+      image: quay.io/orchestrator/serverless-workflow-mta:097fc3fee30b0627b128999b612fe949538c80e5
   resources:
     configMaps:
       - configMap:
