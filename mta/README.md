@@ -16,6 +16,10 @@ helm install mta workflows/mta --namespace=sonataflow-infra
 ```console
 oc -n openshift-mta get route mta -o yaml | yq -r .spec.host
 ```
+And to edit the configmap:
+```console
+oc -n <namespace> edit configmap mtaanalysis-props
+```
 
 - Verify MTA resources and workflow are ready:
 ```console
