@@ -31,16 +31,24 @@ Note that those ssh keys needs to be added in your git repository as well. For b
 
 # Installation
 
+Set `TARGET_NS` to the target namespace:
+```console
+TARGET_NS=sonataflow-infra
+```
 
 From `charts` folder run 
 ```console
-helm install move2kube workflows/move2kube --namespace=sonataflow-infra
+helm install move2kube workflows/move2kube --namespace=${TARGET_NS}
 ```
 Run the following command to apply it to the `move2kubeURL` parameter:
 ```console
-M2K_ROUTE=$(oc -n sonataflow-infra get routes move2kube-route -o yaml | yq -r .spec.host)
-oc -n sonataflow-infra delete ksvc m2k-save-transformation-func &&
-helm upgrade move2kube move2kube --namespace=sonataflow-infra --set workflow.move2kubeURL=https://${M2K_ROUTE} &&
-oc -n sonataflow-infra scale deployment m2k --replicas=0 &&
-oc -n sonataflow-infra scale deployment m2k --replicas=1
+M2K_ROUTE=$(oc -n ${TARGET_NS} get routes move2kube-route -o yaml | yq -r .spec.host)
+oc -n ${TARGET_NS} delete ksvc m2k-save-transformation-func &&
+helm upgrade move2kube move2kube --namespace=${TARGET_NS} --set workflow.move2kubeURL=https://${M2K_ROUTE}
+```
+
+Run the following to set K_SINK environment variable in the workflow:
+```console
+BROKER_URL=$(oc -n ${TARGET_NS} get broker -o yaml | yq -r .items[0].status.address.url)
+oc -n ${TARGET_NS} patch sonataflow m2k --type merge -p '{"spec": { "podTemplate": { "container": { "env": [{"name": "K_SINK", "value": "'${BROKER_URL}'"}]}}}}'
 ```
