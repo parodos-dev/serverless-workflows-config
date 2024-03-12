@@ -44,6 +44,9 @@ spec:
       - name: createNotification
         operation: notifications#createNotification
         type: rest
+      - name: increasePlanRetries
+        operation: .planRetries=.planRetries + 1
+        type: expression
     start:
       stateName: StartPlanning
     states:
@@ -60,8 +63,14 @@ spec:
               refName: startPlanning
         name: StartPlanning
         transition:
-          nextState: GetPlanning
+          nextState: InitGetPlanningRetry
         type: operation
+      - data:
+          planRetries: 0
+        name: InitGetPlanningRetry
+        transition:
+          nextState: GetPlanning
+        type: inject
       - actionMode: sequential
         actions:
           - actionDataFilter:
@@ -77,12 +86,26 @@ spec:
               before: PT2S
         name: GetPlanning
         transition:
+          nextState: IncreaseGetPlanningRetry
+        type: operation
+      - actionMode: sequential
+        actions:
+          - actionDataFilter:
+              useResults: true
+            functionRef:
+              invoke: sync
+              refName: increasePlanRetries
+        name: IncreaseGetPlanningRetry
+        transition:
           nextState: PlanRetrievedCheck
         type: operation
       - dataConditions:
           - condition: (has("plan") and .plan != "")
             transition:
               nextState: StartTransformation
+          - condition: (.planRetries >  ($SECRET.move2kube_get_plan_max_retries | tonumber))
+            transition:
+              nextState: GetPlanRetryExceededError
         defaultCondition:
           transition:
             nextState: GetPlanning
@@ -169,13 +192,19 @@ spec:
         transition:
           nextState: PrintExitErrorMessage
         type: inject
+      - data:
+          exitMessage: '"Get plan retries exceeded, an error probably occurred, check the move2kube instance logs"'
+        name: GetPlanRetryExceededError
+        transition:
+          nextState: PrintExitErrorMessage
+        type: inject
       - branches:
           - actions:
               - actionDataFilter:
                   useResults: true
                 functionRef:
                   arguments:
-                    message: '${"m2k workflow: " + $WORKFLOW.instanceId + " has finalized with error. Exit message: " + .exitMessage + " -- Context: "  + .error }'
+                    message: '${"m2k workflow: " + $WORKFLOW.instanceId + " has finalized with error. Exit message: " + .exitMessage + " -- Plan retries: " + (.planRetries|tostring) + " -- Context: "  + .error }'
                   invoke: sync
                   refName: systemOut
                 name: printSystemOut
@@ -186,7 +215,7 @@ spec:
                 condition: ((has("notificationsDisabled") and .notificationsDisabled != null and .notificationsDisabled == true)|not)
                 functionRef:
                   arguments:
-                    message: '"Move2Kube workflow  " + $WORKFLOW.instanceId + " on workspace " + .workspaceId + " and project " + .projectId + " failed with exit message: "+ .exitMessage + "\n\nError: "  + .error'
+                    message: '"Move2Kube workflow  " + $WORKFLOW.instanceId + " on workspace " + .workspaceId + " and project " + .projectId + " failed with exit message: "+ .exitMessage + " -- Plan retries: "  + (.planRetries|tostring) + " -- Error: "  + .error'
                     origin: Move2Kube Workflow
                     title: '"Move2Kube workflow " + $WORKFLOW.instanceId + " failed"'
                     topic: Move2Kube Workflow
@@ -234,7 +263,7 @@ spec:
   podTemplate:
     container:
       resources: {}
-      image: quay.io/orchestrator/serverless-workflow-move2kube:461344f60b29fe64958b0041641a33d764c0771c
+      image: quay.io/orchestrator/serverless-workflow-move2kube:8d27f0eae1b9060585fa73f82d8caa75a891024f
   resources:
     configMaps:
       - configMap:
