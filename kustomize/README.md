@@ -6,5 +6,5 @@ Under each workflow folder, there is a README file with detailed instructions on
 
 - [Escalation](./escalation/README.md)
 - [Greeting](./greeting/README.md)
-- [move2kube](./move2kube/README.md)
+- [Move2kube](./move2kube/README.md)
 - [MTA](./mta/README.md)
