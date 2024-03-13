@@ -2,6 +2,10 @@ Move2kube
 ===========
 
 # Configuration
+Set `TARGET_NS` to the target namespace:
+```console
+TARGET_NS=sonataflow-infra
+```
 
 We need to use `initContainers` and `securityContext` in our Knative services to allow SSH key exchange in move2kube workflow, we have to tell Knative to enable that feature:
 ```bash
@@ -14,12 +18,12 @@ We need to use `initContainers` and `securityContext` in our Knative services to
 
 Also, `move2kube` instance runs as root so we need to allow the `default` service account to use `runAsUser`:
 ```console
-oc -n sonataflow-infra adm policy add-scc-to-user anyuid -z default
+oc -n ${TARGET_NS} adm policy add-scc-to-user anyuid -z default
 ```
 
 Create the secret that holds the ssh keys:
 ```console
-oc create secret generic sshkeys --from-file=id_rsa=${HOME}/.ssh/id_rsa --from-file=id_rsa.pub=${HOME}/.ssh/id_rsa.pub -n sonataflow-infra
+oc -n ${TARGET_NS} create secret generic sshkeys --from-file=id_rsa=${HOME}/.ssh/id_rsa --from-file=id_rsa.pub=${HOME}/.ssh/id_rsa.pub
 ```
 If you change the name of the secret, you will also have to updated the value of `sshSecretName` in [values.yaml](values.yaml)
 
@@ -30,11 +34,6 @@ If you do not have ssh keys, you can generate them with `ssh-keygen` command. Yo
 Note that those ssh keys needs to be added in your git repository as well. For bitbucket it should be on the account level (https://bitbucket.org/account/settings/ssh-keys/)
 
 # Installation
-
-Set `TARGET_NS` to the target namespace:
-```console
-TARGET_NS=sonataflow-infra
-```
 
 From `charts` folder run 
 ```console
