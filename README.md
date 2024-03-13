@@ -30,6 +30,30 @@ To install workflows by the meta-chart, run:
 $ helm install orchestrator-workflows orchestrator-workflows/workflows --namespace=sonataflow-infra
 ```
 
+Run the following command to apply it to the `move2kubeURL` parameter:
+```console
+M2K_ROUTE=$(oc -n sonataflow-infra get routes move2kube-route -o yaml | yq -r .spec.host)
+oc -n sonataflow-infra delete ksvc m2k-save-transformation-func &&
+helm upgrade  orchestrator-workflows  orchestrator-workflows/workflows --set move2kube.workflow.move2kubeURL=https://${M2K_ROUTE} --namespace=sonataflow-infra
+```
+
+Then edit the `m2k-props` confimap to set the `quarkus.rest-client.move2kube_yaml.url` and `move2kube_url` properties with the value of `${M2K_ROUTE}`
+
+Run the following to set K_SINK environment variable in the workflow:
+```console
+BROKER_URL=$(oc -n sonataflow-infra get broker -o yaml | yq -r .items[0].status.address.url)
+oc -n sonataflow-infra patch sonataflow m2k --type merge -p '{"spec": { "podTemplate": { "container": { "env": [{"name": "K_SINK", "value": "'${BROKER_URL}'"}]}}}}'
+```
+
+Edit the `mtaanalysis-props` confimap to set the `mta.url` with the value of the following command:
+```console
+oc -n openshift-mta get route mta -o yaml | yq -r .spec.host
+```
+And to edit the configmap:
+```console
+oc -n sonataflow-infra edit configmap mtaanalysis-props
+```    
+
 ## Configuration
 
 The following table lists the configurable parameters of the Workflows chart and their default values.
