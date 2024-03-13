@@ -46,6 +46,8 @@ oc -n ${TARGET_NS} delete ksvc m2k-save-transformation-func &&
 helm upgrade move2kube move2kube --namespace=${TARGET_NS} --set workflow.move2kubeURL=https://${M2K_ROUTE}
 ```
 
+Then edit the `m2k-props` confimap to set the `quarkus.rest-client.move2kube_yaml.url` and `move2kube_url` properties with the value of `${M2K_ROUTE}`
+
 Run the following to set K_SINK environment variable in the workflow:
 ```console
 BROKER_URL=$(oc -n ${TARGET_NS} get broker -o yaml | yq -r .items[0].status.address.url)
