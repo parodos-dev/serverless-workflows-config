@@ -33,7 +33,25 @@ Notice that workflow-1 has the code embedded while workflow-2 and 3 is a depende
 
 ```
 helm repo add orchestrator-workflows https://parodos.dev/serverless-workflows-helm
-helm install orchestrator-workflows serverless-workflows/workflows
+helm install orchestrator-workflows  orchestrator-workflows/workflows
+```
+
+Run the following command to apply it to the `move2kubeURL` parameter:
+```console
+M2K_ROUTE=$(oc get routes move2kube-route -o yaml | yq -r .spec.host)
+oc delete ksvc m2k-save-transformation-func &&
+helm upgrade  orchestrator-workflows  orchestrator-workflows/workflows --set workflow.move2kubeURL=https://${M2K_ROUTE}
+```
+
+Run the following to set K_SINK environment variable in the workflow:
+```console
+BROKER_URL=$(oc get broker -o yaml | yq -r .items[0].status.address.url)
+oc patch sonataflow m2k --type merge -p '{"spec": { "podTemplate": { "container": { "env": [{"name": "K_SINK", "value": "'${BROKER_URL}'"}]}}}}'
+```
+
+Edit the `mtaanalysis-props` confimap to set the `mta.url` with the value of the following command:
+```console
+oc -n openshift-mta get route mta -o yaml | yq -r .spec.host
 ```
       
 To generate `values.schema.json`, next to you `values.yaml` file, run: 
