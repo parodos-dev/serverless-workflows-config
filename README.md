@@ -33,14 +33,14 @@ Notice that workflow-1 has the code embedded while workflow-2 and 3 is a depende
 
 ```
 helm repo add orchestrator-workflows https://parodos.dev/serverless-workflows-helm
-helm install orchestrator-workflows  orchestrator-workflows/workflows
+helm install orchestrator-workflows orchestrator-workflows/workflows
 ```
 
 Run the following command to apply it to the `move2kubeURL` parameter:
 ```console
 M2K_ROUTE=$(oc get routes move2kube-route -o yaml | yq -r .spec.host)
 oc delete ksvc m2k-save-transformation-func &&
-helm upgrade  orchestrator-workflows  orchestrator-workflows/workflows --set move2kube.workflow.move2kubeURL=https://${M2K_ROUTE}
+helm upgrade  orchestrator-workflows orchestrator-workflows/workflows --set move2kube.workflow.move2kubeURL=https://${M2K_ROUTE}
 ```
 
 Then edit the `m2k-props` confimap to set the `quarkus.rest-client.move2kube_yaml.url` and `move2kube_url` properties with the value of `${M2K_ROUTE}`
