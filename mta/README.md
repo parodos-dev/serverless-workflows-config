@@ -9,13 +9,15 @@ At the end of a successful assessment workflow, a link to the report will be ava
 ## Installation
 - Run 
 ```console
-helm install mta workflows/mta --namespace=sonataflow-infra
+helm repo add orchestrator-workflows https://parodos.dev/serverless-workflows-helm
+helm install mta orchestrator-workflows/workflows --set greeting.enabled=false --set move2kube.enabled=false
 ```
 
 - Edit the `mtaanalysis-props` confimap to set the `mta.url` with the value of the following command:
 ```console
-oc -n openshift-mta get route mta -o yaml | yq -r .spec.host
+echo "https://"$(oc -n openshift-mta get route mta -o yaml | yq -r .spec.host)
 ```
+
 And to edit the configmap:
 ```console
 oc -n <namespace> edit configmap mtaanalysis-props
@@ -24,7 +26,7 @@ oc -n <namespace> edit configmap mtaanalysis-props
 - Verify MTA resources and workflow are ready:
 ```console
 sleep 120s # to wait until the MTA operator has created all requested resources
-oc wait --for=jsonpath='{.status.phase}=Succeeded' -n openshift-mta csv/mta-operator.v6.2.1 --timeout=2m
+oc wait --for=jsonpath='{.status.phase}=Succeeded' -n openshift-mta csv/mta-operator.v6.2.2 --timeout=2m
 oc wait --for=condition=Ready=true pods -l "app.kubernetes.io/name=mta-ui" -n openshift-mta --timeout=2m
 oc wait sonataflow/mtaanalysis --for=condition=Running --timeout=2m
 ```

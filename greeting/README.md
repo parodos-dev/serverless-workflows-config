@@ -9,7 +9,8 @@ There is no configuration required for the greeting workflow to run.
 ## Installation
 
 ```console
-helm install greeting workflows/greeting --namespace=sonataflow-infra
+helm repo add orchestrator-workflows https://parodos.dev/serverless-workflows-helm
+helm install greeting orchestrator-workflows/workflows --set mta.enabled=false --set move2kube.enabled=false
 ```
 
 Verify the greeting workflow is ready:
