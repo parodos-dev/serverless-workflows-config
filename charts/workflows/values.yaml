@@ -3,5 +3,4 @@ mta:
 greeting:
   enabled: true # Indicates that greeting workflow is enabled
 move2kube:
-  enabled: true # Indicates that move2kube workflow is enabled
-
+  enabled: false # Indicates that move2kube workflow is enabled
