@@ -63,7 +63,7 @@ The following table lists the configurable parameters of the Workflows chart and
 | ------------------------ | ----------------------- | -------------- |
 | `mta.enabled` | Indicates that mta workflow is enabled | `true` |
 | `greeting.enabled` | Indicates that greeting workflow is enabled | `true` |
-| `move2kube.enabled` | Indicates that move2kube workflow is enabled | `true` |
+| `move2kube.enabled` | Indicates that move2kube workflow is enabled | `false` |
 
 
 ## Helm index
