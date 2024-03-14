@@ -25,9 +25,10 @@ The workflows can be installed by the meta chart or individually. Visit workflow
 * [MTA](./mta/README.md)
 * [Move2Kube](./move2kube/README.md)
 
-To install workflows by the meta-chart, run:
+By default, only the Greeting and MTA workflows are enabled.
+To install *all* of the workflows by the meta-chart, run:
 ```
-$ helm install orchestrator-workflows orchestrator-workflows/workflows --namespace=sonataflow-infra
+$ helm install orchestrator-workflows orchestrator-workflows/workflows --set move2kube.enabled=true --namespace=sonataflow-infra
 ```
 
 Run the following command to apply it to the `move2kubeURL` parameter:
@@ -63,3 +64,7 @@ The following table lists the configurable parameters of the Workflows chart and
 | `mta.enabled` | Indicates that mta workflow is enabled | `true` |
 | `greeting.enabled` | Indicates that greeting workflow is enabled | `true` |
 | `move2kube.enabled` | Indicates that move2kube workflow is enabled | `true` |
+
+
+## Helm index
+[https://www.parodos.dev/serverless-workflows-helm/index.yaml](https://www.parodos.dev/serverless-workflows-helm/index.yaml)

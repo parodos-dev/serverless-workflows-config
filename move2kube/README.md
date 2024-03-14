@@ -40,7 +40,9 @@ Note that those ssh keys needs to be added in your git repository as well. For b
 
 Run 
 ```console
-helm install move2kube workflows/move2kube --namespace=${TARGET_NS}
+helm repo add orchestrator-workflows https://parodos.dev/serverless-workflows-helm
+helm install move2kube orchestrator-workflows/workflows --set move2kube.enabled=true --namespace=${TARGET_NS} \
+    --set greeting.enabled=false --set mta.enabled=false
 ```
 Run the following command to apply it to the `move2kubeURL` parameter:
 ```console
