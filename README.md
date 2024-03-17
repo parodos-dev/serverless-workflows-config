@@ -15,8 +15,12 @@ o utilize the workflows contained in this repository, the Orchestrator Deploymen
 
 
 ## Installation
+```bash
+helm repo add orchestrator-workflows https://parodos.dev/serverless-workflows-helm
 ```
-$ helm repo add orchestrator-workflows https://parodos.dev/serverless-workflows-helm
+
+Expected output:
+```console
 "orchestrator-workflows" has been added to your repositories
 ```
 
@@ -25,35 +29,21 @@ The workflows can be installed by the meta chart or individually. Visit workflow
 * [MTA](./mta/README.md)
 * [Move2Kube](./move2kube/README.md)
 
-By default, only the Greeting and MTA workflows are enabled.
-To install *all* of the workflows by the meta-chart, run:
-```
-$ helm install orchestrator-workflows orchestrator-workflows/workflows --set move2kube.enabled=true --namespace=sonataflow-infra
-```
-
-Run the following command to apply it to the `move2kubeURL` parameter:
-```console
-M2K_ROUTE=$(oc -n sonataflow-infra get routes move2kube-route -o yaml | yq -r .spec.host)
-oc -n sonataflow-infra delete ksvc m2k-save-transformation-func &&
-helm upgrade  orchestrator-workflows  orchestrator-workflows/workflows --set move2kube.workflow.move2kubeURL=https://${M2K_ROUTE} --namespace=sonataflow-infra
+By default, all of the workflows are disabled.
+To install the workflows by the parent chart, choose which workflow to install either by editing `values.yaml` or by providing additional flags to install command, e.g. `--set ${workflow-id}.enabled=true` (workflow IDs are specified in the values.yaml file):
+```bash
+helm install orchestrator-workflows orchestrator-workflows/workflows --set greeting.enabled=true
 ```
 
-Then edit the `m2k-props` confimap to set the `quarkus.rest-client.move2kube_yaml.url` and `move2kube_url` properties with the value of `${M2K_ROUTE}`
-
-Run the following to set K_SINK environment variable in the workflow:
+Expected output:
 ```console
-BROKER_URL=$(oc -n sonataflow-infra get broker -o yaml | yq -r .items[0].status.address.url)
-oc -n sonataflow-infra patch sonataflow m2k --type merge -p '{"spec": { "podTemplate": { "container": { "env": [{"name": "K_SINK", "value": "'${BROKER_URL}'"}]}}}}'
+NAME: orchestrator-workflows
+LAST DEPLOYED: Sun Mar 17 13:25:18 2024
+NAMESPACE: orchestrator
+STATUS: deployed
+REVISION: 1
+TEST SUITE: None
 ```
-
-Edit the `mtaanalysis-props` confimap to set the `mta.url` with the value of the following command:
-```console
-oc -n openshift-mta get route mta -o yaml | yq -r .spec.host
-```
-And to edit the configmap:
-```console
-oc -n sonataflow-infra edit configmap mtaanalysis-props
-```    
 
 ## Configuration
 
@@ -61,8 +51,8 @@ The following table lists the configurable parameters of the Workflows chart and
 
 | Parameter                | Description             | Default        |
 | ------------------------ | ----------------------- | -------------- |
-| `mta.enabled` | Indicates that mta workflow is enabled | `true` |
-| `greeting.enabled` | Indicates that greeting workflow is enabled | `true` |
+| `mta.enabled` | Indicates that mta workflow is enabled | `false` |
+| `greeting.enabled` | Indicates that greeting workflow is enabled | `false` |
 | `move2kube.enabled` | Indicates that move2kube workflow is enabled | `false` |
 
 
