@@ -23,12 +23,12 @@
                     "default": false,
                     "title": "The enabled Schema",
                     "examples": [
-                        true
+                        false
                     ]
                 }
             },
             "examples": [{
-                "enabled": true
+                "enabled": false
             }]
         },
         "greeting": {
@@ -44,12 +44,12 @@
                     "default": false,
                     "title": "The enabled Schema",
                     "examples": [
-                        true
+                        false
                     ]
                 }
             },
             "examples": [{
-                "enabled": true
+                "enabled": false
             }]
         },
         "move2kube": {
@@ -76,10 +76,10 @@
     },
     "examples": [{
         "mta": {
-            "enabled": true
+            "enabled": false
         },
         "greeting": {
-            "enabled": true
+            "enabled": false
         },
         "move2kube": {
             "enabled": false
