@@ -10,7 +10,7 @@ There is no configuration required for the greeting workflow to run.
 
 ```console
 helm repo add orchestrator-workflows https://parodos.dev/serverless-workflows-helm
-helm install greeting orchestrator-workflows/workflows --set mta.enabled=false --set move2kube.enabled=false
+helm install greeting orchestrator-workflows/workflows --set greeting.enabled=true
 ```
 
 Verify the greeting workflow is ready:
