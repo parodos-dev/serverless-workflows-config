@@ -27,14 +27,20 @@ Consider this chart as a meta chart or template chart for other workflows or sub
 Notice that workflow-1 has the code embedded while workflow-2 and 3 is a dependency resolved from the root Chart.yaml
 
 
-# Usage      
+# Usage
 
+To install the workflow from sources directly:
+- Clone the project
+- Choose which workflow to install either by editing `values.yaml` or by providing additional flags to install command, e.g. `--set ${workflow-id}.enabled=true`:
 ```
-helm repo add orchestrator-workflows https://parodos.dev/serverless-workflows-helm
-helm install orchestrator-workflows orchestrator-workflows/workflows
+git clone git@github.com:parodos-dev/serverless-workflows-helm.git
+cd serverless-workflows-helm/charts
+helm install orchestrator-workflows workflows
 ```
-See further installation steps and detailed explanation for each workflow [here](https://github.com/parodos-dev/serverless-workflows-helm/tree/gh-pages?tab=readme-ov-file#installation) or [here](https://www.parodos.dev/serverless-workflows-helm/).
+
+For installing the workflows from Helm repository, see further installation steps and detailed explanation for each workflow [here](https://github.com/parodos-dev/serverless-workflows-helm/tree/gh-pages?tab=readme-ov-file#installation) or [here](https://www.parodos.dev/serverless-workflows-helm/).
       
+# Development
 To generate `values.schema.json`, next to your `values.yaml` file, run: 
 ```
 npx @socialgouv/helm-schema -f values.yaml
@@ -44,3 +50,5 @@ To generate `README.md`, run:
 ```
 frigate gen <path to the chart folder> README.md
 ```
+
+To bump a new chart version, use `./hack/bump_version.sh`
