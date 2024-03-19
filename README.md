@@ -27,9 +27,6 @@ Consider this chart as a meta chart or template chart for other workflows or sub
 
 Notice that workflow-1 has the code embedded while workflow-2 and 3 is a dependency resolved from the root Chart.yaml
 
-## Kustomize
-See details [here](https://github.com/parodos-dev/serverless-workflows-config/tree/main/kustomize#readme)
-
 ### Usage
 
 To install the workflow from sources directly:
@@ -42,6 +39,9 @@ helm install orchestrator-workflows workflows
 ```
 
 For installing the workflows from Helm repository, see further installation steps and detailed explanation for each workflow [here](https://github.com/parodos-dev/serverless-workflows-helm/tree/gh-pages?tab=readme-ov-file#installation) or [here](https://www.parodos.dev/serverless-workflows-helm/).
+
+## Kustomize
+See details [here](https://github.com/parodos-dev/serverless-workflows-config/tree/main/kustomize#readme)
       
 # Development
 To generate `values.schema.json`, next to your `values.yaml` file, run: 
