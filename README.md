@@ -25,7 +25,7 @@ Expected output:
 ```
 
 The workflows can be installed by the meta chart or individually. Visit workflows for specific details:
-* [Greeting]([./greeting/README.md](https://github.com/parodos-dev/serverless-workflows-config/blob/gh-pages/greeting/README.md))
+* [Greeting](https://github.com/parodos-dev/serverless-workflows-config/blob/gh-pages/greeting/README.md))
 * [MTA](https://github.com/parodos-dev/serverless-workflows-config/blob/gh-pages/mta/README.md)
 * [Move2Kube](https://github.com/parodos-dev/serverless-workflows-config/blob/gh-pages/move2kube/README.md)
 
