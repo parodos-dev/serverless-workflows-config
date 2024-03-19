@@ -16,7 +16,7 @@ o utilize the workflows contained in this repository, the Orchestrator Deploymen
 
 ## Installation
 ```bash
-helm repo add orchestrator-workflows https://parodos.dev/serverless-workflows-helm
+helm repo add orchestrator-workflows https://parodos.dev/serverless-workflows-config
 ```
 
 Expected output:
@@ -25,9 +25,9 @@ Expected output:
 ```
 
 The workflows can be installed by the meta chart or individually. Visit workflows for specific details:
-* [Greeting]([./greeting/README.md](https://github.com/parodos-dev/serverless-workflows-helm/blob/gh-pages/greeting/README.md))
-* [MTA](https://github.com/parodos-dev/serverless-workflows-helm/blob/gh-pages/mta/README.md)
-* [Move2Kube](https://github.com/parodos-dev/serverless-workflows-helm/blob/gh-pages/move2kube/README.md)
+* [Greeting]([./greeting/README.md](https://github.com/parodos-dev/serverless-workflows-config/blob/gh-pages/greeting/README.md))
+* [MTA](https://github.com/parodos-dev/serverless-workflows-config/blob/gh-pages/mta/README.md)
+* [Move2Kube](https://github.com/parodos-dev/serverless-workflows-config/blob/gh-pages/move2kube/README.md)
 
 By default, all of the workflows are disabled.
 To install the workflows by the parent chart, choose which workflow to install either by editing `values.yaml` or by providing additional flags to install command, e.g. `--set ${workflow-id}.enabled=true` (workflow IDs are specified in the values.yaml file):
@@ -57,4 +57,4 @@ The following table lists the configurable parameters of the Workflows chart and
 
 
 ## Helm index
-[https://www.parodos.dev/serverless-workflows-helm/index.yaml](https://www.parodos.dev/serverless-workflows-helm/index.yaml)
+[https://www.parodos.dev/serverless-workflows-config/index.yaml](https://www.parodos.dev/serverless-workflows-config/index.yaml)

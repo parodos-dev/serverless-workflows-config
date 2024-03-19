@@ -26,7 +26,7 @@ oc -n ${TARGET_NS} create secret generic sshkeys --from-file=id_rsa=${HOME}/.ssh
 ```
 If you change the name of the secret, you will also have to provide the value of `sshSecretName` when installing the helm chart(`--set sshSecretName=<name of the secret>`)
 
-The list of the overridable values can be found in our [git repository](https://github.com/parodos-dev/serverless-workflows-helm/blob/main/charts/workflows/charts/move2kube/values.yaml)
+The list of the overridable values can be found in our [git repository](https://github.com/parodos-dev/serverless-workflows-config/blob/main/charts/workflows/charts/move2kube/values.yaml)
 
 If you want to use other ssh keys you should update the `from-file` parameters values to match your own.
 
@@ -34,13 +34,13 @@ If you do not have ssh keys, you can generate them with `ssh-keygen` command. Yo
 
 Note that those ssh keys needs to be added in your git repository as well. For bitbucket it should be on the [account level](https://bitbucket.org/account/settings/ssh-keys/)
 
-[View the Move2Kube README on GitHub](https://github.com/parodos-dev/serverless-workflows-helm/blob/main/charts/workflows/charts/move2kube/README.md)
+[View the Move2Kube README on GitHub](https://github.com/parodos-dev/serverless-workflows-config/blob/main/charts/workflows/charts/move2kube/README.md)
 
 ## Installation
 
 Run 
 ```console
-helm repo add orchestrator-workflows https://parodos.dev/serverless-workflows-helm
+helm repo add orchestrator-workflows https://parodos.dev/serverless-workflows-config
 helm install move2kube orchestrator-workflows/workflows --set move2kube.enabled=true --namespace=${TARGET_NS}
 ```
 Run the following command to apply it to the `move2kubeURL` parameter:
