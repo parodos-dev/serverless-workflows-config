@@ -1,12 +1,13 @@
-# serverless-workflows-helm
+# serverless-workflows-config
 
-serverless workflows helm charts 
+This repository includes two methods of installing workflows: by Helm or by Kustomize.
 
+## Helm charts
 This is a chart repo for serverless workflows to be deployed using Sonataflow Operator.
-All the workflows address defined use-cases, tested and validated using CI, and versioned by the chart version.
+All the workflows address defined use cases, tested and validated using CI, and versioned by the chart version.
 
 The chart contains the workflows and all their needed dependencies and it may reference other workflows chart repo 
-by dependency resolution, meaning we don't have to have all the worklflows definition here. 
+by dependency resolution, meaning we don't have to have all the workflow definitions here. 
 Consider this chart as a meta chart or template chart for other workflows or sub-workflows:
 
 ```
@@ -26,8 +27,10 @@ Consider this chart as a meta chart or template chart for other workflows or sub
 
 Notice that workflow-1 has the code embedded while workflow-2 and 3 is a dependency resolved from the root Chart.yaml
 
+## Kustomize
+See details [here](https://github.com/parodos-dev/serverless-workflows-config/tree/main/kustomize#readme)
 
-# Usage
+### Usage
 
 To install the workflow from sources directly:
 - Clone the project
