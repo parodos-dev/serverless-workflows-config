@@ -1,12 +1,13 @@
 # serverless-workflows-config
 
-serverless workflows helm charts 
+This repository includes two methods of installing workflows: Helm or Kustomize.
 
-This is a chart repo for serverless workflows to be deployed using Sonataflow Operator.
-All the workflows address defined use-cases, tested and validated using CI, and versioned by the chart version.
+## Helm charts
+This is a chart repo for deploying serverless workflows using Sonataflow Operator.
+All the workflows address defined use cases, tested and validated using CI, and versioned by the chart version.
 
 The chart contains the workflows and all their needed dependencies and it may reference other workflows chart repo 
-by dependency resolution, meaning we don't have to have all the worklflows definition here. 
+by dependency resolution, meaning we don't have to have all the workflow definitions here. 
 Consider this chart as a meta chart or template chart for other workflows or sub-workflows:
 
 ```
@@ -26,8 +27,7 @@ Consider this chart as a meta chart or template chart for other workflows or sub
 
 Notice that workflow-1 has the code embedded while workflow-2 and 3 is a dependency resolved from the root Chart.yaml
 
-
-# Usage
+### Usage
 
 To install the workflow from sources directly:
 - Clone the project
@@ -38,8 +38,11 @@ cd serverless-workflows-config/charts
 helm install orchestrator-workflows workflows
 ```
 
-For installing the workflows from Helm repository, see further installation steps and detailed explanation for each workflow [here](https://github.com/parodos-dev/serverless-workflows-config/tree/gh-pages?tab=readme-ov-file#installation) or [here](https://www.parodos.dev/serverless-workflows-config/).
-      
+For installing the workflows from the Helm repository, see further installation steps and detailed explanation for each workflow [here](https://github.com/parodos-dev/serverless-workflows-config/tree/gh-pages?tab=readme-ov-file#installation) or [here](https://www.parodos.dev/serverless-workflows-config/).
+
+## Kustomize
+See details [here](https://github.com/parodos-dev/serverless-workflows-config/tree/main/kustomize#readme)
+
 # Development
 To generate `values.schema.json`, next to your `values.yaml` file, run: 
 ```
