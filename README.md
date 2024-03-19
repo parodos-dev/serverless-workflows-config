@@ -1,4 +1,4 @@
-# serverless-workflows-helm
+# serverless-workflows-config
 
 serverless workflows helm charts 
 
@@ -33,12 +33,12 @@ To install the workflow from sources directly:
 - Clone the project
 - Choose which workflow to install either by editing `values.yaml` or by providing additional flags to install command, e.g. `--set ${workflow-id}.enabled=true`:
 ```
-git clone git@github.com:parodos-dev/serverless-workflows-helm.git
-cd serverless-workflows-helm/charts
+git clone git@github.com:parodos-dev/serverless-workflows-config.git
+cd serverless-workflows-config/charts
 helm install orchestrator-workflows workflows
 ```
 
-For installing the workflows from Helm repository, see further installation steps and detailed explanation for each workflow [here](https://github.com/parodos-dev/serverless-workflows-helm/tree/gh-pages?tab=readme-ov-file#installation) or [here](https://www.parodos.dev/serverless-workflows-helm/).
+For installing the workflows from Helm repository, see further installation steps and detailed explanation for each workflow [here](https://github.com/parodos-dev/serverless-workflows-config/tree/gh-pages?tab=readme-ov-file#installation) or [here](https://www.parodos.dev/serverless-workflows-config/).
       
 # Development
 To generate `values.schema.json`, next to your `values.yaml` file, run: 
