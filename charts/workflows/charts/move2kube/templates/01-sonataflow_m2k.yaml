@@ -246,7 +246,7 @@ spec:
                 condition: ((has("notificationsDisabled") and .notificationsDisabled != null and .notificationsDisabled == true)|not)
                 functionRef:
                   arguments:
-                    message: '"Move2Kube workflow  " + $WORKFLOW.instanceId + " on workspace " + .workspaceId + " and project " + .projectId + " was successful; the output is available in the branch " + .targetBranch + " of your git repository "+ .repositoryURL"'
+                    message: '"Move2Kube workflow  " + $WORKFLOW.instanceId + " on workspace " + .workspaceId + " and project " + .projectId + " was successful; the output is available in the branch " + .targetBranch + " of your git repository "+ .repositoryURL'
                     origin: Move2Kube Workflow
                     title: '"Move2Kube workflow " + $WORKFLOW.instanceId + " success"'
                     topic: Move2Kube Workflow
@@ -263,7 +263,7 @@ spec:
   podTemplate:
     container:
       resources: {}
-      image: quay.io/orchestrator/serverless-workflow-move2kube:57da88beb5d1a10cadbeb0a39ff3963b8c004c0b
+      image: quay.io/orchestrator/serverless-workflow-move2kube:077be52896da824880474776bdf273d981a60675
   resources:
     configMaps:
       - configMap:

@@ -4,7 +4,7 @@ dependencies:
   version: 0.2.5
 - name: move2kube
   repository: file://charts/move2kube
-  version: 0.2.8
+  version: 0.2.9
 - name: mta
   repository: file://charts/mta
   version: 0.2.11
