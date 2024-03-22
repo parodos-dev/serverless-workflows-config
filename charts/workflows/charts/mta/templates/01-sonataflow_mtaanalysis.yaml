@@ -166,7 +166,7 @@ spec:
               invoke: sync
               refName: getTaskgroup
             sleep:
-              before: PT2S
+              before: PT30S
         name: poll
         transition:
           nextState: checkReportDone
@@ -248,7 +248,7 @@ spec:
   podTemplate:
     container:
       resources: {}
-      image: quay.io/orchestrator/serverless-workflow-mta:71fefca59c97be93c0b5d1672d2124874275c029
+      image: quay.io/orchestrator/serverless-workflow-mta:f70c237deab8fd348f5f27589e52b27d2c5ede44
   resources:
     configMaps:
       - configMap:
