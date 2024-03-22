@@ -27,17 +27,17 @@ configMapGenerator:
 configurations:
 - config/image-configuration.yaml
 
-patches:
 # Replace dev profile in SonataFlow instance(s)
-  - path: sonataflow-patch.yaml
-    target:
-      kind: SonataFlow
-      name: ticketescalation
+patches:
+- path: sonataflow-patch.yaml
+  target:
+    kind: SonataFlow
+    name: ticketescalation
 
 images:
 - name: serverless-workflow-escalation
   newName: quay.io/orchestrator/serverless-workflow-escalation
-  newTag: 9a320174
+  newTag: e5a190e7
 - name: serverless-workflow-jira-listener
   newName: quay.io/orchestrator/serverless-workflow-jira-listener
   newTag: latest
