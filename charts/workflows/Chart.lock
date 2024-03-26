@@ -7,6 +7,6 @@ dependencies:
   version: 0.2.9
 - name: mta
   repository: file://charts/mta
-  version: 0.2.11
-digest: sha256:92eb18f414769126504c0ce900dd654b619f5f74b786799481e00cd1af6ed0b0
-generated: "2024-03-26T19:53:14.28124269Z"
+  version: 0.2.12
+digest: sha256:70d4dbfa3b0b91537499ffbaa85a880cd39413de20a68d1ba79fd9286bad6a72
+generated: "2024-03-26T21:58:37.692693275+02:00"
