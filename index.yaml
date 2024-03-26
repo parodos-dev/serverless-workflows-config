@@ -3,6 +3,30 @@ entries:
   workflows:
   - apiVersion: v2
     appVersion: 1.16.0
+    created: "2024-03-26T20:09:52.378254102Z"
+    dependencies:
+    - condition: greeting.enabled
+      name: greeting
+      repository: file://charts/greeting
+      version: 0.2.7
+    - condition: move2kube.enabled
+      name: move2kube
+      repository: file://charts/move2kube
+      version: 0.2.10
+    - condition: mta.enabled
+      name: mta
+      repository: file://charts/mta
+      version: 0.2.12
+    description: A Helm chart for serverless workflows
+    digest: c756d36ef4493c9a9104fa47420f2629faad824bdc6d7397c550dc69b7e33105
+    icon: https://raw.githubusercontent.com/parodos-dev/parodos-dev.github.io/main/assets/images/WO_black.svg
+    name: workflows
+    type: application
+    urls:
+    - https://github.com/parodos-dev/serverless-workflows-config/releases/download/workflows-0.2.20/workflows-0.2.20.tgz
+    version: 0.2.20
+  - apiVersion: v2
+    appVersion: 1.16.0
     created: "2024-03-26T19:54:25.121468363Z"
     dependencies:
     - condition: greeting.enabled
@@ -552,4 +576,4 @@ entries:
     urls:
     - https://github.com/rgolangh/serverless-workflows-config/releases/download/workflows-0.1.0/workflows-0.1.0.tgz
     version: 0.1.0
-generated: "2024-03-26T19:54:25.121658537Z"
+generated: "2024-03-26T20:09:52.378456168Z"
