@@ -17,7 +17,7 @@ appVersion: "1.16.0"
 dependencies:
   - name: greeting
     repository: "file://charts/greeting"
-    version: "0.2.5"
+    version: "0.2.6"
     condition: greeting.enabled
   - name: move2kube
     repository: "file://charts/move2kube"

@@ -1,7 +1,7 @@
 dependencies:
 - name: greeting
   repository: file://charts/greeting
-  version: 0.2.5
+  version: 0.2.6
 - name: move2kube
   repository: file://charts/move2kube
   version: 0.2.9
