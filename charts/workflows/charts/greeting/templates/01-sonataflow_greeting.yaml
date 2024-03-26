@@ -35,7 +35,7 @@ spec:
         name: ChooseOnLanguage
         type: switch
       - data:
-          greeting: 'Hello from YAML Workflow, '
+          greeting: 'Hi from YAML Workflow, '
         name: GreetInEnglish
         transition:
           nextState: GreetPerson
@@ -63,7 +63,7 @@ spec:
   podTemplate:
     container:
       resources: {}
-      image: quay.io/orchestrator/serverless-workflow-greeting:196ccfd03ff736a6beeaec092fb5c5252c7a3a23
+      image: quay.io/orchestrator/serverless-workflow-greeting:34b7ea283a0a8d84b15625009f91408f3fe8f0a3
   resources:
     configMaps:
       - configMap:
