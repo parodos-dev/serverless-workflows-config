@@ -1,0 +1,54 @@
+apiVersion: v1
+data:
+  jiraSwf.sw.yaml: "specVersion: \"0.8\"\nid: ticketingService\nname: Jira Ticketing
+    Service\nannotations:\n  - \"workflow-type/infrastructure\"\nversion: 0.0.1\ntimeouts:\n
+    \ workflowExecTimeout:\n    duration: PT24H\nstart: Setup\ndataInputSchema:\n
+    \ failOnValidationErrors: true\n  schema: schemas/ticketing-service-schema.json\nerrors:\n
+    \ - name: authError\n    code: '401'\nfunctions:\n  - name: createJiraIssue\n
+    \   operation: specs/jira.yaml#createIssue\n  - name: getJiraIssue\n    operation:
+    specs/jira.yaml#getIssue\n  - name: logInfo\n    type: custom\n    operation:
+    \"sysout:INFO\"\nstates:\n  - name: Setup\n    type: operation\n    actions:\n
+    \     - name: \"logInfo\"\n        functionRef:\n          refName: \"logInfo\"\n
+    \         arguments:\n            message: \"\\\"Invoking Jira SWF with: \\\\(.)\\\"\"\n
+    \   transition: OnRequest\n  - name: OnRequest\n    type: switch\n    dataConditions:\n
+    \     - condition: '.request.type ==\"create\"'\n        transition: CreateJiraIssue
+    \   \n      - condition: '.request.type ==\"get\"'\n        transition: GetJiraIssue
+    \   \n    defaultCondition: \n      transition: Unmanaged\n  - name: CreateJiraIssue\n
+    \   type: operation\n    actions:\n      - name: Create Jira Issue\n        functionRef:\n
+    \         refName: createJiraIssue\n          arguments:\n            update:
+    {}\n            fields:\n              summary: '\"Request For New Namespace:
+    \" + .request.namespace'\n              labels:\n                - '$SECRET.jira_label_workflowInstanceId
+    + \"=\" + .request.parentId'\n                - \"$SECRET.jira_label_workflowName\"\n
+    \             issuetype:\n                id: \"$SECRET.jira_issue_type\"\n              project:\n
+    \               key: \"$SECRET.jira_project\"\n        actionDataFilter:\n          toStateData:
+    .jiraIssue\n    transition: NormalizeCreateResponse\n    onErrors:\n      - errorRef:
+    authError\n        transition: AuthError\n    stateDataFilter:\n      output:
+    \". += { jiraBrowser: ((.jiraIssue.self  | sub(\\\"rest/.*\\\"; \\\"browse/\\\"))
+    + .jiraIssue.key) }\"\n  - name: NormalizeCreateResponse\n    type: inject\n    data:
+    {}\n    stateDataFilter:\n      output: \"${ {type: \\\"create\\\", ticketId:
+    .jiraIssue.key, ticket: .jiraIssue, browseUrl: ((.jiraIssue.self  | sub(\\\"rest/.*\\\";
+    \\\"browse/\\\")) + .jiraIssue.key)} }\"\n    end: true\n  - name: GetJiraIssue\n
+    \   type: operation\n    actions:\n      - functionRef:\n          refName: getJiraIssue\n
+    \         arguments:\n            issueIdOrKey: .request.ticketId\n            fields:
+    status\n        actionDataFilter:\n          toStateData: .jiraIssue\n    transition:
+    NormalizeGetResponse\n  - name: NormalizeGetResponse\n    type: inject\n    data:
+    {}\n    stateDataFilter:\n      output: \"${ { type: \\\"get\\\", ticketId: .jiraIssue.key,
+    ticket: .jiraIssue, status: (if .jiraIssue.fields.status.statusCategory.key ==
+    \\\"done\\\" then \\\"Approved\\\" elif .jiraIssue.fields.status.statusCategory.key
+    == \\\"new\\\" then \\\"Created\\\" elif .jiraIssue.fields.status.statusCategory.key
+    == \\\"undefined\\\" then \\\"Unknown\\\" else \\\"Unknown\\\" end)} }\"\n    end:
+    true\n  - name: Unmanaged\n    type: operation\n    actions:\n      - name: \"printAction\"\n
+    \       functionRef:\n          refName: \"logInfo\"\n          arguments:\n            message:
+    \"\\\"Unmanaged request: \\\\(.)\\\"\"\n    end: true\n  - name: AuthError\n    type:
+    operation\n    actions:\n      - name: \"printAction\"\n        functionRef:\n
+    \         refName: \"logInfo\"\n          arguments:\n            message: \"\\\"AuthError:
+    \\\\(.)\\\"\"\n    stateDataFilter:\n      output: \"${ { type: \\\"get\\\", ticketId:
+    .jiraIssue.key, ticket: .jiraIssue, status: (if .jiraIssue.fields.status.statusCategory.key
+    == \\\"done\\\" then \\\"Approved\\\" elif .jiraIssue.fields.status.statusCategory.key
+    == \\\"new\\\" then \\\"Created\\\" elif .jiraIssue.fields.status.statusCategory.key
+    == \\\"undefined\\\" then \\\"Unknown\\\" else \\\"Unknown\\\" end)} }\"\n    end:
+    true"
+kind: ConfigMap
+metadata:
+  creationTimestamp: null
+  name: 02-ticketescalation-resources
