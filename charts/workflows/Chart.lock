@@ -4,9 +4,9 @@ dependencies:
   version: 0.2.7
 - name: move2kube
   repository: file://charts/move2kube
-  version: 0.2.10
+  version: 0.2.11
 - name: mta
   repository: file://charts/mta
   version: 0.2.13
-digest: sha256:a8aeca605786e94b1ed784c9cadc9f5dd7fc21469d71193dce3885adf54581a2
-generated: "2024-03-26T22:50:24.519811104Z"
+digest: sha256:6bb91020eede0914a2f5d88e33ea501836f58a16318233aea8dde02ee9ef5705
+generated: "2024-03-27T14:35:18.088243585Z"
