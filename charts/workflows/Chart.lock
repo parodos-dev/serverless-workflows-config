@@ -1,12 +1,12 @@
 dependencies:
 - name: greeting
   repository: file://charts/greeting
-  version: 0.2.7
+  version: 0.2.8
 - name: move2kube
   repository: file://charts/move2kube
   version: 0.2.10
 - name: mta
   repository: file://charts/mta
   version: 0.2.13
-digest: sha256:a8aeca605786e94b1ed784c9cadc9f5dd7fc21469d71193dce3885adf54581a2
-generated: "2024-03-26T22:50:24.519811104Z"
+digest: sha256:f7f87cdd73c21af2754b680c37fd78275f92d46f58f5e9187a751c2d822134a7
+generated: "2024-03-27T14:35:24.879617928Z"
