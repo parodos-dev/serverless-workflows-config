@@ -8,6 +8,7 @@ data:
     #quarkus.rest-client.mta_json.auth.basicAuth.password = password
 
     #quarkus.log.category.\"org.apache.http\".level = DEBUG
+    quarkus.flyway.migrate-at-start=true
 kind: ConfigMap
 metadata:
   creationTimestamp: null
