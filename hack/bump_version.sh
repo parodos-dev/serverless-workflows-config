@@ -88,7 +88,7 @@ for arg in $dependencies_args; do
     sed -i "/^ *- name: ${dependency_name}/,/^ *- /s/version: .*/version: \"${new_dependency_version}\"/" "${main_chart_file}"
 
     # Update the dependency version in the dependency Chart.yaml
-    chart_file="charts/workflows/charts/${dependency_name}/Chart.yaml"
+    chart_file="charts/${dependency_name}/Chart.yaml"
     attribute_name="version:"
     sed -i "s/^${attribute_name} .*/${attribute_name} ${new_dependency_version}/" "${chart_file}"
 done
