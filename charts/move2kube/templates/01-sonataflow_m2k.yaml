@@ -12,6 +12,8 @@ metadata:
   name: m2k
 spec:
   flow:
+    annotations:
+      - workflow-type/infrastructure
     dataInputSchema:
       failOnValidationErrors: true
       schema: schemas/input.json
@@ -263,7 +265,7 @@ spec:
   podTemplate:
     container:
       resources: {}
-      image: quay.io/orchestrator/serverless-workflow-move2kube:8d4f120ad02ca0f194c209b65f2fa47c9232291a
+      image: quay.io/orchestrator/serverless-workflow-move2kube:d7a24f210495d1703d8c855b0c8343f265dd8972
   resources:
     configMaps:
       - configMap:
