@@ -1,0 +1,18 @@
+name: Release Helm chart for mta workflow
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ "main" ]
+    paths:
+      - 'charts/mta/**'
+      - '.github/workflows/mta.yaml'
+      - '.github/workflows/release.yaml'
+
+jobs:
+  release-mta:
+    uses: ./.github/workflows/release.yaml
+    with:
+      workflow_id: mta
+    secrets: inherit
+
