@@ -1,0 +1,18 @@
+name: Release Helm chart for greeting workflow
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ "main" ]
+    paths:
+      - 'charts/workflows/**'
+      - '.github/workflows/workflows.yaml'
+      - '.github/workflows/release.yaml'
+
+jobs:
+  release-workflows:
+    uses: ./.github/workflows/release.yaml
+    with:
+      workflow_id: workflows
+    secrets: inherit
+

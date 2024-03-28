@@ -1,0 +1,18 @@
+name: Release Helm chart for greeting workflow
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ "main" ]
+    paths:
+      - 'charts/move2kube/**'
+      - '.github/workflows/move2kube.yaml'
+      - '.github/workflows/release.yaml'
+
+jobs:
+  release-move2kube:
+    uses: ./.github/workflows/release.yaml
+    with:
+      workflow_id: move2kube
+    secrets: inherit
+

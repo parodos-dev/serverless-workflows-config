@@ -1,9 +1,11 @@
-name: Release Charts
+name: Reusable Workflow to release Helm Charts
 
 on:
-  push:
-    branches:
-      - main
+  workflow_call:
+    inputs:
+      workflow_id:
+        required: true
+        type: string
 
 jobs:
   release:
@@ -19,9 +21,11 @@ jobs:
           git config user.name "$GITHUB_ACTOR"
           git config user.email "$GITHUB_ACTOR@users.noreply.github.com"
 
-      - name: Run chart-releaser
+      - name: Release ${{ inputs.workflow_id }} chart
         uses: helm/chart-releaser-action@v1.6.0
         with:
           skip_existing: true
+          charts_dir: charts/${{ inputs.workflow_id }}
         env:
           CR_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
+  
