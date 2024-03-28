@@ -63,12 +63,23 @@ spec:
   podTemplate:
     container:
       resources: {}
-      image: quay.io/orchestrator/serverless-workflow-greeting:3cf79633a172326f3954a516f215f74b8784b6d7
+      image: quay.io/orchestrator/serverless-workflow-greeting:7e6c303fbfa4eecdd0432696d8a614d86c1508e6
   resources:
     configMaps:
       - configMap:
           name: 01-greeting-resources
         workflowPath: specs
+  persistence:
+    postgresql:
+      secretRef:
+        name: postgres-secrets
+        userKey: POSTGRES_USER
+        passwordKey: POSTGRES_PASSWORD
+      serviceRef:
+        name: postgres
+        port: 5432
+        databaseName: sonataflow
+        databaseSchema: greeting
 status:
   address: {}
   lastTimeRecoverAttempt: null
