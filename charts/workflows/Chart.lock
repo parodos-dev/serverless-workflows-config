@@ -7,6 +7,6 @@ dependencies:
   version: 0.2.10
 - name: mta
   repository: file://../mta
-  version: 0.2.13
-digest: sha256:c85998a347519ef17b592a62f8604d78c4f2993e1d376cc81cf4f2a7ed1c2a36
-generated: "2024-03-28T15:06:41.547186958Z"
+  version: 0.2.14
+digest: sha256:95c9e7bb7ece001abb6f94ed2ff5ab55ebffa13a0587a2339a0dc2b8133ab19c
+generated: "2024-03-28T21:58:50.014361642+02:00"
