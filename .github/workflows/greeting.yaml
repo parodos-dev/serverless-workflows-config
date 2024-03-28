@@ -1,0 +1,15 @@
+name: Release greeting chart
+
+on:
+  push:
+    branches: [ "main" ]
+    paths:
+      - 'charts/workflows/greeting/**'
+
+jobs:
+  call-main-workflow:
+    uses: ./.github/workflows/release.yaml
+    with:
+      workflow_id: greeting
+    secrets: inherit
+
