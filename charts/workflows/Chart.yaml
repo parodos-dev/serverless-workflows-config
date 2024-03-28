@@ -22,7 +22,7 @@ dependencies:
     condition: greeting.enabled
   - name: move2kube
     repository: "file://../move2kube"
-    version: "0.2.10"
+    version: "0.2.11"
     condition: move2kube.enabled
   - name: mta
     repository: "file://../mta"
