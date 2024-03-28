@@ -248,12 +248,23 @@ spec:
   podTemplate:
     container:
       resources: {}
-      image: quay.io/orchestrator/serverless-workflow-mta:13fcfd6abee104c8ece24ce90dfccd7d5d4546a9
+      image: quay.io/orchestrator/serverless-workflow-mta:7e6c303fbfa4eecdd0432696d8a614d86c1508e6
   resources:
     configMaps:
       - configMap:
           name: 01-mtaanalysis-resources
         workflowPath: specs
+  persistence:
+    postgresql:
+      secretRef:
+        name: postgres-secrets
+        userKey: POSTGRES_USER
+        passwordKey: POSTGRES_PASSWORD
+      serviceRef:
+        name: postgres
+        port: 5432
+        databaseName: sonataflow
+        databaseSchema: mta
 status:
   address: {}
   lastTimeRecoverAttempt: null
