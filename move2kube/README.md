@@ -37,12 +37,66 @@ Note that those ssh keys needs to be added in your git repository as well. For b
 [View the Move2Kube README on GitHub](https://github.com/parodos-dev/serverless-workflows-config/blob/main/charts/workflows/charts/move2kube/README.md)
 
 ## Installation
+### Persistence pre-requisites
+If persistence is enbaled, you must have a PostgreSQL instance running in the cluster, in the same `namespace` as the workflows.
 
+A `secret` containing the instance credentials must exists as well. 
+
+See https://www.parodos.dev/orchestrator-helm-chart/postgresql on how to install a PostgreSQL instance. Please follow the section detailing how to install using helm. In this document, a `secret` holding the credentials is created.
+
+
+### Installing helm chart 
 Run 
 ```console
 helm repo add orchestrator-workflows https://parodos.dev/serverless-workflows-config
 helm install move2kube orchestrator-workflows/workflows --set move2kube.enabled=true --namespace=${TARGET_NS}
 ```
+
+You need to edit the `sonataflow` resource to set the correct value for the `persistence` `spec`.
+The defaults are:
+```
+persistence:
+  postgresql:
+    secretRef:
+      name: sonataflow-psql-postgresql
+      userKey: postgres-username
+      passwordKey: postgres-password
+    serviceRef:
+      name: sonataflow-psql-postgresql
+      port: 5432
+      databaseName: sonataflow
+      databaseSchema: m2k
+```
+
+Make sure the above values match what is deployed on your namespace `TARGET_NS`.
+
+You can patch the resource by running (update it if needed with your own values):
+```bash
+  oc patch sonataflow/m2k \
+    -n ${TARGET_NS} \
+    --type merge \
+    -p '
+    {
+      "spec": {
+        "persistence": {
+          "postgresql": {
+            "secretRef": {
+              "name": "sonataflow-psql-postgresql",
+              "userKey": "postgres-username",
+              "passwordKey": "postgres-password"
+            },
+            "serviceRef": {
+              "name": "sonataflow-psql-postgresql",
+              "port": 5432,
+              "databaseName": "sonataflow",
+              "databaseSchema": "m2k"
+            }
+          }
+        }
+      }
+    }'
+```
+
 Run the following command to apply it to the `move2kubeURL` parameter:
 ```console
 M2K_ROUTE=$(oc -n ${TARGET_NS} get routes move2kube-route -o yaml | yq -r .spec.host)
