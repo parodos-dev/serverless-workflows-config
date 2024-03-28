@@ -1,4 +1,4 @@
-name: Release Helm chart for greeting workflow
+name: Release Helm chart for mta workflow
 
 on:
   workflow_dispatch:
