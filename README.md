@@ -11,7 +11,14 @@ The repository includes a variety of serverless workflows, such as:
 ## Usage
 
 ### Pre-requisites
-o utilize the workflows contained in this repository, the Orchestrator Deployment must be installed on your OpenShift Container Platform (OCP) cluster. For detailed instructions on installing the Orchestrator, please visit the [Orchestrator Helm Repository](https://www.parodos.dev/orchestrator-helm-chart/)
+Utilize the workflows contained in this repository, the Orchestrator Deployment must be installed on your OpenShift Container Platform (OCP) cluster. For detailed instructions on installing the Orchestrator, please visit the [Orchestrator Helm Repository](https://www.parodos.dev/orchestrator-helm-chart/)
+
+### Persistence pre-requisites
+If persistence is enbaled, you must have a PostgreSQL instance running in the cluster, in the same `namespace` as the workflows.
+
+A `secret` containing the instance credentials must exists as well. 
+
+See https://www.parodos.dev/orchestrator-helm-chart/postgresql on how to install a PostgreSQL instance. Please follow the section detailing how to install using helm. In this document, a `secret` holding the credentials is created.
 
 
 ## Installation
