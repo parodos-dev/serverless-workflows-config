@@ -17,15 +17,15 @@ appVersion: "1.16.0"
 
 dependencies:
   - name: greeting
-    repository: "file://charts/greeting"
+    repository: "file://../greeting"
     version: "0.2.7"
     condition: greeting.enabled
   - name: move2kube
-    repository: "file://charts/move2kube"
+    repository: "file://../move2kube"
     version: "0.2.10"
     condition: move2kube.enabled
   - name: mta
-    repository: "file://charts/mta"
+    repository: "file://../mta"
     version: "0.2.13"
     condition: mta.enabled
 
