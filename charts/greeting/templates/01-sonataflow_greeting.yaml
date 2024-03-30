@@ -12,6 +12,8 @@ metadata:
   name: greeting
 spec:
   flow:
+    annotations:
+      - workflow-type/infrastructure
     dataInputSchema:
       failOnValidationErrors: true
       schema: specs/greeting.sw.input-schema.json
@@ -63,7 +65,7 @@ spec:
   podTemplate:
     container:
       resources: {}
-      image: quay.io/orchestrator/serverless-workflow-greeting:8d4f120ad02ca0f194c209b65f2fa47c9232291a
+      image: quay.io/orchestrator/serverless-workflow-greeting:1e05fa404664a56ca33b425ee8d1d4e2571373d4
   resources:
     configMaps:
       - configMap:
