@@ -4,9 +4,9 @@ dependencies:
   version: 0.2.8
 - name: move2kube
   repository: file://../move2kube
-  version: 0.2.12
+  version: 0.2.13
 - name: mta
   repository: file://../mta
   version: 0.2.14
-digest: sha256:87d2df1d90e05a83b97c1454823d4acdc5caf7a064386aacd89c97aa528b4e51
-generated: "2024-03-28T20:12:06.264540233Z"
+digest: sha256:d6f86164613c161d0473ba23d1e71646daf4ff1f9cc2c33de641583151372406
+generated: "2024-03-30T22:01:53.589449671Z"
