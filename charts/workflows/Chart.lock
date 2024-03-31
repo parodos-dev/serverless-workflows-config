@@ -1,12 +1,12 @@
 dependencies:
 - name: greeting
   repository: file://../greeting
-  version: 0.2.8
+  version: 0.2.9
 - name: move2kube
   repository: file://../move2kube
-  version: 0.2.13
+  version: 0.2.14
 - name: mta
   repository: file://../mta
-  version: 0.2.14
-digest: sha256:d6f86164613c161d0473ba23d1e71646daf4ff1f9cc2c33de641583151372406
-generated: "2024-03-30T22:01:53.589449671Z"
+  version: 0.2.15
+digest: sha256:5230384ea77a732a2c6de6567bce5b6fd8a4215c8b41ab6eaecdfa9b169baf9c
+generated: "2024-03-31T19:50:47.161256717+03:00"
