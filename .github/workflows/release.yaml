@@ -26,6 +26,7 @@ jobs:
         uses: masayag/chart-releaser-action@main
         with:
           skip_existing: true
+          index_path: ./index.yaml
           pages_index_path: ./docs/index.yaml
         env:
           CR_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
