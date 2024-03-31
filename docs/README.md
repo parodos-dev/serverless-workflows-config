@@ -11,50 +11,33 @@ The repository includes a variety of serverless workflows, such as:
 ## Usage
 
 ### Pre-requisites
-o utilize the workflows contained in this repository, the Orchestrator Deployment must be installed on your OpenShift Container Platform (OCP) cluster. For detailed instructions on installing the Orchestrator, please visit the [Orchestrator Helm Repository](https://www.parodos.dev/orchestrator-helm-chart/)
+To utilize the workflows contained in this repository, the Orchestrator Deployment must be installed on your OpenShift Container Platform (OCP) cluster. For detailed instructions on installing the Orchestrator, please visit the [Orchestrator Helm Repository](https://www.parodos.dev/orchestrator-helm-chart/)
 
+The workflows are set up to utilize persistence. To achieve this, their configuration relies on a Kubernetes secret named sonataflow-psql-postgresql being present in the same namespace as the workflow. 
 
 ## Installation
 ```bash
 helm repo add orchestrator-workflows https://parodos.dev/serverless-workflows-config
 ```
 
-Expected output:
-```console
-"orchestrator-workflows" has been added to your repositories
+View available workflows on the Helm repository:
+```
+helm search repo orchestrator-workflows
 ```
 
-The workflows can be installed by the meta chart or individually. Visit workflows for specific details:
-* [Greeting]([./greeting/README.md](https://github.com/parodos-dev/serverless-workflows-config/blob/gh-pages/greeting/README.md))
-* [MTA](https://github.com/parodos-dev/serverless-workflows-config/blob/gh-pages/mta/README.md)
-* [Move2Kube](https://github.com/parodos-dev/serverless-workflows-config/blob/gh-pages/move2kube/README.md)
-
-By default, all of the workflows are disabled.
-To install the workflows by the parent chart, choose which workflow to install either by editing `values.yaml` or by providing additional flags to install command, e.g. `--set ${workflow-id}.enabled=true` (workflow IDs are specified in the values.yaml file):
-```bash
-helm install orchestrator-workflows orchestrator-workflows/workflows --set greeting.enabled=true
+The expected result should look like (with different versions):
+```
+NAME                            	CHART VERSION	APP VERSION	DESCRIPTION                                      
+orchestrator-workflows/greeting 	0.4.2        	1.16.0     	A Helm chart for the greeting serverless workflow
+orchestrator-workflows/move2kube	0.2.16       	1.16.0     	A Helm chart to deploy the move2kube workflow.   
+orchestrator-workflows/mta      	0.2.16       	1.16.0     	A Helm chart for MTA serverless workflow         
+orchestrator-workflows/workflows	0.2.24       	1.16.0     	A Helm chart for serverless workflows
 ```
 
-Expected output:
-```console
-NAME: orchestrator-workflows
-LAST DEPLOYED: Sun Mar 17 13:25:18 2024
-NAMESPACE: orchestrator
-STATUS: deployed
-REVISION: 1
-TEST SUITE: None
-```
-
-## Configuration
-
-The following table lists the configurable parameters of the Workflows chart and their default values.
-
-| Parameter                | Description             | Default        |
-| ------------------------ | ----------------------- | -------------- |
-| `mta.enabled` | Indicates that mta workflow is enabled | `false` |
-| `greeting.enabled` | Indicates that greeting workflow is enabled | `false` |
-| `move2kube.enabled` | Indicates that move2kube workflow is enabled | `false` |
-
+You can install each workflow separately. For detailed information, please visit the page of each workflow:
+* [Greeting](https://github.com/parodos-dev/serverless-workflows-config/blob/gh-pages/docs/greeting/README.md)
+* [MTA](https://github.com/parodos-dev/serverless-workflows-config/blob/gh-pages/docs/mta/README.md)
+* [Move2Kube](https://github.com/parodos-dev/serverless-workflows-config/blob/gh-pages/docs/move2kube/README.md)
 
 ## Helm index
 [https://www.parodos.dev/serverless-workflows-config/index.yaml](https://www.parodos.dev/serverless-workflows-config/index.yaml)
