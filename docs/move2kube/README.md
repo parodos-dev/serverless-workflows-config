@@ -41,16 +41,19 @@ Note that those ssh keys needs to be added in your git repository as well. For b
 Run 
 ```console
 helm repo add orchestrator-workflows https://parodos.dev/serverless-workflows-config
-helm install move2kube orchestrator-workflows/workflows --set move2kube.enabled=true --namespace=${TARGET_NS}
+helm install move2kube orchestrator-workflows/move2kube
 ```
 Run the following command to apply it to the `move2kubeURL` parameter:
 ```console
 M2K_ROUTE=$(oc -n ${TARGET_NS} get routes move2kube-route -o yaml | yq -r .spec.host)
 oc -n ${TARGET_NS} delete ksvc m2k-save-transformation-func &&
-helm upgrade move2kube move2kube --namespace=${TARGET_NS} --set workflow.move2kubeURL=https://${M2K_ROUTE}
+  helm upgrade move2kube orchestrator-workflows/move2kube --namespace=${TARGET_NS} --set workflow.move2kubeURL=https://${M2K_ROUTE}
 ```
 
 Then edit the `m2k-props` confimap to set the `quarkus.rest-client.move2kube_yaml.url` and `move2kube_url` properties with the value of `${M2K_ROUTE}`
+```
+oc edit -n sonataflow-infra configmaps m2k-props
+```
 
 Run the following to set K_SINK environment variable in the workflow:
 ```console
