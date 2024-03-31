@@ -17,15 +17,15 @@ appVersion: "1.16.0"
 
 dependencies:
   - name: greeting
-    repository: "file://../greeting"
+    repository: "https://parodos.dev/serverless-workflows-config"
     version: "0.2.8"
     condition: greeting.enabled
   - name: move2kube
-    repository: "file://../move2kube"
+    repository: "https://parodos.dev/serverless-workflows-config"
     version: "0.2.13"
     condition: move2kube.enabled
   - name: mta
-    repository: "file://../mta"
+    repository: "https://parodos.dev/serverless-workflows-config"
     version: "0.2.14"
     condition: mta.enabled
 
