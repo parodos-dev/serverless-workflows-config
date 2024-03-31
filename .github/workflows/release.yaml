@@ -21,11 +21,14 @@ jobs:
           git config user.name "$GITHUB_ACTOR"
           git config user.email "$GITHUB_ACTOR@users.noreply.github.com"
 
+      - name: Install Helm
+        uses: azure/setup-helm@v3
+
       - name: Release ${{ inputs.workflow_id }} chart
         uses: helm/chart-releaser-action@v1.6.0
         with:
           skip_existing: true
-          charts_dir: charts/${{ inputs.workflow_id }}
+          charts_dir: charts/${{ inputs.workflow_id }}/charts
         env:
           CR_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
   
