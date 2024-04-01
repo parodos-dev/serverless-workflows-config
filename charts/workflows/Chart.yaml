@@ -18,15 +18,15 @@ appVersion: "1.16.0"
 dependencies:
   - name: greeting
     repository: "file://../greeting"
-    version: "0.2.9"
+    version: "0.4.2"
     condition: greeting.enabled
   - name: move2kube
     repository: "file://../move2kube"
-    version: "0.2.14"
+    version: "0.2.17"
     condition: move2kube.enabled
   - name: mta
     repository: "file://../mta"
-    version: "0.2.15"
+    version: "0.2.17"
     condition: mta.enabled
 
 icon: https://raw.githubusercontent.com/parodos-dev/parodos-dev.github.io/main/assets/images/WO_black.svg
