@@ -37,6 +37,17 @@ entries:
   move2kube:
   - apiVersion: v2
     appVersion: 1.16.0
+    created: "2024-04-01T12:10:06.54267688Z"
+    description: 'A Helm chart to deploy the move2kube workflow. '
+    digest: ee7764a33c2c4a6a7fd42e9250f185686b4de0b3af6cdc5535a6d3f7ad98d3a0
+    icon: https://raw.githubusercontent.com/parodos-dev/parodos-dev.github.io/main/assets/images/WO_black.svg
+    name: move2kube
+    type: application
+    urls:
+    - https://github.com/parodos-dev/serverless-workflows-config/releases/download/move2kube-0.2.17/move2kube-0.2.17.tgz
+    version: 0.2.17
+  - apiVersion: v2
+    appVersion: 1.16.0
     created: "2024-03-31T19:55:06.655208936Z"
     description: 'A Helm chart to deploy the move2kube workflow. '
     digest: a132a0232ca969135be441667392aebba8fbafeefeaba316d836ae8e958bccab
@@ -71,6 +82,17 @@ entries:
   mta:
   - apiVersion: v2
     appVersion: 1.16.0
+    created: "2024-04-01T12:10:06.668732896Z"
+    description: A Helm chart for MTA serverless workflow
+    digest: 173726abdb818d1627efc978f0a59fd665dbf8f948f972c11dc070d4a9ab4e18
+    icon: https://raw.githubusercontent.com/parodos-dev/parodos-dev.github.io/main/assets/images/WO_black.svg
+    name: mta
+    type: application
+    urls:
+    - https://github.com/parodos-dev/serverless-workflows-config/releases/download/mta-0.2.17/mta-0.2.17.tgz
+    version: 0.2.17
+  - apiVersion: v2
+    appVersion: 1.16.0
     created: "2024-03-31T17:00:10.226366023Z"
     description: A Helm chart for MTA serverless workflow
     digest: 67d802fc239e4ec3f85ea968429c23b5a864336b308eeba33e060f508eee992c
@@ -92,6 +114,31 @@ entries:
     - https://github.com/parodos-dev/serverless-workflows-config/releases/download/mta-0.2.15/mta-0.2.15.tgz
     version: 0.2.15
   workflows:
+  - apiVersion: v2
+    appVersion: 1.16.0
+    created: "2024-04-01T12:10:06.778107699Z"
+    dependencies:
+    - condition: greeting.enabled
+      name: greeting
+      repository: file://../greeting
+      version: 0.4.2
+    - condition: move2kube.enabled
+      name: move2kube
+      repository: file://../move2kube
+      version: 0.2.17
+    - condition: mta.enabled
+      name: mta
+      repository: file://../mta
+      version: 0.2.17
+    description: A Helm chart for serverless workflows. This chart is **deprecated**.
+      The recommended method is installing workflows independently.
+    digest: dda0d90a221d9c394b2d802fe1af2ace163ce1aeabd7b0e6d0058dd300a30bd1
+    icon: https://raw.githubusercontent.com/parodos-dev/parodos-dev.github.io/main/assets/images/WO_black.svg
+    name: workflows
+    type: application
+    urls:
+    - https://github.com/parodos-dev/serverless-workflows-config/releases/download/workflows-0.2.25/workflows-0.2.25.tgz
+    version: 0.2.25
   - apiVersion: v2
     appVersion: 1.16.0
     created: "2024-03-31T16:52:16.974241447Z"
@@ -499,4 +546,4 @@ entries:
     urls:
     - https://github.com/rgolangh/serverless-workflows-config/releases/download/workflows-0.1.0/workflows-0.1.0.tgz
     version: 0.1.0
-generated: "2024-03-31T19:55:06.655274489Z"
+generated: "2024-04-01T12:10:06.778344932Z"
