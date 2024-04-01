@@ -13,7 +13,23 @@ The repository includes a variety of serverless workflows, such as:
 ### Pre-requisites
 To utilize the workflows contained in this repository, the Orchestrator Deployment must be installed on your OpenShift Container Platform (OCP) cluster. For detailed instructions on installing the Orchestrator, please visit the [Orchestrator Helm Repository](https://www.parodos.dev/orchestrator-helm-chart/)
 
-The workflows are set up to utilize persistence. To achieve this, their configuration relies on a Kubernetes secret named sonataflow-psql-postgresql being present in the same namespace as the workflow. 
+The workflows are configured to utilize persistence, which entails each workflow storing its data on its dedicated schema. To enable this functionality, the configuration depends on the existence of a Kubernetes secret called `sonataflow-psql-postgresql` within the same namespace as the workflow. This secret must contain the following keys:
+```yaml
+apiVersion: v1
+kind: Secret
+metadata:
+  name: sonataflow-psql-postgresql
+  namespace: sonataflow-infra
+data:
+  postgres-password: <set password>
+  postgres-username: <set username>
+type: Opaque
+```
+
+To deploy workflows in different namespaces and utilize the same secret details, you should replicate the secret into the target namespace of the workflows. For instance, you can copy the secret into the `default` namespace as follows:
+```bash
+kubectl get secret sonataflow-psql-postgresql --namespace=sonataflow-infra -o yaml | sed 's/namespace: .*/namespace: default/' | kubectl apply -f -
+```
 
 ## Installation
 ```bash
