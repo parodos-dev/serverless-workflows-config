@@ -7,7 +7,7 @@ type: application
 # to the chart and its templates, including the app version.
 # Versions are expected to follow Semantic Versioning (https://semver.org/)
 
-version: 0.2.25
+version: 0.2.26
 
 # This is the version number of the application being deployed. This version number should be
 # incremented each time you make changes to the application. Versions are not expected to
@@ -17,16 +17,16 @@ appVersion: "1.16.0"
 
 dependencies:
   - name: greeting
-    repository: "file://../greeting"
-    version: "0.4.2"
+    repository: "https://parodos.dev/serverless-workflows-config"
+    version: "0.4.3"
     condition: greeting.enabled
   - name: move2kube
-    repository: "file://../move2kube"
-    version: "0.2.17"
+    repository: "https://parodos.dev/serverless-workflows-config"
+    version: "0.2.18"
     condition: move2kube.enabled
   - name: mta
-    repository: "file://../mta"
-    version: "0.2.17"
+    repository: "https://parodos.dev/serverless-workflows-config"
+    version: "0.2.19"
     condition: mta.enabled
 
 icon: https://raw.githubusercontent.com/parodos-dev/parodos-dev.github.io/main/assets/images/WO_black.svg
