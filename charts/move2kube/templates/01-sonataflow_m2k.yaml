@@ -265,15 +265,15 @@ spec:
   podTemplate:
     container:
       resources: {}
-      image: quay.io/orchestrator/serverless-workflow-move2kube:9f1d9cfbd81859dba790009cf2818fd3d67ec529
+      image: quay.io/orchestrator/serverless-workflow-move2kube:19609c21336f6f29483077beafd1a17ec3ae5311
   resources:
     configMaps:
       - configMap:
           name: 01-m2k-resources
-        workflowPath: specs
+        workflowPath: schemas
       - configMap:
           name: 02-m2k-resources
-        workflowPath: schemas
+        workflowPath: specs
   persistence:
     postgresql:
       secretRef:
