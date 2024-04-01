@@ -1,21 +1,22 @@
 {{/* Empty line */}}
-Helm Release {{ .Release.Name }} installed in namespace {{ .Release.Namespace }}.
+{{- $ns := .Release.Namespace }}
+Helm Release {{ .Release.Name }} installed in namespace {{ $ns }}.
 {{- $yes := "YES" }}
 {{- $no := "NO " }}
-{{- $move2kubeInstalled := $yes }} 
+{{- $move2kubeInstalled := $yes }}
 {{- $move2kubeWorkflowInstalled := $yes }}
 {{- $move2kubeSaveTransformationKFuncInstalled := $yes }}
 {{- $timeout := "--timeout=2m" }}
 
 
-Components                                  Installed   Namespace
+Components                                     Installed   Namespace
 ====================================================================
-move2kube instance                                  {{ $move2kubeInstalled }}         {{ .Values.namespace }}
-serverless workflow - move2kube                    {{ $move2kubeWorkflowInstalled }}         {{ .Values.namespace }}
-save move2kube transformation Knative function    {{ $move2kubeSaveTransformationKFuncInstalled }}         {{ .Values.namespace }}
+move2kube instance                                   {{ $move2kubeInstalled }}   {{ $ns }}
+serverless workflow - move2kube                      {{ $move2kubeWorkflowInstalled }}   {{ $ns }}
+save move2kube transformation Knative function       {{ $move2kubeSaveTransformationKFuncInstalled }}   {{ $ns }}
 {{/* Empty line */}}
 
-Run the following commands to wait until the move2kube workflow dependencies and build are done and workflow is running on namespace {{ .Values.namespace }}:
-  oc wait -n {{ .Values.namespace }}  --for=condition=Ready=true {{ $timeout }} pod -l app={{ .Values.instance.name }}
-  oc wait -n {{ .Values.namespace }} ksvc {{ .Values.kfunction.name }} --for=condition=Ready=true {{ $timeout }}
-  oc wait -n {{ .Values.namespace }} sonataflow/{{ .Values.workflow.name }} --for=condition=Running {{ $timeout }}
+Run the following commands to wait until the move2kube workflow dependencies and build are done and workflow is running on namespace {{ $ns }}:
+  oc wait -n {{ $ns }}  --for=condition=Ready=true {{ $timeout }} pod -l app={{ .Values.instance.name }}
+  oc wait -n {{ $ns }} ksvc {{ .Values.kfunction.name }} --for=condition=Ready=true {{ $timeout }}
+  oc wait -n {{ $ns }} sonataflow/{{ .Values.workflow.name }} --for=condition=Running {{ $timeout }}

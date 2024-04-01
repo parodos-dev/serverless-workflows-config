@@ -2,8 +2,7 @@
 Workflows
 ===========
 
-A Helm chart for serverless workflows
-
+A Helm chart for serverless workflows. This chart is **deprecated**. The recommended method is installing workflows independently.
 
 ## Configuration
 
