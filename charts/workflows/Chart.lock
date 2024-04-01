@@ -1,12 +1,12 @@
 dependencies:
 - name: greeting
-  repository: https://parodos.dev/serverless-workflows-config
+  repository: file://../greeting
   version: 0.4.3
 - name: move2kube
-  repository: https://parodos.dev/serverless-workflows-config
+  repository: file://../move2kube
   version: 0.2.18
 - name: mta
-  repository: https://parodos.dev/serverless-workflows-config
+  repository: file://../mta
   version: 0.2.19
-digest: sha256:781b9d8d31871d71ef8e2bdef7203c0f91d361e6641ef5dda8e32950046e3483
-generated: "2024-04-01T17:54:40.515132508+03:00"
+digest: sha256:11bae2219381fabf97b19126a22a77301c8b2702a611d29f1910b8fd8d2b1755
+generated: "2024-04-01T18:00:23.379322274+03:00"
