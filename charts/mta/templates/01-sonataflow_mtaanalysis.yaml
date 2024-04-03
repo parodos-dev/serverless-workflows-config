@@ -4,6 +4,7 @@ metadata:
   annotations:
     sonataflow.org/description: Workflow to execute MTA Analysis
     sonataflow.org/expressionLang: jq
+    sonataflow.org/profile: prod
     sonataflow.org/version: "1.0"
   creationTimestamp: null
   labels:
@@ -248,7 +249,7 @@ spec:
   podTemplate:
     container:
       resources: {}
-      image: quay.io/orchestrator/serverless-workflow-mta:19609c21336f6f29483077beafd1a17ec3ae5311
+      image: quay.io/orchestrator/serverless-workflow-mta:a63cec86340fc60c4c4e437a12b9a978c16fc733
   resources:
     configMaps:
       - configMap:
