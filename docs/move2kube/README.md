@@ -26,9 +26,9 @@ oc -n ${TARGET_NS} create secret generic sshkeys --from-file=id_rsa=${HOME}/.ssh
 ```
 If you change the name of the secret, you will also have to provide the value of `sshSecretName` when installing the helm chart(`--set sshSecretName=<name of the secret>`)
 
-The list of the overridable values can be found in our [git repository](https://github.com/parodos-dev/serverless-workflows-config/blob/main/charts/workflows/charts/move2kube/values.yaml)
+The list of the overridable values can be found in our [git repository](https://github.com/parodos-dev/serverless-workflows-config/blob/main/charts/move2kube/values.yaml)
 
-If you want to use other ssh keys you should update the `from-file` parameters values to match your own.
+If you want to use other ssh keys you should update the `from-file` parameter values to match your own.
 
 If you do not have ssh keys, you can generate them with `ssh-keygen` command. You can for instance refer to https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent 
 
