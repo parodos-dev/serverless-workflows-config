@@ -32,7 +32,7 @@ If you want to use other ssh keys you should update the `from-file` parameter va
 
 If you do not have ssh keys, you can generate them with `ssh-keygen` command. You can for instance refer to https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent 
 
-Note that those ssh keys needs to be added in your git repository as well. For bitbucket it should be on the [account level](https://bitbucket.org/account/settings/ssh-keys/)
+Note that those ssh keys need to be added to your git repository as well. For bitbucket, it should be on the [account level](https://bitbucket.org/account/settings/ssh-keys/)
 
 View the [Move2Kube README](https://github.com/parodos-dev/serverless-workflows-config/blob/main/charts/move2kube/README.md) on GitHub.
 
@@ -41,13 +41,13 @@ View the [Move2Kube README](https://github.com/parodos-dev/serverless-workflows-
 Run 
 ```console
 helm repo add orchestrator-workflows https://parodos.dev/serverless-workflows-config
-helm install move2kube orchestrator-workflows/move2kube
+helm install move2kube orchestrator-workflows/move2kube -n ${TARGET_NS}
 ```
 Run the following command to apply it to the `move2kubeURL` parameter:
 ```console
 M2K_ROUTE=$(oc -n ${TARGET_NS} get routes move2kube-route -o yaml | yq -r .spec.host)
 oc -n ${TARGET_NS} delete ksvc m2k-save-transformation-func &&
-  helm upgrade move2kube orchestrator-workflows/move2kube --namespace=${TARGET_NS} --set workflow.move2kubeURL=https://${M2K_ROUTE}
+  helm upgrade move2kube orchestrator-workflows/move2kube -n ${TARGET_NS} --set workflow.move2kubeURL=https://${M2K_ROUTE}
 ```
 
 Then edit the `m2k-props` confimap to set the `quarkus.rest-client.move2kube_yaml.url` and `move2kube_url` properties with the value of `${M2K_ROUTE}`
