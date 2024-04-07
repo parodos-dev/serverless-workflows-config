@@ -17,6 +17,41 @@ save move2kube transformation Knative function       {{ $move2kubeSaveTransforma
 {{/* Empty line */}}
 
 Run the following commands to wait until the move2kube workflow dependencies and build are done and workflow is running on namespace {{ $ns }}:
+  oc wait -n {{ $ns }} pod --for=condition=Ready=true -l app={{ .Values.instance.name }} {{ $timeout }}
+  oc wait -n {{ $ns }} ksvc {{ .Values.kfunction.name }} --for=condition=Ready=true {{ $timeout }}
+  oc wait -n {{ $ns }} sonataflow/{{ .Values.workflow.name }} --for=condition=Running {{ $timeout }}
+
+{{/* Empty line */}}
+Once the wait commands are completed successfully, there is a need to edit the move2kube workflow with a link to the move2kube route.
+Run the following commands to complete the installation:
+
+  M2K_ROUTE="https://$(oc -n {{ $ns }} get routes move2kube-route -o yaml | yq -r .spec.host)"
+  oc -n {{ $ns }} delete ksvc m2k-save-transformation-func && \
+    helm upgrade move2kube orchestrator-workflows/move2kube -n {{ $ns }} --set workflow.move2kubeURL=${M2K_ROUTE}
+
+Once again, run the following commands to wait until the move2kube workflow dependencies and build are done and workflow is running on namespace {{ $ns }}:
   oc wait -n {{ $ns }}  --for=condition=Ready=true {{ $timeout }} pod -l app={{ .Values.instance.name }}
   oc wait -n {{ $ns }} ksvc {{ .Values.kfunction.name }} --for=condition=Ready=true {{ $timeout }}
   oc wait -n {{ $ns }} sonataflow/{{ .Values.workflow.name }} --for=condition=Running {{ $timeout }}
+
+Once all commands are completed, set the value of $M2K_ROUTE to the move2kube workflow m2k-props configmap:
+
+  # Get the current ConfigMap data
+  CURRENT_DATA=$(oc -n {{ $ns }} get configmap m2k-props -o jsonpath='{.data.application\.properties}')
+
+  # Update the properties in the ConfigMap data
+  UPDATED_DATA=$(echo "$CURRENT_DATA" | \
+    sed "s/^quarkus.rest-client.move2kube_yaml.url=.*/quarkus.rest-client.move2kube_yaml.url=$M2K_ROUTE/g; s/^move2kube_url=.*/move2kube_url=$M2K_ROUTE/g")
+
+  # Replace newline characters with escape sequences
+  UPDATED_DATA=$(echo -n "$UPDATED_DATA" | sed ':a;N;$!ba;s/\n/\\n/g')
+
+  # Patch the ConfigMap with the updated data
+  oc -n {{ $ns }} patch configmap m2k-props --patch "{\"data\": {\"application.properties\": \"$UPDATED_DATA\"}}"
+
+  # Run the following to set K_SINK environment variable in the workflow:
+  BROKER_URL=$(oc -n {{ $ns }} get broker -o yaml | yq -r .items[0].status.address.url)
+  oc -n {{ $ns }} patch sonataflow m2k --type merge -p '{"spec": { "podTemplate": { "container": { "env": [{"name": "K_SINK", "value": "'${BROKER_URL}'"}]}}}}'
+
+Verify workflow is ready:
+  oc wait -n {{ $ns }} pods -l "sonataflow.org/workflow-app=m2k" --for=condition=Ready=true {{ $timeout }}
