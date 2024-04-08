@@ -41,8 +41,8 @@ Once all commands are completed, set the value of $M2K_ROUTE to the move2kube wo
 
   # Update the properties in the ConfigMap data
   UPDATED_DATA=$(echo "$CURRENT_DATA" | \
-    sed "s/^quarkus.rest-client.move2kube_yaml.url=.*/quarkus.rest-client.move2kube_yaml.url=$M2K_ROUTE/g; s/^move2kube_url=.*/move2kube_url=$M2K_ROUTE/g")
-
+    sed "s#^quarkus.rest-client.move2kube_yaml.url=.*#quarkus.rest-client.move2kube_yaml.url=$M2K_ROUTE#g; s#^move2kube_url=.*#move2kube_url=$M2K_ROUTE#g")
+    
   # Replace newline characters with escape sequences
   UPDATED_DATA=$(echo -n "$UPDATED_DATA" | sed ':a;N;$!ba;s/\n/\\n/g')
 
