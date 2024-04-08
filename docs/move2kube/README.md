@@ -43,7 +43,7 @@ Run
 helm repo add orchestrator-workflows https://parodos.dev/serverless-workflows-config
 helm install move2kube orchestrator-workflows/move2kube -n ${TARGET_NS}
 ```
-Run the following command to apply it to the `move2kubeURL` parameter:
+Run the following command or follow the steps prompted at the end of the workflow installation to apply it to the `move2kubeURL` parameter:
 ```console
 M2K_ROUTE=$(oc -n ${TARGET_NS} get routes move2kube-route -o yaml | yq -r .spec.host)
 oc -n ${TARGET_NS} delete ksvc m2k-save-transformation-func &&
