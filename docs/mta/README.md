@@ -6,7 +6,7 @@ At the end of a successful assessment workflow, a link to the report will be ava
 **Note**: The *MTA* workflow type functions as an assessment tool, evaluating the provided code repository and suggesting the next workflow to execute for that repository. Currently, there is a correlation between the *MTA* and *Move2Kube* workflow, where *Move2Kube* is recommended by the *MTA*. Consequently, it is necessary to install both to leverage their benefits fully.
 
 ## Configuration
-[View the MTA README on GitHub]([https://github.com/parodos-dev/serverless-workflows-config/blob/main/charts/workflows/charts/mta/README.md](https://github.com/parodos-dev/serverless-workflows-config/blob/main/charts/mta/README.md))
+View the [MTA README on GitHub](https://github.com/parodos-dev/serverless-workflows-config/blob/main/charts/mta/README.md)
 
 ## Installation
 - Run 
