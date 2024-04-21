@@ -16,7 +16,7 @@ spec:
     annotations:
       - workflow-type/assessment
     dataInputSchema:
-      failOnValidationErrors: false
+      failOnValidationErrors: true
       schema: specs/mta-input.json
     functions:
       - name: filterApplication
@@ -249,7 +249,7 @@ spec:
   podTemplate:
     container:
       resources: {}
-      image: quay.io/orchestrator/serverless-workflow-mta:7af9a6413b66ce798891d9b7a512a78b16cf8c5c
+      image: quay.io/orchestrator/serverless-workflow-mta:15748f2c89fbe6147254b8c1d3320d859d4cc2a1
   resources:
     configMaps:
       - configMap:
