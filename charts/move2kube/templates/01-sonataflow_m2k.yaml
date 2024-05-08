@@ -266,7 +266,7 @@ spec:
   podTemplate:
     container:
       resources: {}
-      image: quay.io/orchestrator/serverless-workflow-move2kube:a02fc07467f6cdb206fb620a4d25a68a5dc6afec
+      image: quay.io/orchestrator/serverless-workflow-move2kube:5919ecc475e5f1ac822b2b746c11badcff6f898c
   resources:
     configMaps:
       - configMap:
