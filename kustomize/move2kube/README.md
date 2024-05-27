@@ -1,7 +1,7 @@
 ## Prerequisites
 * The manifests are generated without the `namespace` configuration
 * Manifest names reflect the `resources` section of [kustomization.yaml](./base/kustomization.yaml)
-* Apply the required configuration described in the Configuration section of [INSTALL.md](../../charts/workflows/charts/move2kube/INSTALL.md#configuration)
+* Apply the required configuration described in the Configuration section of [INSTALL.md](../../charts/move2kube/INSTALL.md#configuration)
  
 A brief explanation of the system architecture is provided in the related [document](./move2kube.md).
 
@@ -55,7 +55,7 @@ oc logs -f -n ${TARGET_NS} -l app=m2k
 ### Notes about transformation from Helm chart
 * The Helm values is converted to a `move2kube-values` ConfigMap and we use a replacement configuration to update the affected fields one by one, as in
   [replace-config.yaml](./base/replace-config.yamll)
-  * The original [YAML](../../charts/workflows/charts/move2kube/values.yaml) is converted to a [properties file](./base/values.properties)
+  * The original [YAML](../../charts/move2kube/values.yaml) is converted to a [properties file](./base/values.properties)
   * The original Helm variable references were transformed accordingly, e.g. `{{ .Values.instance.name }}` is changed to `__instance_name__`
   * The following properties are not managed as values but they were either not used in the chart or we map them differently (e.g. using the image transformer in [kustomization.yaml](./base/kustomization.yaml)):
 ```
@@ -81,5 +81,5 @@ metadata:
 
 You can run the following diff to highlight the main changes:
 ```bash
-diff -r base/ ../../charts/workflows/charts/move2kube/templates
+diff -r base/ ../../charts/move2kube/templates
 ```
