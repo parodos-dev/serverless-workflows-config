@@ -13,16 +13,12 @@ Consider this chart as a meta chart or template chart for other workflows or sub
 ```
 /
   charts/              
-    workflows/
+    workflow-1/
       Chart.yaml
       values.yaml
-      charts/
-        workflow-1/
-          Chart.yaml
-          values.yaml
-          templates/
-        workflow-2-0.1.0.tgz
-        workflow-3-0.1.1.tgz
+      templates/
+    workflow-2-0.1.0.tgz
+    workflow-3-0.1.1.tgz
 ```
 
 Notice that workflow-1 has the code embedded while workflow-2 and 3 is a dependency resolved from the root Chart.yaml
@@ -34,8 +30,10 @@ To install the workflow from sources directly:
 - Choose which workflow to install either by editing `values.yaml` or by providing additional flags to install command, e.g. `--set ${workflow-id}.enabled=true`:
 ```
 git clone git@github.com:parodos-dev/serverless-workflows-config.git
-cd serverless-workflows-config/charts
-helm install orchestrator-workflows workflows
+cd serverless-workflows-config
+helm install mta charts/mta
+helm install move2kube charts/move2kube
+
 ```
 
 For installing the workflows from the Helm repository, see further installation steps and detailed explanation for each workflow [here](https://github.com/parodos-dev/serverless-workflows-config/tree/gh-pages?tab=readme-ov-file#installation) or [here](https://www.parodos.dev/serverless-workflows-config/).

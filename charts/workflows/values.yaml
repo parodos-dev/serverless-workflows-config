@@ -1,6 +1,0 @@
-mta:
-  enabled: false # Indicates that mta workflow is enabled
-greeting:
-  enabled: false # Indicates that greeting workflow is enabled
-move2kube:
-  enabled: false # Indicates that move2kube workflow is enabled
