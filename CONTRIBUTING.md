@@ -45,7 +45,7 @@ If you have not done so on this machine, you need to:
 
 ## Requirements
 
-* The newly created Helm chart shall be located in its own folder: `charts/workflows/charts/<workflow name>`
+* The newly created Helm chart shall be located in its own folder: `charts/<workflow name>`
 * The workflow for which you want to create a new Helm chart shall be in the [production repository](https://github.com/parodos-dev/serverless-workflows) and be througfully tested.
 * Values in `values.yaml` shall have a description
 * Each Helm chart shall have a `README.md` and `values.schema`.json files generated
