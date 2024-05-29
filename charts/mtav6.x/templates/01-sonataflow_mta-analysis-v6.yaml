@@ -8,9 +8,9 @@ metadata:
     sonataflow.org/version: "1.0"
   creationTimestamp: null
   labels:
-    app: mta-analysis
-    sonataflow.org/workflow-app: mta-analysis
-  name: mta-analysis
+    app: mta-analysis-v6
+    sonataflow.org/workflow-app: mta-analysis-v6
+  name: mta-analysis-v6
 spec:
   flow:
     annotations:
@@ -71,7 +71,7 @@ spec:
       operation: specs/mta.json#getTickets
       type: rest
     - name: createNotification
-      operation: notifications#createNotification
+      operation: specs/notifications.json#createNotification
       type: rest
     - name: logInfo
       operation: sysout:INFO
@@ -527,10 +527,10 @@ spec:
   resources:
     configMaps:
     - configMap:
-        name: 01-mta-analysis-resources
+        name: 01-mta-analysis-v6-resources
       workflowPath: schemas
     - configMap:
-        name: 02-mta-analysis-resources
+        name: 02-mta-analysis-v6-resources
       workflowPath: specs
 status:
   address: {}
