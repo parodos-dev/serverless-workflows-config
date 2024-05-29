@@ -3,8 +3,8 @@ data:
   application.properties: |
     quarkus.kogito.devservices.enabled=false
 
-    mta.url = ${MTA_URL:http://mta-ui.openshift-mta.svc.cluster.local:8080}
-    quarkus.rest-client.mta_json.url = http://mta-ui.openshift-mta.svc.cluster.local:8080
+    mta.url = ${MTA_URL:http://tackle-ui.my-konveyor-operator.svc.cluster.local:8080}
+    quarkus.rest-client.mta_json.url = ${mta.url}
     quarkus.rest-client.notifications.url=${BACKSTAGE_NOTIFICATIONS_URL:http://backstage-backstage.rhdh-operator/api/notifications/}
     quarkus.openapi-generator.mta_json.auth.bearerAuth.bearer-token=${MTA_HUB_TOKEN}
     quarkus.flyway.migrate-at-start=true
@@ -12,6 +12,6 @@ kind: ConfigMap
 metadata:
   creationTimestamp: null
   labels:
-    app: mta-analysis
-    sonataflow.org/workflow-app: mta-analysis
-  name: mta-analysis-props
+    app: mta-analysis-v6
+    sonataflow.org/workflow-app: mta-analysis-v6
+  name: mta-analysis-v6-props
