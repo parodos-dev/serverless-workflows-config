@@ -114,6 +114,17 @@ entries:
   move2kube:
   - apiVersion: v2
     appVersion: 1.16.0
+    created: "2024-06-03T09:14:19.391506264Z"
+    description: 'A Helm chart to deploy the move2kube workflow. '
+    digest: 72335b8837eb7cdda764f8a1765076180e3381396d9c730bb3c853c7171611f0
+    icon: https://raw.githubusercontent.com/parodos-dev/parodos-dev.github.io/main/assets/images/WO_black.svg
+    name: move2kube
+    type: application
+    urls:
+    - https://github.com/parodos-dev/serverless-workflows-config/releases/download/move2kube-0.2.27/move2kube-0.2.27.tgz
+    version: 0.2.27
+  - apiVersion: v2
+    appVersion: 1.16.0
     created: "2024-05-28T12:48:29.930287794Z"
     description: 'A Helm chart to deploy the move2kube workflow. '
     digest: 665f2cf08e6798d45a6931a4cb493fbc89d433d7894569b74dcb99b27ce6e032
@@ -846,4 +857,4 @@ entries:
     urls:
     - https://github.com/rgolangh/serverless-workflows-config/releases/download/workflows-0.1.0/workflows-0.1.0.tgz
     version: 0.1.0
-generated: "2024-06-03T09:13:46.508905689Z"
+generated: "2024-06-03T09:14:19.391706258Z"
