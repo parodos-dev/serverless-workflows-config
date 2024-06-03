@@ -3,6 +3,17 @@ entries:
   greeting:
   - apiVersion: v2
     appVersion: 1.16.0
+    created: "2024-06-03T07:26:05.873511283Z"
+    description: A Helm chart for the greeting serverless workflow
+    digest: 94ed9fea2fd5986cec15b50b4fb387a9cea2edc33cf6fafa4bb474a861581acb
+    icon: https://raw.githubusercontent.com/parodos-dev/parodos-dev.github.io/main/assets/images/WO_black.svg
+    name: greeting
+    type: application
+    urls:
+    - https://github.com/parodos-dev/serverless-workflows-config/releases/download/greeting-0.4.9/greeting-0.4.9.tgz
+    version: 0.4.9
+  - apiVersion: v2
+    appVersion: 1.16.0
     created: "2024-05-09T09:27:23.597675087Z"
     description: A Helm chart for the greeting serverless workflow
     digest: 0ff4202e447e92d15dec86c247292af0bc5372092bab972c623d6f3b6cdf0348
@@ -824,4 +835,4 @@ entries:
     urls:
     - https://github.com/rgolangh/serverless-workflows-config/releases/download/workflows-0.1.0/workflows-0.1.0.tgz
     version: 0.1.0
-generated: "2024-05-28T12:48:29.930429978Z"
+generated: "2024-06-03T07:26:05.873696599Z"
