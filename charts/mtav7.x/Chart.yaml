@@ -1,5 +1,5 @@
 apiVersion: v2
-name: mta
+name: mta-v7
 description: A Helm chart for MTA serverless workflow
 
 # A chart can be either an 'application' or a 'library' chart.
