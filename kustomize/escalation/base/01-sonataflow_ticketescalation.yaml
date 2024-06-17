@@ -163,13 +163,13 @@ spec:
     configMaps:
     - configMap:
         name: 01-ticketescalation-resources
-      workflowPath: subflows
-    - configMap:
-        name: 02-ticketescalation-resources
       workflowPath: schemas
     - configMap:
-        name: 03-ticketescalation-resources
+        name: 02-ticketescalation-resources
       workflowPath: specs
+    - configMap:
+        name: 03-ticketescalation-resources
+      workflowPath: subflows
 status:
   address: {}
   lastTimeRecoverAttempt: null
