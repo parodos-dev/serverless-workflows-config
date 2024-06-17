@@ -12,7 +12,7 @@ data:
     OpenShift API Server\nquarkus.rest-client.kube_yaml.url=${OCP_API_SERVER_URL}\nquarkus.openapi-generator.kube_yaml.auth.BearerToken.bearer-token=${OCP_API_SERVER_TOKEN}\nquarkus.tls.trust-all=true\nquarkus.kubernetes-client.trust-certs=true\n\n#
     Notifications service\nquarkus.rest-client.notifications.url=${BACKSTAGE_NOTIFICATIONS_URL:http://backstage-backstage.rhdh-operator/api/notifications/}\n\n#
     This is to enable debugging of HTTP request \nquarkus.log.category.\\\"org.apache.http\\\".level=INFO\n\n#
-    Knative eventing configuration\nmp.messaging.incoming.kogito_incoming_stream.connector=quarkus-http\nmp.messaging.incoming.kogito_incoming_stream.path=/\nmp.messaging.incoming.kogito_incoming_stream.method=POST"
+    Knative eventing configuration\nmp.messaging.incoming.kogito_incoming_stream.connector=quarkus-http\nmp.messaging.incoming.kogito_incoming_stream.path=/\nmp.messaging.incoming.kogito_incoming_stream.method=POST\nquarkus.flyway.migrate-at-start=true\n"
 kind: ConfigMap
 metadata:
   creationTimestamp: null
