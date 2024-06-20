@@ -1,5 +1,17 @@
 apiVersion: v1
 entries:
+  create-ocp-project:
+  - apiVersion: v2
+    appVersion: 1.16.0
+    created: "2024-06-20T18:26:58.635469087Z"
+    description: A Helm chart for the create OCP project serverless workflow
+    digest: b720dfd3229d734edf1407c4d6063b08e20c685a26870e72a7c163e9b5a80faa
+    icon: https://raw.githubusercontent.com/parodos-dev/parodos-dev.github.io/main/assets/images/WO_black.svg
+    name: create-ocp-project
+    type: application
+    urls:
+    - https://github.com/parodos-dev/serverless-workflows-config/releases/download/create-ocp-project-0.0.1/create-ocp-project-0.0.1.tgz
+    version: 0.0.1
   greeting:
   - apiVersion: v2
     appVersion: 1.16.0
@@ -111,6 +123,18 @@ entries:
     urls:
     - https://github.com/parodos-dev/serverless-workflows-config/releases/download/greeting-0.2.9/greeting-0.2.9.tgz
     version: 0.2.9
+  modify-vm-resources:
+  - apiVersion: v2
+    appVersion: 1.16.0
+    created: "2024-06-20T18:26:58.765102595Z"
+    description: A Helm chart for the modify VM resources serverless workflow
+    digest: c447724a554e102705d2cb103b9d864b19bd680a7c96d343e9463cd025330227
+    icon: https://raw.githubusercontent.com/parodos-dev/parodos-dev.github.io/main/assets/images/WO_black.svg
+    name: modify-vm-resources
+    type: application
+    urls:
+    - https://github.com/parodos-dev/serverless-workflows-config/releases/download/modify-vm-resources-0.0.1/modify-vm-resources-0.0.1.tgz
+    version: 0.0.1
   move2kube:
   - apiVersion: v2
     appVersion: 1.16.0
@@ -399,6 +423,18 @@ entries:
     urls:
     - https://github.com/parodos-dev/serverless-workflows-config/releases/download/mta-0.2.15/mta-0.2.15.tgz
     version: 0.2.15
+  request-vm-cnv:
+  - apiVersion: v2
+    appVersion: 1.16.0
+    created: "2024-06-20T18:26:59.023155018Z"
+    description: A Helm chart for the request VM using CNV serverless workflow
+    digest: 2a4fcf93d6405b3e5d54ecc24a44bc0088e1d7e40eea69ff127aee5b5007c9d2
+    icon: https://raw.githubusercontent.com/parodos-dev/parodos-dev.github.io/main/assets/images/WO_black.svg
+    name: request-vm-cnv
+    type: application
+    urls:
+    - https://github.com/parodos-dev/serverless-workflows-config/releases/download/request-vm-cnv-0.0.1/request-vm-cnv-0.0.1.tgz
+    version: 0.0.1
   workflows:
   - apiVersion: v2
     appVersion: 1.16.0
@@ -857,4 +893,4 @@ entries:
     urls:
     - https://github.com/rgolangh/serverless-workflows-config/releases/download/workflows-0.1.0/workflows-0.1.0.tgz
     version: 0.1.0
-generated: "2024-06-03T09:14:19.391706258Z"
+generated: "2024-06-20T18:26:59.023359731Z"
