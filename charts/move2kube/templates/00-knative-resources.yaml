@@ -7,41 +7,6 @@ data:
     Host *
         StrictHostKeyChecking no
 ---
-apiVersion: eventing.knative.dev/v1
-kind: Trigger
-metadata:
-  name: error-trigger-{{ .Values.workflow.name }}
-spec:
-  broker: {{ .Values.brokerName }}
-  filter:
-    attributes:
-      type: error
-  subscriber:
-    ref:
-      apiVersion: v1
-      kind: Service
-      name: {{ .Values.workflow.name }}
----
-apiVersion: eventing.knative.dev/v1
-kind: Trigger
-metadata:
-  name: transformation-saved-trigger-{{ .Values.workflow.name }}
-spec:
-  broker: {{ .Values.brokerName }}
-  filter:
-    attributes:
-      type: transformation_saved
-  subscriber:
-    ref:
-      apiVersion: v1
-      kind: Service
-      name: {{ .Values.workflow.name }}
----
-apiVersion: eventing.knative.dev/v1
-kind: Broker
-metadata:
-  name: {{ .Values.brokerName }}
----
 apiVersion: serving.knative.dev/v1
 kind: Service
 metadata:
@@ -57,7 +22,6 @@ spec:
           securityContext:
             runAsUser: 0
             allowPrivilegeEscalation: true
-          securityContext:
           command: [ "sh", "-c", "cp /tmp/.ssh/id_rsa /etc/pre-install/. && chown 185 /etc/pre-install/id_rsa" ]
           volumeMounts:
             - name: ssh-priv-key
