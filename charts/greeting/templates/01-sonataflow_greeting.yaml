@@ -66,7 +66,7 @@ spec:
   podTemplate:
     container:
       resources: {}
-      image: quay.io/orchestrator/serverless-workflow-greeting:585b07d022b526689e0dbbd19dcea66ff91ca58d
+      image: quay.io/orchestrator/serverless-workflow-greeting:ee4a4a1e1792d139fda593e684dfb9f0cdf5d164
   resources:
     configMaps:
       - configMap:
