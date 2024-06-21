@@ -1,0 +1,20 @@
+apiVersion: v1
+data:
+  create-ocp-project__main-schema.json: "{\n  \"$id\": \"classpath:/schemas/create-ocp-project-schema.json\",\n
+    \ \"title\": \"Data input schema\",\n  \"$schema\": \"http://json-schema.org/draft-07/schema#\",\n
+    \ \"type\": \"object\",\n  \"properties\": {\n    \"inputs\": {\n      \"title\":
+    \"Inputs\",\n      \"type\": \"object\",\n      \"properties\": {\n        \"operationsProjectKey\":
+    {\n          \"title\": \"Operations Project Key\",\n          \"description\":
+    \"JIRA project key for operations\",\n          \"type\": \"string\",\n          \"default\":
+    \"OP\"\n        },\n        \"auditProjectKey\": {\n          \"title\": \"Audit
+    Project Key\",\n          \"description\": \"JIRA project key for auditing\",\n
+    \         \"type\": \"string\",\n          \"default\": \"AUD\"\n        },\n
+    \       \"projectName\": {\n          \"title\": \"Project Name\",\n          \"description\":
+    \"OCP project to create\",\n          \"type\": \"string\",\n          \"pattern\":
+    \"^[a-z0-9]([-a-z0-9]*[a-z0-9])?$\"\n        }        \n      },\n      \"required\":
+    [\n        \"operationsProjectKey\",\n        \"auditProjectKey\",\n        \"projectName\"\n
+    \     ]\n    }\n  }\n  \n}\n"
+kind: ConfigMap
+metadata:
+  creationTimestamp: null
+  name: 01-create-ocp-project-resources
