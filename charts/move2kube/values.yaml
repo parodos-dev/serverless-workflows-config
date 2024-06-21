@@ -1,6 +1,5 @@
 sshSecretName: sshkeys # name of the secret holding the ssh keys that will be used by move2kube resources
-brokerName: m2k-default # name of the broker used by Knative eventing resources
-brokerURL: http://broker-ingress.knative-eventing.svc.cluster.local/sonataflow-infra/m2k-default
+brokerName: "" # name of the broker used by Knative eventing resources
 workflow:
   name: m2k # name of the workflow
   move2kubeURL: https://move2kube-route-sonataflow-infra.apps.cluster-8xfw.redhatworkshops.io # URL for move2kube instance
