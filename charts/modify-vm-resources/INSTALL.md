@@ -22,6 +22,8 @@ From `charts` folder run
 helm install modify-vm-resources modify-vm-resources --namespace=${TARGET_NS}
 ```
 
+### Post-installation
+#### Persistence
 
 You need to edit the `sonataflow` resource to set the correct value for the `persistence` `spec`.
 The defaults are:
@@ -69,15 +71,59 @@ You can patch the resource by running (update it if needed with your own values)
 ```
 
 
-Run the following to set K_SINK and MOVE2KUBE_URL environment variables in the workflow:
+#### Environment variables
+
+##### ConfigMap
+Run the following to set the following environment variables values in the workflow:
 ```console
-oc -n ${TARGET_NS} patch sonataflow modify-vm-resources --type merge -p '{"spec": { "podTemplate": { "container": { "env": [{"name": "JIRA_URL", "value": "<Jira URL>"}, {"name": "JIRA_USERNAME", "value": "<Your jira username>"}, {"name": "JIRA_API_TOKEN", "value": "<Your jira token>"}, {"name": "OCP_API_SERVER_URL", "value": "<Target openshift URL>"}, {"name": "OCP_API_SERVER_TOKEN", "value": "<Token to access the target OCP cluster>"}]}}}}'
-```
-Ie:
-```console
-oc -n ${TARGET_NS} patch sonataflow modify-vm-resources --type merge -p '{"spec":  { "podTemplate": { "container": { "env": [{"name": "JIRA_URL", "value": "https://masayag.atlassian.net"}, {"name": "JIRA_USERNAME", "value": "=moti.asayag@gmail.com"}, {"name": "JIRA_API_TOKEN", "value": "<Your jira token>"}, {"name": "OCP_API_SERVER_URL", "value": "https://api.cluster-ddf9q.dynamic.redhatworkshops.io:6443"}, {"name": "OCP_API_SERVER_TOKEN", "value": "<Token to access the target OCP cluster>"}]}}}}'
+oc -n sonataflow-infra patch sonataflow modify-vm-resources --type merge -p '{
+  "spec": {
+    "podTemplate": {
+      "container": {
+        "env": [
+          {
+            "name": "JIRA_URL",
+            "value": "<jira url>"
+          },
+          {
+            "name": "JIRA_USERNAME",
+            "value": "<jira username>"
+          },
+          {
+            "name": "OCP_API_SERVER_URL",
+            "value": "<OCP API URL>"
+          },
+          {
+            "name": "OCP_CONSOLE_URL",
+            "value": "<OCP console URL>"
+          }
+        ]
+      }
+    }
+  }
+}
+'
 ```
 
+#### Secret
+
+We also need to set the following environment variables:
+* JIRA_API_TOKEN
+* OCP_API_SERVER_TOKEN
+
+To do so, edit the secret `${WORKFLOW_NAME}-creds` and set those values and the one of `NOTIFICATIONS_BEARER_TOKEN`:
+```
+WORKFLOW_NAME=modify-vm-resources
+oc -n sonataflow-infra patch secret "${WORKFLOW_NAME}-creds" --type merge -p '{
+   "data":{
+      "NOTIFICATIONS_BEARER_TOKEN":"'$(oc get secrets -n rhdh-operator backstage-backend-auth-secret -o go-template='{{ .data.BACKEND_SECRET  }}')'"
+   },
+   "stringData":{
+      "JIRA_API_TOKEN":"{{ JIRA_API_TOKEN }}",
+      "OCP_API_SERVER_TOKEN":"{{ OCP_API_SERVER_TOKEN }}"
+   }
+}'
+```
 If you are using Jira cloud, you can generate the `JIRA_API_TOKEN` using https://id.atlassian.com/manage-profile/security/api-tokens 
 
 The `OCP_API_SERVER_TOKEN` should be associated with a service account.
