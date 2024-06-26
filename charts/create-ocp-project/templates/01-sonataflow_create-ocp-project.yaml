@@ -294,7 +294,7 @@ spec:
   podTemplate:
     container:
       resources: {}
-      image: quay.io/orchestrator/serverless-workflow-create-ocp-project:ee4a4a1e1792d139fda593e684dfb9f0cdf5d164
+      image: quay.io/orchestrator/serverless-workflow-create-ocp-project:7b3023b52eb327f0a897df3a6cc1c68d6aa7c80d
   resources:
     configMaps:
       - configMap:
