@@ -68,14 +68,43 @@ You can patch the resource by running (update it if needed with your own values)
     }'
 ```
 
-
 Run the following to set K_SINK and MOVE2KUBE_URL environment variables in the workflow:
 ```console
-oc -n ${TARGET_NS} patch sonataflow create-ocp-project --type merge -p '{"spec": { "podTemplate": { "container": { "env": [{"name": "JIRA_URL", "value": "<Jira URL>"}, {"name": "JIRA_USERNAME", "value": "<Your jira username>"}, {"name": "JIRA_API_TOKEN", "value": "<Your jira token>"}, {"name": "OCP_API_SERVER_URL", "value": "<Target openshift URL>"}, {"name": "OCP_API_SERVER_TOKEN", "value": "<Token to access the target OCP cluster>"}]}}}}'
-```
-Ie:
-```console
-oc -n ${TARGET_NS} patch sonataflow create-ocp-project --type merge -p '{"spec":  { "podTemplate": { "container": { "env": [{"name": "JIRA_URL", "value": "https://masayag.atlassian.net"}, {"name": "JIRA_USERNAME", "value": "=moti.asayag@gmail.com"}, {"name": "JIRA_API_TOKEN", "value": "<Your jira token>"}, {"name": "OCP_API_SERVER_URL", "value": "https://api.cluster-ddf9q.dynamic.redhatworkshops.io:6443"}, {"name": "OCP_API_SERVER_TOKEN", "value": "<Token to access the target OCP cluster>"}]}}}}'
+oc -n sonataflow-infra patch sonataflow modify-vm-resources --type merge -p '{
+  "spec": {
+    "podTemplate": {
+      "container": {
+        "env": [
+          {
+            "name": "JIRA_URL",
+            "value": "<jira url>"
+          },
+          {
+            "name": "JIRA_USERNAME",
+            "value": "<jira username>"
+          },
+          {
+            "name": "JIRA_API_TOKEN",
+            "value": "<jira token>"
+          },
+          {
+            "name": "OCP_API_SERVER_URL",
+            "value": "<OCP API URL>"
+          },
+          {
+            "name": "OCP_API_SERVER_TOKEN",
+            "value": "<OCP token>"
+          },
+          {
+            "name": "OCP_CONSOLE_URL",
+            "value": "<OCP console URL>"
+          }
+        ]
+      }
+    }
+  }
+}
+'
 ```
 
 If you are using Jira cloud, you can generate the `JIRA_API_TOKEN` using https://id.atlassian.com/manage-profile/security/api-tokens 
