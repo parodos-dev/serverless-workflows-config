@@ -38,6 +38,9 @@ spec:
       - name: increaseVMStatusRunningRetries
         operation: .vmStatusRunningRetries=.vmStatusRunningRetries + 1
         type: expression
+      - name: fillEmptyValues
+        operation: '{ vm_new_memory:(if (.inputs.vm_new_memory == null or .inputs.vm_new_memory =="") then .vm.spec.template.spec.domain.memory.guest else .inputs.vm_new_memory end), vm_new_cpu_cores:(if .inputs.vm_new_cpu_cores == null then .vm.spec.template.spec.domain.cpu.cores else .inputs.vm_new_cpu_cores end), vm_new_cpu_sockets:(if .inputs.vm_new_cpu_sockets == null then .vm.spec.template.spec.domain.cpu.sockets else .inputs.vm_new_cpu_sockets end), vm_new_cpu_threads:if .inputs.vm_new_cpu_threads == null then .vm.spec.template.spec.domain.cpu.threads else .inputs.vm_new_cpu_threads end }'
+        type: expression
     start:
       stateName: Get VM
     states:
@@ -57,14 +60,18 @@ spec:
         transition:
           nextState: Fill empty values
         type: operation
-      - data:
-          empty: ""
+      - actionMode: sequential
+        actions:
+          - actionDataFilter:
+              useResults: true
+            functionRef:
+              invoke: sync
+              refName: fillEmptyValues
+            name: Fill empty values
         name: Fill empty values
-        stateDataFilter:
-          output: '( . + {vm_new_memory: (if (.inputs.vm_new_memory == null or .inputs.vm_new_memory == "") then .vm.spec.template.spec.domain.memory.guest else .inputs.vm_new_memory end), vm_new_cpu_cores: (if .inputs.vm_new_cpu_cores == null then .vm.spec.template.spec.domain.cpu.cores else .inputs.vm_new_cpu_cores end), vm_new_cpu_sockets: (if .inputs.vm_new_cpu_sockets == null then .vm.spec.template.spec.domain.cpu.sockets else .inputs.vm_new_cpu_sockets end), vm_new_cpu_threads: if .inputs.vm_new_cpu_threads == null then .vm.spec.template.spec.domain.cpu.threads else .inputs.vm_new_cpu_threads end})'
         transition:
           nextState: Open issue on JIRA
-        type: inject
+        type: operation
       - actionMode: sequential
         actions:
           - actionDataFilter:
@@ -381,7 +388,7 @@ spec:
   podTemplate:
     container:
       resources: {}
-      image: quay.io/orchestrator/serverless-workflow-modify-vm-resources:ee4a4a1e1792d139fda593e684dfb9f0cdf5d164
+      image: quay.io/orchestrator/serverless-workflow-modify-vm-resources:1d8c71ccf3994917619153ea5702b66015ba2d0a
   resources:
     configMaps:
       - configMap:
