@@ -1,3 +1,12 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: m2k-ssh-config
+data:
+  config: |
+    Host *
+        StrictHostKeyChecking no
+---
 apiVersion: eventing.knative.dev/v1
 kind: Trigger
 metadata:
@@ -77,7 +86,10 @@ spec:
               readOnly: true
               mountPath: "/home/jboss/.ssh/id_rsa.pub"
               subPath: id_rsa.pub
-
+            - mountPath: /home/jboss/.ssh/config
+              name: m2k-ssh-config
+              readOnly: true
+              subPath: config
           readinessProbe:
             successThreshold: 1
             tcpSocket:
@@ -92,6 +104,9 @@ spec:
             secretName: {{ .Values.sshSecretName }}
         - name: pre-install
           emptyDir: { }
+        - name: m2k-ssh-config
+          configMap:
+            name: m2k-ssh-config
 
 ---
 apiVersion: eventing.knative.dev/v1
