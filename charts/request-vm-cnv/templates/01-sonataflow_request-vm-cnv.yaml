@@ -380,7 +380,7 @@ spec:
   podTemplate:
     container:
       resources: {}
-      image: quay.io/orchestrator/serverless-workflow-request-vm-cnv:ee4a4a1e1792d139fda593e684dfb9f0cdf5d164
+      image: quay.io/orchestrator/serverless-workflow-request-vm-cnv:1d8c71ccf3994917619153ea5702b66015ba2d0a
   resources:
     configMaps:
       - configMap:
