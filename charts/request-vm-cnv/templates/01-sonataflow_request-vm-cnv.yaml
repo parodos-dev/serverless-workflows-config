@@ -380,15 +380,15 @@ spec:
   podTemplate:
     container:
       resources: {}
-      image: quay.io/orchestrator/serverless-workflow-request-vm-cnv:ee4a4a1e1792d139fda593e684dfb9f0cdf5d164
+      image: quay.io/orchestrator/serverless-workflow-request-vm-cnv:5acfaa1301dd6e8adea955d72b635f1ca24c714d
   resources:
     configMaps:
       - configMap:
           name: 01-request-vm-cnv-resources
-        workflowPath: schemas
+        workflowPath: specs
       - configMap:
           name: 02-request-vm-cnv-resources
-        workflowPath: specs
+        workflowPath: schemas
   persistence:
     postgresql:
       secretRef:
