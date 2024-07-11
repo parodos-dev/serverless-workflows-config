@@ -116,13 +116,14 @@ spec:
           useResults: true
         functionRef:
           arguments:
-            actions:
-            - title: '"Escalation ticket " + .createResponse.ticketId'
-              url: .createResponse.browseUrl
-            message: '"Please manage escalation ticket " + .createResponse.ticketId '
-            origin: Escalation Workflow
-            title: '"ATTN: Escalation for ticket - " + .createResponse.ticketId'
-            topic: Escalation Workflow
+            payload:
+              description: '"Please manage escalation ticket " + .createResponse.ticketId '
+              link: .createResponse.browseUrl
+              scope: Escalation Workflow
+              title: '"ATTN: Escalation for ticket - " + .createResponse.ticketId'
+              topic: Escalation Workflow
+            recipients:
+              type: broadcast
           invoke: sync
           refName: createNotification
         name: createNotification
@@ -163,13 +164,13 @@ spec:
     configMaps:
     - configMap:
         name: 01-ticketescalation-resources
-      workflowPath: subflows
-    - configMap:
-        name: 02-ticketescalation-resources
       workflowPath: schemas
     - configMap:
-        name: 03-ticketescalation-resources
+        name: 02-ticketescalation-resources
       workflowPath: specs
+    - configMap:
+        name: 03-ticketescalation-resources
+      workflowPath: subflows
 status:
   address: {}
   lastTimeRecoverAttempt: null
