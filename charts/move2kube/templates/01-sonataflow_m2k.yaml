@@ -28,7 +28,7 @@ spec:
         name: transformationSavedEvent
         type: transformation_saved
       - dataOnly: true
-        kind: consumed
+        kind: produced
         name: saveTransformationEvent
         type: save-transformation
     functions:
@@ -149,19 +149,20 @@ spec:
         actions:
           - actionDataFilter:
               useResults: true
-            condition: ((has("notificationsDisabled") and .notificationsDisabled != null and .notificationsDisabled == true)|not)
             functionRef:
               arguments:
-                actions:
-                  - title: Move2Kube waiting Q&A
-                    url: '$SECRET.move2kube_url + "/workspaces/"+ .workspaceId + "/projects/" + .projectId + "/outputs/"+ .transformId '
-                message: '"Please go to your move2kube instance and answer the questions in order to continue the Move2Kube workflow"'
-                origin: Move2Kube Workflow
-                title: ' "Transformation " + .transformationId + " waiting for Q&A" '
-                topic: Move2Kube Workflow
+                payload:
+                  description: '"Please go to your move2kube instance and answer the questions in order to continue the Move2Kube workflow"'
+                  link: '$SECRET.move2kube_url + "/workspaces/"+ .workspaceId + "/projects/" + .projectId + "/outputs/"+ .transformId '
+                  scope: Move2Kube Workflow
+                  title: ' "Transformation " + .transformationId + " waiting for Q&A" '
+                  topic: Move2Kube Workflow
+                recipients:
+                  entityRef: .recipients
+                  type: entity
               invoke: sync
               refName: createNotification
-            name: create
+            name: createNotification
         name: NotifyTransformationWaiting
         transition:
           nextState: WaitForSaveTransformationCompletionEvent
@@ -215,13 +216,16 @@ spec:
           - actions:
               - actionDataFilter:
                   useResults: true
-                condition: ((has("notificationsDisabled") and .notificationsDisabled != null and .notificationsDisabled == true)|not)
                 functionRef:
                   arguments:
-                    message: '"Move2Kube workflow  " + $WORKFLOW.instanceId + " on workspace " + .workspaceId + " and project " + .projectId + " failed with exit message: "+ .exitMessage + " -- Plan retries: "  + (.planRetries|tostring) + " -- Error: "  + .error'
-                    origin: Move2Kube Workflow
-                    title: '"Move2Kube workflow " + $WORKFLOW.instanceId + " failed"'
-                    topic: Move2Kube Workflow
+                    payload:
+                      description: '"Move2Kube workflow  " + $WORKFLOW.instanceId + " on workspace " + .workspaceId + " and project " + .projectId + " failed with exit message: "+ .exitMessage + " -- Plan retries: "  + (.planRetries|tostring) + " -- Error: "  + .error'
+                      scope: Move2Kube Workflow
+                      title: '"Move2Kube workflow " + $WORKFLOW.instanceId + " failed"'
+                      topic: Move2Kube Workflow
+                    recipients:
+                      entityRef: .recipients
+                      type: entity
                   invoke: sync
                   refName: createNotification
                 name: createNotification
@@ -246,13 +250,16 @@ spec:
           - actions:
               - actionDataFilter:
                   useResults: true
-                condition: ((has("notificationsDisabled") and .notificationsDisabled != null and .notificationsDisabled == true)|not)
                 functionRef:
                   arguments:
-                    message: '"Move2Kube workflow  " + $WORKFLOW.instanceId + " on workspace " + .workspaceId + " and project " + .projectId + " was successful; the output is available in the branch " + .targetBranch + " of your git repository "+ .repositoryURL'
-                    origin: Move2Kube Workflow
-                    title: '"Move2Kube workflow " + $WORKFLOW.instanceId + " success"'
-                    topic: Move2Kube Workflow
+                    payload:
+                      description: '"Move2Kube workflow  " + $WORKFLOW.instanceId + " on workspace " + .workspaceId + " and project " + .projectId + " was successful; the output is available in the branch " + .targetBranch + " of your git repository "+ .repositoryURL'
+                      scope: Move2Kube Workflow
+                      title: '"Move2Kube workflow " + $WORKFLOW.instanceId + " succeeded"'
+                      topic: Move2Kube Workflow
+                    recipients:
+                      entityRef: .recipients
+                      type: entity
                   invoke: sync
                   refName: createNotification
                 name: createNotification
@@ -266,7 +273,7 @@ spec:
   podTemplate:
     container:
       resources: {}
-      image: quay.io/orchestrator/serverless-workflow-move2kube:585b07d022b526689e0dbbd19dcea66ff91ca58d
+      image: quay.io/orchestrator/serverless-workflow-move2kube:3d0c5da73258ce5d039b6cb6a0c312618c4408e0
   resources:
     configMaps:
       - configMap:
