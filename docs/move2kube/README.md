@@ -60,3 +60,20 @@ Run the following to set K_SINK environment variable in the workflow:
 BROKER_URL=$(oc -n ${TARGET_NS} get broker -o yaml | yq -r .items[0].status.address.url)
 oc -n ${TARGET_NS} patch sonataflow m2k --type merge -p '{"spec": { "podTemplate": { "container": { "env": [{"name": "K_SINK", "value": "'${BROKER_URL}'"}]}}}}'
 ```
+
+There is a variable required to be set in the `m2k-props` ConfigMap:
+* **NOTIFICATIONS_BEARER_TOKEN** - The token for sending notifications from the MTA workflow to RHDH notifications service
+
+To obtain the value for `NOTIFICATIONS_BEARER_TOKEN` use the value of the following command:
+```bash
+oc get secrets -n rhdh-operator backstage-backend-auth-secret -o go-template='{{ .data.BACKEND_SECRET | base64decode }}'
+```
+Or fetch the secret from the app-config.yaml of your RHDH instance if not installed by the Orchestrator operator.
+
+And to edit the configmap:
+```console
+oc -n <namespace> edit configmap m2k-props
+```
+
+**Please note:** Running the upgrade of the chart will cause the NOTIFICATIONS_BEARER_TOKEN value to be reverted. This will be addressed later.
+For this version, there is a need to repeat the step of setting the NOTIFICATIONS_BEARER_TOKEN in the configmap after the upgrade of the chart.
