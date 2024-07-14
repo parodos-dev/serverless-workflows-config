@@ -30,13 +30,16 @@ spec:
         operation: specs/jira-openapi.json#getIssue
         type: rest
       - name: createNotification
-        operation: specs/notifications-openapi.yaml#createNotification
+        operation: notifications#createNotification
         type: rest
       - name: print
         operation: sysout
         type: custom
       - name: increaseVMStatusRunningRetries
         operation: .vmStatusRunningRetries=.vmStatusRunningRetries + 1
+        type: expression
+      - name: fillEmptyValues
+        operation: '{ vm_new_memory:(if (.inputs.vm_new_memory == null or .inputs.vm_new_memory =="") then .vm.spec.template.spec.domain.memory.guest else .inputs.vm_new_memory end), vm_new_cpu_cores:(if .inputs.vm_new_cpu_cores == null then .vm.spec.template.spec.domain.cpu.cores else .inputs.vm_new_cpu_cores end), vm_new_cpu_sockets:(if .inputs.vm_new_cpu_sockets == null then .vm.spec.template.spec.domain.cpu.sockets else .inputs.vm_new_cpu_sockets end), vm_new_cpu_threads:if .inputs.vm_new_cpu_threads == null then .vm.spec.template.spec.domain.cpu.threads else .inputs.vm_new_cpu_threads end }'
         type: expression
     start:
       stateName: Get VM
@@ -48,8 +51,8 @@ spec:
               useResults: true
             functionRef:
               arguments:
-                name: .inputs.vm_name
-                namespace: .inputs.vm_namespace
+                name: .vm_name
+                namespace: .vm_namespace
               invoke: sync
               refName: readNamespacedVirtualMachine
             name: get VM
@@ -57,14 +60,18 @@ spec:
         transition:
           nextState: Fill empty values
         type: operation
-      - data:
-          empty: ""
+      - actionMode: sequential
+        actions:
+          - actionDataFilter:
+              useResults: true
+            functionRef:
+              invoke: sync
+              refName: fillEmptyValues
+            name: Fill empty values
         name: Fill empty values
-        stateDataFilter:
-          output: '( . + {vm_new_memory: (if (.inputs.vm_new_memory == null or .inputs.vm_new_memory == "") then .vm.spec.template.spec.domain.memory.guest else .inputs.vm_new_memory end), vm_new_cpu_cores: (if .inputs.vm_new_cpu_cores == null then .vm.spec.template.spec.domain.cpu.cores else .inputs.vm_new_cpu_cores end), vm_new_cpu_sockets: (if .inputs.vm_new_cpu_sockets == null then .vm.spec.template.spec.domain.cpu.sockets else .inputs.vm_new_cpu_sockets end), vm_new_cpu_threads: if .inputs.vm_new_cpu_threads == null then .vm.spec.template.spec.domain.cpu.threads else .inputs.vm_new_cpu_threads end})'
         transition:
           nextState: Open issue on JIRA
-        type: inject
+        type: operation
       - actionMode: sequential
         actions:
           - actionDataFilter:
@@ -73,15 +80,15 @@ spec:
             functionRef:
               arguments:
                 fields:
-                  description: '"Authorization request to update VM " + .inputs.vm_name + " in namespace " + .inputs.vm_namespace + ".\nMemory: " + .vm_new_memory + "\nCPU cores: " + (.vm_new_cpu_cores|tostring) + "\nCPU threads: " + (.vm_new_cpu_threads|tostring) + "\nCPU sockets: " + (.vm_new_cpu_sockets|tostring) + "\nAuto restart VM: " + (if .inputs.vm_auto_restart == true then "yes" else "no" end)'
+                  description: '"Authorization request to update VM " + .vm_name + " in namespace " + .vm_namespace + ".\nMemory: " + .vm_new_memory + "\nCPU cores: " + (.vm_new_cpu_cores|tostring) + "\nCPU threads: " + (.vm_new_cpu_threads|tostring) + "\nCPU sockets: " + (.vm_new_cpu_sockets|tostring) + "\nAuto restart VM: " + (if .vm_auto_restart == true then "yes" else "no" end)'
                   issuetype:
                     name: Task
                   labels:
                     - backstage-workflow
                     - '"workflowId=" + $WORKFLOW.instanceId'
                   project:
-                    key: .inputs.projectKey
-                  summary: '"Authorization request to update VM " + .inputs.vm_name + " in namespace " + .inputs.vm_namespace'
+                    key: .projectKey
+                  summary: '"Authorization request to update VM " + .vm_name + " in namespace " + .vm_namespace'
               invoke: sync
               refName: jiraCreateIssue
             name: callbackAction
@@ -95,15 +102,15 @@ spec:
               useResults: true
             functionRef:
               arguments:
-                actions:
-                  - title: View on JIRA
-                    url: $SECRET.jira_url + "/jira/servicedesk/projects/" + .inputs.projectKey + "/issues/" + .jiraCreateIssueResult.key
-                message: '"JIRA ticket created to request update for VM " + .inputs.vm_name + " in namespace " + .inputs.vm_namespace'
-                origin: SonataFlow
-                targetUsers:
-                  - default/guest
-                title: '"JIRA ticket created for VM " + .inputs.vm_name'
-                topic: Modify VM Resources workflow
+                payload:
+                  description: '"JIRA ticket created to request update for VM " + .vm_name + " in namespace " + .vm_namespace'
+                  link: $SECRET.jira_url + "/jira/servicedesk/projects/" + .projectKey + "/issues/" + .jiraCreateIssueResult.key
+                  scope: SonataFlow
+                  title: '"JIRA ticket created for VM " + .vm_name'
+                  topic: Modify VM Resources workflow
+                recipients:
+                  entityRef: .recipients
+                  type: entity
               invoke: sync
               refName: createNotification
             name: 'Create notification: JIRA ticket created'
@@ -148,7 +155,7 @@ spec:
                   useResults: true
                 functionRef:
                   arguments:
-                    message: '${"VM update authorized, see Jira issue: " + $SECRET.jira_url + "/jira/servicedesk/projects/" + .inputs.projectKey + "/issues/" + .jiraCreateIssueResult.key + " ==> " + .inputs.vm_name}'
+                    message: '${"VM update authorized, see Jira issue: " + $SECRET.jira_url + "/jira/servicedesk/projects/" + .projectKey + "/issues/" + .jiraCreateIssueResult.key + " ==> " + .vm_name}'
                   invoke: sync
                   refName: print
                 name: printSystemOut
@@ -158,12 +165,14 @@ spec:
                   useResults: true
                 functionRef:
                   arguments:
-                    message: '"Authorization granted to update VM " + .inputs.vm_name + " in namespace " + .inputs.vm_namespace + ". Memory: " + .vm_new_memory + ". CPU cores: " + (.vm_new_cpu_cores|tostring) + ". CPU threads: " + (.vm_new_cpu_threads|tostring) + ". CPU sockets: " + (.vm_new_cpu_sockets|tostring) + ". Auto restart: " + (if .inputs.vm_auto_restart == true then "yes" else "no" end)'
-                    origin: SonataFlow
-                    targetUsers:
-                      - default/guest
-                    title: '"Authorization granted to update VM" + .inputs.vm_name + " in namespace " + .inputs.vm_namespace'
-                    topic: Modify VM Resources workflow
+                    payload:
+                      description: '"Authorization granted to update VM " + .vm_name + " in namespace " + .vm_namespace + ". Memory: " + .vm_new_memory + ". CPU cores: " + (.vm_new_cpu_cores|tostring) + ". CPU threads: " + (.vm_new_cpu_threads|tostring) + ". CPU sockets: " + (.vm_new_cpu_sockets|tostring) + ". Auto restart: " + (if .vm_auto_restart == true then "yes" else "no" end)'
+                      scope: SonataFlow
+                      title: '"Authorization granted to update VM" + .vm_name + " in namespace " + .vm_namespace'
+                      topic: Modify VM Resources workflow
+                    recipients:
+                      entityRef: .recipients
+                      type: entity
                   invoke: sync
                   refName: createNotification
                 name: 'Create notification: VM update authorized'
@@ -180,11 +189,11 @@ spec:
               useResults: true
             functionRef:
               arguments:
-                name: .inputs.vm_name
-                namespace: .inputs.vm_namespace
+                name: .vm_name
+                namespace: .vm_namespace
                 spec:
                   spec:
-                    running: (.inputs.vm_auto_restart|not)
+                    running: (.vm_auto_restart|not)
                     template:
                       spec:
                         domain:
@@ -201,7 +210,7 @@ spec:
           nextState: Check auto restart
         type: operation
       - dataConditions:
-          - condition: .inputs.vm_auto_restart == true
+          - condition: .vm_auto_restart == true
             name: VM autorestart enabled
             transition:
               nextState: Restart VM
@@ -216,8 +225,8 @@ spec:
               useResults: true
             functionRef:
               arguments:
-                name: .inputs.vm_name
-                namespace: .inputs.vm_namespace
+                name: .vm_name
+                namespace: .vm_namespace
                 spec:
                   spec:
                     running: true
@@ -240,8 +249,8 @@ spec:
               useResults: true
             functionRef:
               arguments:
-                name: .inputs.vm_name
-                namespace: .inputs.vm_namespace
+                name: .vm_name
+                namespace: .vm_namespace
               invoke: sync
               refName: readNamespacedVirtualMachine
             name: get VM
@@ -292,15 +301,15 @@ spec:
                   useResults: true
                 functionRef:
                   arguments:
-                    actions:
-                      - title: Open console
-                        url: $SECRET.cluster_console_url + "/k8s/ns/" + .inputs.vm_namespace + "/kubevirt.io~v1~VirtualMachine/" + .inputs.vm_name + "/console/standalone"
-                    message: '"VM" + .inputs.vm_name + " in namespace " + .inputs.vm_namespace + " updated."'
-                    origin: SonataFlow
-                    targetUsers:
-                      - default/guest
-                    title: '"VM" + .inputs.vm_name + " in namespace " + .inputs.vm_namespace + " updated and ready"'
-                    topic: Modify VM Resources workflow
+                    payload:
+                      description: '"VM" + .vm_name + " in namespace " + .vm_namespace + " updated."'
+                      link: $SECRET.cluster_console_url + "/k8s/ns/" + .vm_namespace + "/kubevirt.io~v1~VirtualMachine/" + .vm_name + "/console/standalone"
+                      scope: SonataFlow
+                      title: '"VM" + .vm_name + " in namespace " + .vm_namespace + " updated and ready"'
+                      topic: Modify VM Resources workflow
+                    recipients:
+                      entityRef: .recipients
+                      type: entity
                   invoke: sync
                   refName: createNotification
                 name: 'Create notification: VM update running'
@@ -327,12 +336,14 @@ spec:
                   useResults: true
                 functionRef:
                   arguments:
-                    message: '"VM" + .inputs.vm_name + " in namespace " + .inputs.vm_namespace + " not ready after the update atfer checking" +.vmStatusRunningRetries+" times: " + .vm.status'
-                    origin: SonataFlow
-                    targetUsers:
-                      - default/guest
-                    title: '"VM" + .inputs.vm_name + " in namespace " + .inputs.vm_namespace + " not ready"'
-                    topic: Modify VM Resources workflow
+                    payload:
+                      description: '"VM" + .vm_name + " in namespace " + .vm_namespace + " not ready after the update after checking" +.vmStatusRunningRetries+" times: " + .vm.status'
+                      scope: SonataFlow
+                      title: '"VM" + .vm_name + " in namespace " + .vm_namespace + " not ready"'
+                      topic: Modify VM Resources workflow
+                    recipients:
+                      entityRef: .recipients
+                      type: entity
                   invoke: sync
                   refName: createNotification
                 name: 'Create notification: VM update not running'
@@ -349,7 +360,7 @@ spec:
                   useResults: true
                 functionRef:
                   arguments:
-                    message: '${"VM update denied, see Jira issue: " + $SECRET.jira_url + "/jira/servicedesk/projects/" + .inputs.projectKey + "/issues/" + .jiraCreateIssueResult.key + " ==> " + .inputs.vm_name}'
+                    message: '${"VM update denied, see Jira issue: " + $SECRET.jira_url + "/jira/servicedesk/projects/" + .projectKey + "/issues/" + .jiraCreateIssueResult.key + " ==> " + .vm_name}'
                   invoke: sync
                   refName: print
                 name: printSystemOut
@@ -359,15 +370,15 @@ spec:
                   useResults: true
                 functionRef:
                   arguments:
-                    actions:
-                      - title: View on JIRA
-                        url: $SECRET.jira_url + "/jira/servicedesk/projects/" + .inputs.projectKey + "/issues/" + .jiraCreateIssueResult.key
-                    message: '"Authorization denied to update VM " + .inputs.vm_name + " in namespace " + .inputs.vm_namespace + ". Memory: " + .vm_new_memory + ". CPU cores: " + (.vm_new_cpu_cores|tostring) + ". CPU threads: " + (.vm_new_cpu_threads|tostring) + ". CPU sockets: " + (.vm_new_cpu_sockets|tostring)'
-                    origin: SonataFlow
-                    targetUsers:
-                      - default/guest
-                    title: '"Authorization denied to create VM" + .inputs.vm_name + " in namespace " + .inputs.vm_namespace'
-                    topic: Modify VM Resources workflow
+                    payload:
+                      description: '"Authorization denied to update VM " + .vm_name + " in namespace " + .vm_namespace + ". Memory: " + .vm_new_memory + ". CPU cores: " + (.vm_new_cpu_cores|tostring) + ". CPU threads: " + (.vm_new_cpu_threads|tostring) + ". CPU sockets: " + (.vm_new_cpu_sockets|tostring)'
+                      link: $SECRET.jira_url + "/jira/servicedesk/projects/" + .projectKey + "/issues/" + .jiraCreateIssueResult.key
+                      scope: SonataFlow
+                      title: '"Authorization denied to create VM" + .vm_name + " in namespace " + .vm_namespace'
+                      topic: Modify VM Resources workflow
+                    recipients:
+                      entityRef: .recipients
+                      type: entity
                   invoke: sync
                   refName: createNotification
                 name: 'Create notification: VM update denied'
@@ -381,7 +392,7 @@ spec:
   podTemplate:
     container:
       resources: {}
-      image: quay.io/orchestrator/serverless-workflow-modify-vm-resources:ee4a4a1e1792d139fda593e684dfb9f0cdf5d164
+      image: quay.io/orchestrator/serverless-workflow-modify-vm-resources:b32fd3683febc9d8ab954efe92bf4af94671a965
   resources:
     configMaps:
       - configMap:
