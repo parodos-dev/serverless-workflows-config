@@ -30,7 +30,7 @@ spec:
         operation: specs/jira-openapi.yaml#getIssueTransitions
         type: rest
       - name: createNotification
-        operation: specs/notifications-openapi.yaml#createNotification
+        operation: notifications#createNotification
         type: rest
       - name: createProjectOpenshiftIoV1Project
         operation: specs/ocp-project-openapi.yaml#createProjectOpenshiftIoV1Project
@@ -52,15 +52,15 @@ spec:
             functionRef:
               arguments:
                 fields:
-                  description: '"Workflow executed to request creation project " + .inputs.projectName'
+                  description: '"Workflow executed to request creation project " + .projectName'
                   issuetype:
                     name: Task
                   labels:
                     - backstage-workflow
                     - '"workflowId=" + $WORKFLOW.instanceId'
                   project:
-                    key: .inputs.auditProjectKey
-                  summary: '"Workflow executed to request the creation of project " + .inputs.projectName'
+                    key: .auditProjectKey
+                  summary: '"Workflow executed to request the creation of project " + .projectName'
               invoke: sync
               refName: jiraCreateIssue
             name: callbackAction
@@ -76,15 +76,15 @@ spec:
             functionRef:
               arguments:
                 fields:
-                  description: '"Please review request to create project " + .inputs.projectName'
+                  description: '"Please review request to create project " + .projectName'
                   issuetype:
                     name: Task
                   labels:
                     - backstage-workflow
                     - '"workflowId=" + $WORKFLOW.instanceId'
                   project:
-                    key: .inputs.operationsProjectKey
-                  summary: '"Request authorization to create project " + .inputs.projectName'
+                    key: .operationsProjectKey
+                  summary: '"Request authorization to create project " + .projectName'
               invoke: sync
               refName: jiraCreateIssue
             name: callbackAction
@@ -98,15 +98,15 @@ spec:
               useResults: true
             functionRef:
               arguments:
-                actions:
-                  - title: View on Jira
-                    url: $SECRET.jira_url + "/jira/servicedesk/projects/" + .inputs.operationsProjectKey + "/issues/" + .operationsJiraCreateIssueResult.key
-                message: Jira ticket created
-                origin: SonataFlow
-                targetUsers:
-                  - default/guest
-                title: Jira ticket created
-                topic: Create OCP Project workflow
+                payload:
+                  description: Jira ticket created
+                  link: $SECRET.jira_url + "/jira/servicedesk/projects/" + .operationsProjectKey + "/issues/" + .operationsJiraCreateIssueResult.key
+                  scope: SonataFlow
+                  title: Jira ticket created
+                  topic: Create OCP Project workflow
+                recipients:
+                  entityRef: .recipients
+                  type: entity
               invoke: sync
               refName: createNotification
             name: 'Create notification: Jira ticket created'
@@ -154,8 +154,8 @@ spec:
                 kind: Project
                 metadata:
                   labels:
-                    kubernetes.io/metadata.name: .inputs.projectName
-                  name: .inputs.projectName
+                    kubernetes.io/metadata.name: .projectName
+                  name: .projectName
                 spec:
                   finalizers:
                     - kubernetes
@@ -173,7 +173,7 @@ spec:
               useResults: true
             functionRef:
               arguments:
-                name: .inputs.projectName
+                name: .projectName
               invoke: sync
               refName: readProjectOpenshiftIoV1Project
             name: Get created project
@@ -199,12 +199,14 @@ spec:
               useResults: true
             functionRef:
               arguments:
-                message: '"Project " + .inputs.projectName + " active"'
-                origin: SonataFlow
-                targetUsers:
-                  - default/guest
-                title: '"Project " + .inputs.projectName + " active"'
-                topic: Create OCP Project
+                payload:
+                  description: '"Project " + .projectName + " active"'
+                  scope: SonataFlow
+                  title: '"Project " + .projectName + " active"'
+                  topic: Create OCP Project workflow
+                recipients:
+                  entityRef: .recipients
+                  type: entity
               invoke: sync
               refName: createNotification
             name: 'Create notification: project active'
@@ -218,12 +220,14 @@ spec:
               useResults: true
             functionRef:
               arguments:
-                message: '"Project " + .inputs.projectName + " NOT active"'
-                origin: SonataFlow
-                targetUsers:
-                  - default/guest
-                title: '"Project " + .inputs.projectName + " NOT active"'
-                topic: Create OCP Project
+                payload:
+                  description: '"Project " + .projectName + " inactive"'
+                  scope: SonataFlow
+                  title: '"Project " + .projectName + " inactive"'
+                  topic: Create OCP Project workflow
+                recipients:
+                  entityRef: .recipients
+                  type: entity
               invoke: sync
               refName: createNotification
             name: 'Create notification: project not active'
@@ -253,7 +257,7 @@ spec:
                 update:
                   comment:
                     - add:
-                        body: '"Project " + .inputs.projectName + " is " + .project.status.phase'
+                        body: '"Project " + .projectName + " is " + .project.status.phase'
               invoke: sync
               refName: jiraCloseIssue
             name: Close issue on Jira due to Timeout
@@ -283,7 +287,7 @@ spec:
                 update:
                   comment:
                     - add:
-                        body: '"Creation of project " + .inputs.projectName + " denied"'
+                        body: '"Creation of project " + .projectName + " denied"'
               invoke: sync
               refName: jiraCloseIssue
             name: Close issue on Jira due to Timeout
@@ -294,7 +298,7 @@ spec:
   podTemplate:
     container:
       resources: {}
-      image: quay.io/orchestrator/serverless-workflow-create-ocp-project:ee4a4a1e1792d139fda593e684dfb9f0cdf5d164
+      image: quay.io/orchestrator/serverless-workflow-create-ocp-project:b32fd3683febc9d8ab954efe92bf4af94671a965
   resources:
     configMaps:
       - configMap:
