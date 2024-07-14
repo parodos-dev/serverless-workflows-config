@@ -15,7 +15,13 @@ helm repo add orchestrator-workflows https://parodos.dev/serverless-workflows-co
 helm install mta orchestrator-workflows/mta -n sonataflow-infra
 ```
 
-- Edit the `mtaanalysis-props` confimap to set the `mta.url` with the value of the following command:
+### Edit the `mtaanalysis-props` ConfigMap:
+
+There are two variables required to be set in the `mtaanalysis-props` ConfigMap:
+* **mta.url** - The URL to the MTA application
+* **NOTIFICATIONS_BEARER_TOKEN** - The token for sending notifications from the MTA workflow to RHDH notifications service
+
+To set the `mta.url` with the value of the following command:
 - **Please note** that it may take several minutes for the MTA Operator to become available and for the route to be reachable.
 ```console
 while [[ $retry_count -lt 5 ]]; do
@@ -24,6 +30,12 @@ while [[ $retry_count -lt 5 ]]; do
 done
 echo "https://"$(oc -n openshift-mta get route mta -o yaml | yq -r .spec.host)
 ```
+
+To obtain the value for `NOTIFICATIONS_BEARER_TOKEN` use the value of the following command:
+```bash
+oc get secrets -n rhdh-operator backstage-backend-auth-secret -o go-template='{{ .data.BACKEND_SECRET | base64decode }}'
+```
+Or fetch the secret from the app-config.yaml of your RHDH instance if not installed by the Orchestrator operator.
 
 And to edit the configmap:
 ```console
