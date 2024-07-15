@@ -15,11 +15,11 @@ helm repo add orchestrator-workflows https://parodos.dev/serverless-workflows-co
 helm install mta orchestrator-workflows/mta -n sonataflow-infra
 ```
 
+## Post-installation
 ### Edit the `mtaanalysis-props` ConfigMap:
 
-There are two variables required to be set in the `mtaanalysis-props` ConfigMap:
+There is one variable required to be set in the `mtaanalysis-props` ConfigMap:
 * **mta.url** - The URL to the MTA application
-* **NOTIFICATIONS_BEARER_TOKEN** - The token for sending notifications from the MTA workflow to RHDH notifications service
 
 To set the `mta.url` with the value of the following command:
 - **Please note** that it may take several minutes for the MTA Operator to become available and for the route to be reachable.
@@ -31,16 +31,18 @@ done
 echo "https://"$(oc -n openshift-mta get route mta -o yaml | yq -r .spec.host)
 ```
 
-To obtain the value for `NOTIFICATIONS_BEARER_TOKEN` use the value of the following command:
-```bash
-oc get secrets -n rhdh-operator backstage-backend-auth-secret -o go-template='{{ .data.BACKEND_SECRET | base64decode }}'
-```
-Or fetch the secret from the app-config.yaml of your RHDH instance if not installed by the Orchestrator operator.
+### Edit the `${WORKFLOW_NAME}-creds` Secret
+The token for sending notifications from the m2k workflow to RHDH notifications service needs to be provided to the workflow.
 
-And to edit the configmap:
-```console
-oc -n <namespace> edit configmap mtaanalysis-props
+Edit the secret `${WORKFLOW_NAME}-creds` and set the value of `NOTIFICATIONS_BEARER_TOKEN`:
 ```
+WORKFLOW_NAME=mtaanalysis
+oc -n sonataflow-infra patch secret "${WORKFLOW_NAME}-creds" --type merge -p '{"data": { "NOTIFICATIONS_BEARER_TOKEN": "'$(oc get secrets -n rhdh-operator backstage-backend-auth-secret -o go-template='{{ .data.BACKEND_SECRET  }}')'"}}'
+```
+
+This secret is used in the `sonataflow` CR to inject the token as an environment variable that will be used by the workflow.
+
+### Validate instalation
 
 - Verify MTA resources and workflow are ready:
 ```console
