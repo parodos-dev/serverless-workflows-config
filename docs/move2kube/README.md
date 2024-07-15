@@ -62,7 +62,7 @@ oc -n ${TARGET_NS} patch sonataflow m2k --type merge -p '{"spec": { "podTemplate
 ```
 
 There is a variable required to be set in the `m2k-props` ConfigMap:
-* **NOTIFICATIONS_BEARER_TOKEN** - The token for sending notifications from the MTA workflow to RHDH notifications service
+* **NOTIFICATIONS_BEARER_TOKEN** - The token for sending notifications from the m2k workflow to RHDH notifications service
 
 To obtain the value for `NOTIFICATIONS_BEARER_TOKEN` use the value of the following command:
 ```bash
