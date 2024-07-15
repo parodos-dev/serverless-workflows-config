@@ -40,4 +40,4 @@ images:
   newTag: b32fd368
 - name: serverless-workflow-jira-listener
   newName: quay.io/orchestrator/serverless-workflow-jira-listener
-  newTag: b32fd368
+  newTag: 5285f369
