@@ -28,7 +28,7 @@ spec:
         name: transformationSavedEvent
         type: transformation_saved
       - dataOnly: true
-        kind: consumed
+        kind: produced
         name: saveTransformationEvent
         type: save-transformation
     functions:
@@ -273,15 +273,15 @@ spec:
   podTemplate:
     container:
       resources: {}
-      image: quay.io/orchestrator/serverless-workflow-move2kube:b32fd3683febc9d8ab954efe92bf4af94671a965
+      image: quay.io/orchestrator/serverless-workflow-move2kube:5285f369153079a90f031112b824dbe3ed34cac1
   resources:
     configMaps:
       - configMap:
           name: 01-m2k-resources
-        workflowPath: specs
+        workflowPath: schemas
       - configMap:
           name: 02-m2k-resources
-        workflowPath: schemas
+        workflowPath: specs
   persistence:
     postgresql:
       secretRef:
