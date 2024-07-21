@@ -13,26 +13,26 @@
           "default": {},
           "title": "The mta Schema",
           "required": [
-              "endpoint"
+              "url"
           ],
           "properties": {
-              "endpoint": {
+              "url": {
                   "type": "string",
                   "default": "",
-                  "title": "The endpoint Schema",
+                  "title": "The MTA URL",
                   "examples": [
-                      "https://mta-openshift-mta.apps.parodos-dev.projects.ecosystem.sysdeseng.com:443/hub/"
+                      "http://mta-ui.openshift-mta.svc.cluster.local:8080"
                   ]
               }
           },
           "examples": [{
-              "endpoint": "https://mta-openshift-mta.apps.parodos-dev.projects.ecosystem.sysdeseng.com:443/hub/"
+              "endpoint": "http://mta-ui.openshift-mta.svc.cluster.local:8080"
           }]
       }
   },
   "examples": [{
       "mta": {
-          "endpoint": "https://mta-openshift-mta.apps.parodos-dev.projects.ecosystem.sysdeseng.com:443/hub/"
+          "endpoint": "http://mta-ui.openshift-mta.svc.cluster.local:8080"
       }
   }]
 }
