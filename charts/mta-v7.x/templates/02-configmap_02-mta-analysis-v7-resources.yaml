@@ -1,1252 +1,2897 @@
 apiVersion: v1
 data:
-  mta.json: "{\n  \"openapi\": \"3.0.1\",\n  \"info\": {\n    \"title\": \"Konveyor
-    Hub API\",\n    \"contact\": {},\n    \"license\": {\n      \"name\": \"Apache
-    2.0\",\n      \"url\": \"http://www.apache.org/licenses/LICENSE-2.0.html\"\n    },\n
-    \   \"version\": \"0.3.z\"\n  },\n  \"servers\": [\n    {\n      \"url\": \"/\"\n
-    \   }\n  ],\n  \"paths\": {\n    \"/hub/migrationwaves\": {\n      \"get\": {\n
-    \       \"operationId\": \"getMigrationwaves\",\n        \"tags\": [\n          \"migrationwaves\"\n
-    \       ],\n        \"summary\": \"List all migration waves.\",\n        \"description\":
-    \"List all migration waves.\",\n        \"responses\": {\n          \"200\": {\n
-    \           \"description\": \"OK\",\n            \"content\": {\n              \"application/json\":
-    {\n                \"schema\": {\n                  \"type\": \"array\",\n                  \"items\":
-    {\n                    \"$ref\": \"#/components/schemas/api.MigrationWave\"\n
-    \                 }\n                }\n              }\n            }\n          }\n
-    \       },\n        \"security\": [\n          {\n            \"bearerAuth\":
-    []\n          }\n        ]  \n      },\n      \"post\": {\n        \"operationId\":
-    \"createMigrationwave\",\n        \"tags\": [\n          \"migrationwaves\"\n
-    \       ],\n        \"summary\": \"Create a migration wave.\",\n        \"description\":
-    \"Create a migration wave.\",\n        \"requestBody\": {\n          \"description\":
-    \"Migration Wave data\",\n          \"content\": {\n            \"application/json\":
-    {\n              \"schema\": {\n                \"$ref\": \"#/components/schemas/api.MigrationWave\"\n
-    \             }\n            }\n          },\n          \"required\": true\n        },\n
-    \       \"responses\": {\n          \"201\": {\n            \"description\": \"Created\",\n
-    \           \"content\": {\n              \"application/json\": {\n                \"schema\":
-    {\n                  \"$ref\": \"#/components/schemas/api.MigrationWave\"\n                }\n
-    \             }\n            }\n          }\n        },\n        \"security\":
-    [\n          {\n            \"bearerAuth\": []\n          }\n        ],\n        \"x-codegen-request-body-name\":
-    \"migrationwave\"\n      }\n    },\n    \"/hub/migrationwaves/{id}\": {\n      \"get\":
-    {\n        \"operationId\": \"getMigrationwave\",\n        \"tags\": [\n          \"migrationwaves\"\n
-    \       ],\n        \"summary\": \"Get a migration wave by ID.\",\n        \"description\":
-    \"Get a migration wave by ID.\",\n        \"parameters\": [\n          {\n            \"name\":
-    \"id\",\n            \"in\": \"path\",\n            \"description\": \"Migration
-    Wave ID\",\n            \"required\": true,\n            \"schema\": {\n              \"type\":
-    \"integer\"\n            }\n          }\n        ],\n        \"responses\": {\n
-    \         \"200\": {\n            \"description\": \"OK\",\n            \"content\":
-    {\n              \"application/json\": {\n                \"schema\": {\n                  \"$ref\":
-    \"#/components/schemas/api.MigrationWave\"\n                }\n              }\n
-    \           }\n          }\n        },\n        \"security\": [\n          {\n
-    \           \"bearerAuth\": []\n          }\n        ]  \n      }\n    },\n    \"/hub/taskgroups/{id}/submit\":
-    {\n      \"put\": {\n        \"operationId\": \"submitTaskgroup\",\n        \"tags\":
-    [\n          \"taskgroups\"\n        ],\n        \"summary\": \"Submit a task
-    group.\",\n        \"description\": \"Submit a task group.\",\n        \"parameters\":
-    [\n          {\n            \"name\": \"id\",\n            \"in\": \"path\",\n
-    \           \"description\": \"TaskGroup ID\",\n            \"required\": true,\n
-    \           \"schema\": {\n              \"type\": \"integer\"\n            }\n
-    \         }\n        ],\n        \"requestBody\": {\n          \"description\":
-    \"TaskGroup data (optional)\",\n          \"content\": {\n            \"application/json\":
-    {\n              \"schema\": {\n                \"$ref\": \"#/components/schemas/api.TaskGroup\"\n
-    \             }\n            }\n          },\n          \"required\": false\n
-    \       },\n        \"responses\": {\n          \"204\": {\n            \"description\":
-    \"No Content\",\n            \"content\": {}\n          }\n        },\n        \"security\":
-    [\n          {\n            \"bearerAuth\": []\n          }\n        ],\n        \"x-codegen-request-body-name\":
-    \"taskgroup\"\n      }\n    },\n    \"/hub/trackers\": {\n      \"get\": {\n        \"operationId\":
-    \"getTrackers\",\n        \"tags\": [\n          \"trackers\"\n        ],\n        \"summary\":
-    \"List all trackers.\",\n        \"description\": \"List all trackers.\",\n        \"responses\":
-    {\n          \"200\": {\n            \"description\": \"OK\",\n            \"content\":
-    {\n              \"application/json\": {\n                \"schema\": {\n                  \"type\":
-    \"array\",\n                  \"items\": {\n                    \"$ref\": \"#/components/schemas/api.Tracker\"\n
-    \                 }\n                }\n              }\n            }\n          }\n
-    \       },\n        \"security\": [\n          {\n            \"bearerAuth\":
-    []\n          }\n        ]            \n      }\n    },\n    \"/hub/trackers/{id}\":
-    {\n      \"get\": {\n        \"operationId\": \"getTracker\",\n        \"tags\":
-    [\n          \"trackers\"\n        ],\n        \"summary\": \"Get a tracker by
-    ID.\",\n        \"description\": \"Get a tracker by ID.\",\n        \"parameters\":
-    [\n          {\n            \"name\": \"id\",\n            \"in\": \"path\",\n
-    \           \"description\": \"Tracker ID\",\n            \"required\": true,\n
-    \           \"schema\": {\n              \"type\": \"integer\"\n            }\n
-    \         }\n        ],\n        \"responses\": {\n          \"200\": {\n            \"description\":
-    \"OK\",\n            \"content\": {\n              \"application/json\": {\n                \"schema\":
-    {\n                  \"$ref\": \"#/components/schemas/api.Tracker\"\n                }\n
-    \             }\n            }\n          }\n        },\n        \"security\":
-    [\n          {\n            \"bearerAuth\": []\n          }\n        ]\n      }\n
-    \   },\n    \"/hub/applications\": {\n      \"get\": {\n        \"operationId\":
-    \"getApplications\",\n        \"tags\": [\n          \"applications\"\n        ],\n
-    \       \"summary\": \"List all applications.\",\n        \"description\": \"List
-    all applications.\",\n        \"responses\": {\n          \"200\": {\n            \"description\":
-    \"OK\",\n            \"content\": {\n              \"application/json\": {\n                \"schema\":
-    {\n                  \"type\": \"array\",\n                  \"items\": {\n                    \"$ref\":
-    \"#/components/schemas/api.Application\"\n                  }\n                }\n
-    \             }\n            }\n          }\n        },\n        \"security\":
-    [\n          {\n            \"bearerAuth\": []\n          }\n        ]\n      },\n
-    \     \"post\": {\n        \"operationId\": \"createApplication\",\n        \"tags\":
-    [\n          \"applications\"\n        ],\n        \"summary\": \"Create an application.\",\n
-    \       \"description\": \"Create an application.\",\n        \"requestBody\":
-    {\n          \"description\": \"Application data\",\n          \"content\": {\n
-    \           \"application/json\": {\n              \"schema\": {\n                \"$ref\":
-    \"#/components/schemas/api.Application\"\n              }\n            }\n          },\n
-    \         \"required\": true\n        },\n        \"responses\": {\n          \"201\":
-    {\n            \"description\": \"Created\",\n            \"content\": {\n              \"application/json\":
-    {\n                \"schema\": {\n                  \"$ref\": \"#/components/schemas/api.Application\"\n
-    \               }\n              }\n            }\n          }\n        },\n        \"security\":
-    [\n          {\n            \"bearerAuth\": []\n          }\n        ],\n        \"x-codegen-request-body-name\":
-    \"application\"\n      }\n      \n    },\n    \"/hub/applications/{id}\": {\n
-    \     \"get\": {\n        \"operationId\": \"getApplication\",\n        \"tags\":
-    [\n          \"applications\"\n        ],\n        \"summary\": \"Get an application
-    by ID.\",\n        \"description\": \"Get an application by ID.\",\n        \"parameters\":
-    [\n          {\n            \"name\": \"id\",\n            \"in\": \"path\",\n
-    \           \"description\": \"Application ID\",\n            \"required\": true,\n
-    \           \"schema\": {\n              \"type\": \"integer\"\n            }\n
-    \         }\n        ],\n        \"responses\": {\n          \"200\": {\n            \"description\":
-    \"OK\",\n            \"content\": {\n              \"application/json\": {\n                \"schema\":
-    {\n                  \"$ref\": \"#/components/schemas/api.Application\"\n                }\n
-    \             }\n            }\n          }\n        },\n        \"security\":
-    [\n          {\n            \"bearerAuth\": []\n          }\n        ]\n      },\n
-    \     \"put\": {\n        \"operationId\": \"updateApplication\",\n        \"tags\":
-    [\n          \"applications\"\n        ],\n        \"summary\": \"Update an application.\",\n
-    \       \"description\": \"Update an application.\",\n        \"parameters\":
-    [\n          {\n            \"name\": \"id\",\n            \"in\": \"path\",\n
-    \           \"description\": \"Application id\",\n            \"required\": true,\n
-    \           \"schema\": {\n              \"type\": \"integer\"\n            }\n
-    \         }\n        ],\n        \"requestBody\": {\n          \"description\":
-    \"Application data\",\n          \"content\": {\n            \"application/json\":
-    {\n              \"schema\": {\n                \"$ref\": \"#/components/schemas/api.Application\"\n
-    \             }\n            }\n          },\n          \"required\": true\n        },\n
-    \       \"responses\": {\n          \"204\": {\n            \"description\": \"No
-    Content\",\n            \"content\": {}\n          }\n        },\n        \"security\":
-    [\n          {\n            \"bearerAuth\": []\n          }\n        ],\n        \"x-codegen-request-body-name\":
-    \"application\"\n      },\n      \"delete\": {\n        \"operationId\": \"deleteApplication\",\n
-    \       \"tags\": [\n          \"applications\"\n        ],\n        \"summary\":
-    \"Delete an application.\",\n        \"description\": \"Delete an application.\",\n
-    \       \"parameters\": [\n          {\n            \"name\": \"id\",\n            \"in\":
-    \"path\",\n            \"description\": \"Application id\",\n            \"required\":
-    true,\n            \"schema\": {\n              \"type\": \"integer\"\n            }\n
-    \         }\n        ],\n        \"responses\": {\n          \"204\": {\n            \"description\":
-    \"No Content\",\n            \"content\": {}\n          }\n        },\n        \"security\":
-    [\n          {\n            \"bearerAuth\": []\n          }\n        ]\n      }\n
-    \   },\n\n    \"/hub/taskgroups\": {\n      \"get\": {\n        \"operationId\":
-    \"getTaskgroups\",\n        \"tags\": [\n          \"taskgroups\"\n        ],\n
-    \       \"summary\": \"List all task groups.\",\n        \"description\": \"List
-    all task groups.\",\n        \"responses\": {\n          \"200\": {\n            \"description\":
-    \"OK\",\n            \"content\": {\n              \"application/json\": {\n                \"schema\":
-    {\n                  \"type\": \"array\",\n                  \"items\": {\n                    \"$ref\":
-    \"#/components/schemas/api.TaskGroup\"\n                  }\n                }\n
-    \             }\n            }\n          }\n        },\n        \"security\":
-    [\n          {\n            \"bearerAuth\": []\n          }\n        ]\n      },\n
-    \     \"post\": {\n        \"operationId\": \"createTaskgroup\",\n        \"tags\":
-    [\n          \"taskgroups\"\n        ],\n        \"summary\": \"Create a task
-    group.\",\n        \"description\": \"Create a task group.\",\n        \"requestBody\":
-    {\n          \"description\": \"TaskGroup data\",\n          \"content\": {\n
-    \           \"application/json\": {\n              \"schema\": {\n                \"$ref\":
-    \"#/components/schemas/api.TaskGroup\"\n              }\n            }\n          },\n
-    \         \"required\": true\n        },\n        \"responses\": {\n          \"201\":
-    {\n            \"description\": \"Created\",\n            \"content\": {\n              \"application/json\":
-    {\n                \"schema\": {\n                  \"$ref\": \"#/components/schemas/api.TaskGroup\"\n
-    \               }\n              }\n            }\n          }\n        },\n        \"security\":
-    [\n          {\n            \"bearerAuth\": []\n          }\n        ],\n        \"x-codegen-request-body-name\":
-    \"taskgroup\"\n      }\n    },\n    \"/hub/taskgroups/{id}\": {\n      \"get\":
-    {\n        \"operationId\": \"getTaskgroup\",\n        \"tags\": [\n          \"taskgroups\"\n
-    \       ],\n        \"summary\": \"Get a task group by ID.\",\n        \"description\":
-    \"Get a task group by ID.\",\n        \"parameters\": [\n          {\n            \"name\":
-    \"id\",\n            \"in\": \"path\",\n            \"description\": \"TaskGroup
-    ID\",\n            \"required\": true,\n            \"schema\": {\n              \"type\":
-    \"integer\"\n            }\n          }\n        ],\n        \"responses\": {\n
-    \         \"200\": {\n            \"description\": \"OK\",\n            \"content\":
-    {\n              \"application/json\": {\n                \"schema\": {\n                  \"$ref\":
-    \"#/components/schemas/api.TaskGroup\"\n                }\n              }\n            }\n
-    \         }\n        },\n        \"security\": [\n          {\n            \"bearerAuth\":
-    []\n          }\n        ]  \n      },\n      \"put\": {\n        \"operationId\":
-    \"updateTaskGroups\",\n        \"tags\": [\n          \"taskgroups\"\n        ],\n
-    \       \"summary\": \"Update a task group.\",\n        \"description\": \"Update
-    a task group.\",\n        \"parameters\": [\n          {\n            \"name\":
-    \"id\",\n            \"in\": \"path\",\n            \"description\": \"Task ID\",\n
-    \           \"required\": true,\n            \"schema\": {\n              \"type\":
-    \"integer\"\n            }\n          }\n        ],\n        \"requestBody\":
-    {\n          \"description\": \"Task data\",\n          \"content\": {\n            \"application/json\":
-    {\n              \"schema\": {\n                \"$ref\": \"#/components/schemas/api.TaskGroup\"\n
-    \             }\n            }\n          },\n          \"required\": true\n        },\n
-    \       \"responses\": {\n          \"204\": {\n            \"description\": \"No
-    Content\",\n            \"content\": {}\n          }\n        },\n        \"security\":
-    [\n          {\n            \"bearerAuth\": []\n          }\n        ],\n        \"x-codegen-request-body-name\":
-    \"task\"\n      },\n      \"delete\": {\n        \"operationId\": \"deleteTaskGroup\",\n
-    \       \"tags\": [\n          \"taskgroups\"\n        ],\n        \"summary\":
-    \"Delete a task group.\",\n        \"description\": \"Delete a task group.\",\n
-    \       \"parameters\": [\n          {\n            \"name\": \"id\",\n            \"in\":
-    \"path\",\n            \"description\": \"TaskGroup ID\",\n            \"required\":
-    true,\n            \"schema\": {\n              \"type\": \"integer\"\n            }\n
-    \         }\n        ],\n        \"responses\": {\n          \"204\": {\n            \"description\":
-    \"No Content\",\n            \"content\": {}\n          }\n        },\n        \"security\":
-    [\n          {\n            \"bearerAuth\": []\n          }\n        ]\n      }\n
-    \   },\n    \"/hub/tickets\": {\n      \"post\": {\n        \"operationId\": \"createTicket\",\n
-    \       \"tags\": [\n          \"tickets\"\n        ],\n        \"summary\": \"Create
-    a ticket.\",\n        \"description\": \"Create a ticket.\",\n        \"requestBody\":
-    {\n          \"description\": \"Ticket data\",\n          \"content\": {\n            \"application/json\":
-    {\n              \"schema\": {\n                \"$ref\": \"#/components/schemas/api.Ticket\"\n
-    \             }\n            }\n          },\n          \"required\": true\n        },\n
-    \       \"responses\": {\n          \"201\": {\n            \"description\": \"Created\",\n
-    \           \"content\": {\n              \"application/json\": {\n                \"schema\":
-    {\n                  \"$ref\": \"#/components/schemas/api.Ticket\"\n                }\n
-    \             }\n            }\n          }\n        },\n        \"security\":
-    [\n          {\n            \"bearerAuth\": []\n          }\n        ],\n        \"x-codegen-request-body-name\":
-    \"ticket\"\n      },\n      \"get\": {\n        \"operationId\": \"getTickets\",\n
-    \       \"tags\": [\n          \"tickets\"\n        ],\n        \"summary\": \"List
-    all tickets.\",\n        \"description\": \"List all tickets.\",\n        \"responses\":
-    {\n          \"200\": {\n            \"description\": \"OK\",\n            \"content\":
-    {\n              \"application/json\": {\n                \"schema\": {\n                  \"type\":
-    \"array\",\n                  \"items\": {\n                    \"$ref\": \"#/components/schemas/api.Ticket\"\n
-    \                 }\n                }\n              }\n            }\n          }\n
-    \       },\n        \"security\": [\n          {\n            \"bearerAuth\":
-    []\n          }\n        ]\n      }\n    },\n    \"/tickets/{id}\": {\n      \"get\":
-    {\n        \"operationId\": \"getTicket\",\n        \"tags\": [\n          \"tickets\"\n
-    \       ],\n        \"summary\": \"Get a ticket by ID.\",\n        \"description\":
-    \"Get a ticket by ID.\",\n        \"parameters\": [\n          {\n            \"name\":
-    \"id\",\n            \"in\": \"path\",\n            \"description\": \"Ticket
-    ID\",\n            \"required\": true,\n            \"schema\": {\n              \"type\":
-    \"integer\"\n            }\n          }\n        ],\n        \"responses\": {\n
-    \         \"200\": {\n            \"description\": \"OK\",\n            \"content\":
-    {\n              \"application/json\": {\n                \"schema\": {\n                  \"$ref\":
-    \"#/components/schemas/api.Ticket\"\n                }\n              }\n            }\n
-    \         }\n        },\n        \"security\": [\n          {\n            \"bearerAuth\":
-    []\n          }\n        ]\n      }\n    },\n    \"/hub/batch/tickets\": {\n      \"post\":
-    {\n        \"operationId\": \"batchCreateTickets\",\n        \"tags\": [\n          \"batch\",\n
-    \         \"tickets\"\n        ],\n        \"summary\": \"Batch-create Tickets.\",\n
-    \       \"description\": \"Batch-create Tickets.\",\n        \"requestBody\":
-    {\n          \"description\": \"Tickets data\",\n          \"content\": {\n            \"application/json\":
-    {\n              \"schema\": {\n                \"type\": \"array\",\n                \"items\":
-    {\n                  \"$ref\": \"#/components/schemas/api.Ticket\"\n                }\n
-    \             }\n            }\n          },\n          \"required\": true\n        },\n
-    \       \"responses\": {\n          \"200\": {\n            \"description\": \"OK\",\n
-    \           \"content\": {\n              \"application/json\": {\n                \"schema\":
-    {\n                  \"type\": \"array\",\n                  \"items\": {\n                    \"$ref\":
-    \"#/components/schemas/api.Ticket\"\n                  }\n                }\n
-    \             }\n            }\n          }\n        },\n        \"security\":
-    [\n          {\n            \"bearerAuth\": []\n          }\n        ],\n        \"x-codegen-request-body-name\":
-    \"tickets\"\n      }\n    },\n    \"/hub/trackers/{id}/projects\": {\n      \"get\":
-    {\n        \"operationId\": \"getTrackerProjects\",\n        \"tags\": [\n          \"trackers\"\n
-    \       ],\n        \"summary\": \"List a tracker's projects.\",\n        \"description\":
-    \"List a tracker's projects.\",\n        \"parameters\": [\n          {\n            \"name\":
-    \"id\",\n            \"in\": \"path\",\n            \"description\": \"Tracker
-    ID\",\n            \"required\": true,\n            \"schema\": {\n              \"type\":
-    \"integer\"\n            }\n          }\n        ],\n        \"responses\": {\n
-    \         \"200\": {\n            \"description\": \"OK\",\n            \"content\":
-    {\n              \"application/json\": {\n                \"schema\": {\n                  \"type\":
-    \"array\",\n                  \"items\": {\n                    \"$ref\": \"#/components/schemas/api.Project\"\n
-    \                 }\n                }\n              }\n            }\n          }\n
-    \       },\n        \"security\": [\n          {\n            \"bearerAuth\":
-    []\n          }\n        ]\n      }\n    },\n    \"/hub/trackers/{id}/projects/{id2}\":
-    {\n      \"get\": {\n        \"operationId\": \"getTrackerProject\",\n        \"tags\":
-    [\n          \"trackers\"\n        ],\n        \"summary\": \"Get a tracker project
-    by ID.\",\n        \"description\": \"Get a tracker project by ID.\",\n        \"parameters\":
-    [\n          {\n            \"name\": \"id\",\n            \"in\": \"path\",\n
-    \           \"description\": \"Tracker ID\",\n            \"required\": true,\n
-    \           \"schema\": {\n              \"type\": \"integer\"\n            }\n
-    \         },\n          {\n            \"name\": \"id2\",\n            \"in\":
-    \"path\",\n            \"description\": \"Project ID\",\n            \"required\":
-    true,\n            \"schema\": {\n              \"type\": \"string\"\n            }\n
-    \         }\n        ],\n        \"responses\": {\n          \"200\": {\n            \"description\":
-    \"OK\",\n            \"content\": {\n              \"application/json\": {\n                \"schema\":
-    {\n                  \"$ref\": \"#/components/schemas/api.Project\"\n                }\n
-    \             }\n            }\n          }\n        },\n        \"security\":
-    [\n          {\n            \"bearerAuth\": []\n          }\n        ]\n      }\n
-    \   },\n    \"/hub/trackers/{id}/projects/{id2}/issuetypes\": {\n      \"get\":
-    {\n        \"operationId\": \"getTrackerProjectIssueTypes\",\n        \"tags\":
-    [\n          \"trackers\"\n        ],\n        \"summary\": \"List a tracker project's
-    issue types.\",\n        \"description\": \"List a tracker project's issue types.\",\n
-    \       \"parameters\": [\n          {\n            \"name\": \"id\",\n            \"in\":
-    \"path\",\n            \"description\": \"Tracker ID\",\n            \"required\":
-    true,\n            \"schema\": {\n              \"type\": \"integer\"\n            }\n
-    \         },\n          {\n            \"name\": \"id2\",\n            \"in\":
-    \"path\",\n            \"description\": \"Project ID\",\n            \"required\":
-    true,\n            \"schema\": {\n              \"type\": \"string\"\n            }\n
-    \         }\n        ],\n        \"responses\": {\n          \"200\": {\n            \"description\":
-    \"OK\",\n            \"content\": {\n              \"application/json\": {\n                \"schema\":
-    {\n                  \"type\": \"array\",\n                  \"items\": {\n                    \"$ref\":
-    \"#/components/schemas/api.IssueType\"\n                  }\n                }\n
-    \             }\n            }\n          }\n        },\n        \"security\":
-    [\n          {\n            \"bearerAuth\": []\n          }\n        ]\n      }\n
-    \   }\n  },\n\n  \"components\": {\n    \"schemas\": {\n      \"api.Addon\": {\n
-    \       \"type\": \"object\",\n        \"properties\": {\n          \"image\":
-    {\n            \"type\": \"string\"\n          },\n          \"name\": {\n            \"type\":
-    \"string\"\n          }\n        }\n      },\n      \"api.Analysis\": {\n        \"type\":
-    \"object\",\n        \"properties\": {\n          \"archived\": {\n            \"type\":
-    \"boolean\"\n          },\n          \"createTime\": {\n            \"type\":
-    \"string\"\n          },\n          \"createUser\": {\n            \"type\": \"string\"\n
-    \         },\n          \"dependencies\": {\n            \"type\": \"array\",\n
-    \           \"items\": {\n              \"$ref\": \"#/components/schemas/api.TechDependency\"\n
-    \           }\n          },\n          \"effort\": {\n            \"type\": \"integer\"\n
-    \         },\n          \"id\": {\n            \"type\": \"integer\"\n          },\n
-    \         \"issues\": {\n            \"type\": \"array\",\n            \"items\":
-    {\n              \"$ref\": \"#/components/schemas/api.Issue\"\n            }\n
-    \         },\n          \"summary\": {\n            \"type\": \"object\",\n            \"properties\":
-    {}\n          },\n          \"updateUser\": {\n            \"type\": \"string\"\n
-    \         }\n        }\n      },\n      \"api.Application\": {\n        \"required\":
-    [\n          \"name\"\n        ],\n        \"type\": \"object\",\n        \"properties\":
-    {\n          \"archetypes\": {\n            \"type\": \"array\",\n            \"items\":
-    {\n              \"$ref\": \"#/components/schemas/api.Ref\"\n            }\n          },\n
-    \         \"assessed\": {\n            \"type\": \"boolean\"\n          },\n          \"assessments\":
-    {\n            \"type\": \"array\",\n            \"items\": {\n              \"$ref\":
-    \"#/components/schemas/api.Ref\"\n            }\n          },\n          \"binary\":
-    {\n            \"type\": \"string\"\n          },\n          \"bucket\": {\n            \"$ref\":
-    \"#/components/schemas/api.Ref\"\n          },\n          \"businessService\":
-    {\n            \"$ref\": \"#/components/schemas/api.Ref\"\n          },\n          \"comments\":
-    {\n            \"type\": \"string\"\n          },\n          \"confidence\": {\n
-    \           \"type\": \"integer\"\n          },\n          \"contributors\": {\n
-    \           \"type\": \"array\",\n            \"items\": {\n              \"$ref\":
-    \"#/components/schemas/api.Ref\"\n            }\n          },\n          \"createTime\":
-    {\n            \"type\": \"string\"\n          },\n          \"createUser\": {\n
-    \           \"type\": \"string\"\n          },\n          \"description\": {\n
-    \           \"type\": \"string\"\n          },\n          \"effort\": {\n            \"type\":
-    \"integer\"\n          },\n          \"id\": {\n            \"type\": \"integer\"\n
-    \         },\n          \"identities\": {\n            \"type\": \"array\",\n
-    \           \"items\": {\n              \"$ref\": \"#/components/schemas/api.Ref\"\n
-    \           }\n          },\n          \"migrationWave\": {\n            \"$ref\":
-    \"#/components/schemas/api.Ref\"\n          },\n          \"name\": {\n            \"type\":
-    \"string\"\n          },\n          \"owner\": {\n            \"$ref\": \"#/components/schemas/api.Ref\"\n
-    \         },\n          \"repository\": {\n            \"$ref\": \"#/components/schemas/api.Repository\"\n
-    \         },\n          \"review\": {\n            \"$ref\": \"#/components/schemas/api.Ref\"\n
-    \         },\n          \"risk\": {\n            \"type\": \"string\"\n          },\n
-    \         \"tags\": {\n            \"type\": \"array\",\n            \"items\":
-    {\n              \"$ref\": \"#/components/schemas/api.TagRef\"\n            }\n
-    \         },\n          \"updateUser\": {\n            \"type\": \"string\"\n
-    \         }\n        }\n      },\n      \"api.Archetype\": {\n        \"type\":
-    \"object\",\n        \"properties\": {\n          \"applications\": {\n            \"type\":
-    \"array\",\n            \"items\": {\n              \"$ref\": \"#/components/schemas/api.Ref\"\n
-    \           }\n          },\n          \"assessed\": {\n            \"type\":
-    \"boolean\"\n          },\n          \"assessments\": {\n            \"type\":
-    \"array\",\n            \"items\": {\n              \"$ref\": \"#/components/schemas/api.Ref\"\n
-    \           }\n          },\n          \"comments\": {\n            \"type\":
-    \"string\"\n          },\n          \"confidence\": {\n            \"type\": \"integer\"\n
-    \         },\n          \"createTime\": {\n            \"type\": \"string\"\n
-    \         },\n          \"createUser\": {\n            \"type\": \"string\"\n
-    \         },\n          \"criteria\": {\n            \"type\": \"array\",\n            \"items\":
-    {\n              \"$ref\": \"#/components/schemas/api.TagRef\"\n            }\n
-    \         },\n          \"description\": {\n            \"type\": \"string\"\n
-    \         },\n          \"id\": {\n            \"type\": \"integer\"\n          },\n
-    \         \"name\": {\n            \"type\": \"string\"\n          },\n          \"review\":
-    {\n            \"$ref\": \"#/components/schemas/api.Ref\"\n          },\n          \"risk\":
-    {\n            \"type\": \"string\"\n          },\n          \"stakeholderGroups\":
-    {\n            \"type\": \"array\",\n            \"items\": {\n              \"$ref\":
-    \"#/components/schemas/api.Ref\"\n            }\n          },\n          \"stakeholders\":
-    {\n            \"type\": \"array\",\n            \"items\": {\n              \"$ref\":
-    \"#/components/schemas/api.Ref\"\n            }\n          },\n          \"tags\":
-    {\n            \"type\": \"array\",\n            \"items\": {\n              \"$ref\":
-    \"#/components/schemas/api.TagRef\"\n            }\n          },\n          \"updateUser\":
-    {\n            \"type\": \"string\"\n          }\n        }\n      },\n      \"api.Assessment\":
-    {\n        \"required\": [\n          \"questionnaire\"\n        ],\n        \"type\":
-    \"object\",\n        \"properties\": {\n          \"application\": {\n            \"$ref\":
-    \"#/components/schemas/api.Ref\"\n          },\n          \"archetype\": {\n            \"$ref\":
-    \"#/components/schemas/api.Ref\"\n          },\n          \"confidence\": {\n
-    \           \"type\": \"integer\"\n          },\n          \"createTime\": {\n
-    \           \"type\": \"string\"\n          },\n          \"createUser\": {\n
-    \           \"type\": \"string\"\n          },\n          \"id\": {\n            \"type\":
-    \"integer\"\n          },\n          \"questionnaire\": {\n            \"$ref\":
-    \"#/components/schemas/api.Ref\"\n          },\n          \"risk\": {\n            \"type\":
-    \"string\",\n            \"description\": \"read only\"\n          },\n          \"riskMessages\":
-    {\n            \"$ref\": \"#/components/schemas/assessment.RiskMessages\"\n          },\n
-    \         \"sections\": {\n            \"type\": \"array\",\n            \"items\":
-    {\n              \"$ref\": \"#/components/schemas/assessment.Section\"\n            }\n
-    \         },\n          \"stakeholderGroups\": {\n            \"type\": \"array\",\n
-    \           \"items\": {\n              \"$ref\": \"#/components/schemas/api.Ref\"\n
-    \           }\n          },\n          \"stakeholders\": {\n            \"type\":
-    \"array\",\n            \"items\": {\n              \"$ref\": \"#/components/schemas/api.Ref\"\n
-    \           }\n          },\n          \"status\": {\n            \"type\": \"string\"\n
-    \         },\n          \"thresholds\": {\n            \"$ref\": \"#/components/schemas/assessment.Thresholds\"\n
-    \         },\n          \"updateUser\": {\n            \"type\": \"string\"\n
-    \         }\n        }\n      },\n      \"api.Bucket\": {\n        \"type\": \"object\",\n
-    \       \"properties\": {\n          \"createTime\": {\n            \"type\":
-    \"string\"\n          },\n          \"createUser\": {\n            \"type\": \"string\"\n
-    \         },\n          \"expiration\": {\n            \"type\": \"string\"\n
-    \         },\n          \"id\": {\n            \"type\": \"integer\"\n          },\n
-    \         \"path\": {\n            \"type\": \"string\"\n          },\n          \"updateUser\":
-    {\n            \"type\": \"string\"\n          }\n        }\n      },\n      \"api.BusinessService\":
-    {\n        \"required\": [\n          \"name\"\n        ],\n        \"type\":
-    \"object\",\n        \"properties\": {\n          \"createTime\": {\n            \"type\":
-    \"string\"\n          },\n          \"createUser\": {\n            \"type\": \"string\"\n
-    \         },\n          \"description\": {\n            \"type\": \"string\"\n
-    \         },\n          \"id\": {\n            \"type\": \"integer\"\n          },\n
-    \         \"name\": {\n            \"type\": \"string\"\n          },\n          \"owner\":
-    {\n            \"$ref\": \"#/components/schemas/api.Ref\"\n          },\n          \"updateUser\":
-    {\n            \"type\": \"string\"\n          }\n        }\n      },\n      \"api.Cache\":
-    {\n        \"type\": \"object\",\n        \"properties\": {\n          \"capacity\":
-    {\n            \"type\": \"string\"\n          },\n          \"exists\": {\n            \"type\":
-    \"boolean\"\n          },\n          \"path\": {\n            \"type\": \"string\"\n
-    \         },\n          \"used\": {\n            \"type\": \"string\"\n          }\n
-    \       }\n      },\n      \"api.CopyRequest\": {\n        \"required\": [\n          \"sourceReview\",\n
-    \         \"targetApplications\"\n        ],\n        \"type\": \"object\",\n
-    \       \"properties\": {\n          \"sourceReview\": {\n            \"type\":
-    \"integer\"\n          },\n          \"targetApplications\": {\n            \"type\":
-    \"array\",\n            \"items\": {\n              \"type\": \"integer\"\n            }\n
-    \         }\n        }\n      },\n      \"api.DepAppReport\": {\n        \"type\":
-    \"object\",\n        \"properties\": {\n          \"businessService\": {\n            \"type\":
-    \"string\"\n          },\n          \"dependency\": {\n            \"type\": \"object\",\n
-    \           \"properties\": {\n              \"id\": {\n                \"type\":
-    \"integer\"\n              },\n              \"indirect\": {\n                \"type\":
-    \"boolean\"\n              },\n              \"labels\": {\n                \"type\":
-    \"array\",\n                \"items\": {\n                  \"type\": \"string\"\n
-    \               }\n              },\n              \"name\": {\n                \"type\":
-    \"string\"\n              },\n              \"provider\": {\n                \"type\":
-    \"string\"\n              },\n              \"sha\": {\n                \"type\":
-    \"string\"\n              },\n              \"version\": {\n                \"type\":
-    \"string\"\n              }\n            }\n          },\n          \"description\":
-    {\n            \"type\": \"string\"\n          },\n          \"id\": {\n            \"type\":
-    \"integer\"\n          },\n          \"name\": {\n            \"type\": \"string\"\n
-    \         }\n        }\n      },\n      \"api.Dependency\": {\n        \"type\":
-    \"object\",\n        \"properties\": {\n          \"createTime\": {\n            \"type\":
-    \"string\"\n          },\n          \"createUser\": {\n            \"type\": \"string\"\n
-    \         },\n          \"from\": {\n            \"$ref\": \"#/components/schemas/api.Ref\"\n
-    \         },\n          \"id\": {\n            \"type\": \"integer\"\n          },\n
-    \         \"to\": {\n            \"$ref\": \"#/components/schemas/api.Ref\"\n
-    \         },\n          \"updateUser\": {\n            \"type\": \"string\"\n
-    \         }\n        }\n      },\n      \"api.Fact\": {\n        \"type\": \"object\",\n
-    \       \"properties\": {\n          \"key\": {\n            \"type\": \"string\"\n
-    \         },\n          \"source\": {\n            \"type\": \"string\"\n          },\n
-    \         \"value\": {\n            \"type\": \"object\"\n          }\n        }\n
-    \     },\n      \"api.FactMap\": {\n        \"type\": \"object\",\n        \"additionalProperties\":
-    true\n      },\n      \"api.Fields\": {\n        \"type\": \"object\",\n        \"additionalProperties\":
-    true\n      },\n      \"api.File\": {\n        \"type\": \"object\",\n        \"properties\":
-    {\n          \"createTime\": {\n            \"type\": \"string\"\n          },\n
-    \         \"createUser\": {\n            \"type\": \"string\"\n          },\n
-    \         \"expiration\": {\n            \"type\": \"string\"\n          },\n
-    \         \"id\": {\n            \"type\": \"integer\"\n          },\n          \"name\":
-    {\n            \"type\": \"string\"\n          },\n          \"path\": {\n            \"type\":
-    \"string\"\n          },\n          \"updateUser\": {\n            \"type\": \"string\"\n
-    \         }\n        }\n      },\n      \"api.FileReport\": {\n        \"type\":
-    \"object\",\n        \"properties\": {\n          \"effort\": {\n            \"type\":
-    \"integer\"\n          },\n          \"file\": {\n            \"type\": \"string\"\n
-    \         },\n          \"incidents\": {\n            \"type\": \"integer\"\n
-    \         },\n          \"issueId\": {\n            \"type\": \"integer\"\n          }\n
-    \       }\n      },\n      \"api.Identity\": {\n        \"required\": [\n          \"kind\",\n
-    \         \"name\"\n        ],\n        \"type\": \"object\",\n        \"properties\":
-    {\n          \"createTime\": {\n            \"type\": \"string\"\n          },\n
-    \         \"createUser\": {\n            \"type\": \"string\"\n          },\n
-    \         \"description\": {\n            \"type\": \"string\"\n          },\n
-    \         \"id\": {\n            \"type\": \"integer\"\n          },\n          \"key\":
-    {\n            \"type\": \"string\"\n          },\n          \"kind\": {\n            \"type\":
-    \"string\"\n          },\n          \"name\": {\n            \"type\": \"string\"\n
-    \         },\n          \"password\": {\n            \"type\": \"string\"\n          },\n
-    \         \"settings\": {\n            \"type\": \"string\"\n          },\n          \"updateUser\":
-    {\n            \"type\": \"string\"\n          },\n          \"user\": {\n            \"type\":
-    \"string\"\n          }\n        }\n      },\n      \"api.Import\": {\n        \"type\":
-    \"object\",\n        \"additionalProperties\": true\n      },\n      \"api.ImportSummary\":
-    {\n        \"type\": \"object\",\n        \"properties\": {\n          \"createEntities\":
-    {\n            \"type\": \"boolean\"\n          },\n          \"createTime\":
-    {\n            \"type\": \"string\"\n          },\n          \"createUser\": {\n
-    \           \"type\": \"string\"\n          },\n          \"filename\": {\n            \"type\":
-    \"string\"\n          },\n          \"id\": {\n            \"type\": \"integer\"\n
-    \         },\n          \"importStatus\": {\n            \"type\": \"string\"\n
-    \         },\n          \"importTime\": {\n            \"type\": \"string\"\n
-    \         },\n          \"invalidCount\": {\n            \"type\": \"integer\"\n
-    \         },\n          \"updateUser\": {\n            \"type\": \"string\"\n
-    \         },\n          \"validCount\": {\n            \"type\": \"integer\"\n
-    \         }\n        }\n      },\n      \"api.Incident\": {\n        \"type\":
-    \"object\",\n        \"properties\": {\n          \"codeSnip\": {\n            \"type\":
-    \"string\"\n          },\n          \"createTime\": {\n            \"type\": \"string\"\n
-    \         },\n          \"createUser\": {\n            \"type\": \"string\"\n
-    \         },\n          \"facts\": {\n            \"$ref\": \"#/components/schemas/api.FactMap\"\n
-    \         },\n          \"file\": {\n            \"type\": \"string\"\n          },\n
-    \         \"id\": {\n            \"type\": \"integer\"\n          },\n          \"line\":
-    {\n            \"type\": \"integer\"\n          },\n          \"message\": {\n
-    \           \"type\": \"string\"\n          },\n          \"updateUser\": {\n
-    \           \"type\": \"string\"\n          }\n        }\n      },\n      \"api.Issue\":
-    {\n        \"required\": [\n          \"category\",\n          \"name\",\n          \"rule\",\n
-    \         \"ruleset\"\n        ],\n        \"type\": \"object\",\n        \"properties\":
-    {\n          \"category\": {\n            \"type\": \"string\"\n          },\n
-    \         \"createTime\": {\n            \"type\": \"string\"\n          },\n
-    \         \"createUser\": {\n            \"type\": \"string\"\n          },\n
-    \         \"description\": {\n            \"type\": \"string\"\n          },\n
-    \         \"effort\": {\n            \"type\": \"integer\"\n          },\n          \"facts\":
-    {\n            \"$ref\": \"#/components/schemas/api.FactMap\"\n          },\n
-    \         \"id\": {\n            \"type\": \"integer\"\n          },\n          \"incidents\":
-    {\n            \"type\": \"array\",\n            \"items\": {\n              \"$ref\":
-    \"#/components/schemas/api.Incident\"\n            }\n          },\n          \"labels\":
-    {\n            \"type\": \"array\",\n            \"items\": {\n              \"type\":
-    \"string\"\n            }\n          },\n          \"links\": {\n            \"type\":
-    \"array\",\n            \"items\": {\n              \"$ref\": \"#/components/schemas/api.Link\"\n
-    \           }\n          },\n          \"name\": {\n            \"type\": \"string\"\n
-    \         },\n          \"rule\": {\n            \"type\": \"string\"\n          },\n
-    \         \"ruleset\": {\n            \"type\": \"string\"\n          },\n          \"updateUser\":
-    {\n            \"type\": \"string\"\n          }\n        }\n      },\n      \"api.IssueAppReport\":
-    {\n        \"type\": \"object\",\n        \"properties\": {\n          \"businessService\":
-    {\n            \"type\": \"string\"\n          },\n          \"description\":
-    {\n            \"type\": \"string\"\n          },\n          \"effort\": {\n            \"type\":
-    \"integer\"\n          },\n          \"files\": {\n            \"type\": \"integer\"\n
-    \         },\n          \"id\": {\n            \"type\": \"integer\"\n          },\n
-    \         \"incidents\": {\n            \"type\": \"integer\"\n          },\n
-    \         \"issue\": {\n            \"type\": \"object\",\n            \"properties\":
-    {\n              \"description\": {\n                \"type\": \"string\"\n              },\n
-    \             \"id\": {\n                \"type\": \"integer\"\n              },\n
-    \             \"name\": {\n                \"type\": \"string\"\n              },\n
-    \             \"rule\": {\n                \"type\": \"string\"\n              },\n
-    \             \"ruleset\": {\n                \"type\": \"string\"\n              }\n
-    \           }\n          },\n          \"name\": {\n            \"type\": \"string\"\n
-    \         }\n        }\n      },\n      \"api.IssueReport\": {\n        \"type\":
-    \"object\",\n        \"properties\": {\n          \"category\": {\n            \"type\":
-    \"string\"\n          },\n          \"description\": {\n            \"type\":
-    \"string\"\n          },\n          \"effort\": {\n            \"type\": \"integer\"\n
-    \         },\n          \"files\": {\n            \"type\": \"integer\"\n          },\n
-    \         \"id\": {\n            \"type\": \"integer\"\n          },\n          \"labels\":
-    {\n            \"type\": \"array\",\n            \"items\": {\n              \"type\":
-    \"string\"\n            }\n          },\n          \"links\": {\n            \"type\":
-    \"array\",\n            \"items\": {\n              \"$ref\": \"#/components/schemas/api.Link\"\n
-    \           }\n          },\n          \"name\": {\n            \"type\": \"string\"\n
-    \         },\n          \"rule\": {\n            \"type\": \"string\"\n          },\n
-    \         \"ruleset\": {\n            \"type\": \"string\"\n          }\n        }\n
-    \     },\n      \"api.IssueType\": {\n        \"type\": \"object\",\n        \"properties\":
-    {\n          \"id\": {\n            \"type\": \"string\"\n          },\n          \"name\":
-    {\n            \"type\": \"string\"\n          }\n        }\n      },\n      \"api.JobFunction\":
-    {\n        \"required\": [\n          \"name\"\n        ],\n        \"type\":
-    \"object\",\n        \"properties\": {\n          \"createTime\": {\n            \"type\":
-    \"string\"\n          },\n          \"createUser\": {\n            \"type\": \"string\"\n
-    \         },\n          \"id\": {\n            \"type\": \"integer\"\n          },\n
-    \         \"name\": {\n            \"type\": \"string\"\n          },\n          \"stakeholders\":
-    {\n            \"type\": \"array\",\n            \"items\": {\n              \"$ref\":
-    \"#/components/schemas/api.Ref\"\n            }\n          },\n          \"updateUser\":
-    {\n            \"type\": \"string\"\n          }\n        }\n      },\n      \"api.Label\":
-    {\n        \"type\": \"object\",\n        \"properties\": {\n          \"label\":
-    {\n            \"type\": \"string\"\n          },\n          \"name\": {\n            \"type\":
-    \"string\"\n          }\n        }\n      },\n      \"api.Link\": {\n        \"type\":
-    \"object\",\n        \"properties\": {\n          \"title\": {\n            \"type\":
-    \"string\"\n          },\n          \"url\": {\n            \"type\": \"string\"\n
-    \         }\n        }\n      },\n      \"api.Login\": {\n        \"type\": \"object\",\n
-    \       \"properties\": {\n          \"expiry\": {\n            \"type\": \"integer\"\n
-    \         },\n          \"password\": {\n            \"type\": \"string\"\n          },\n
-    \         \"refresh\": {\n            \"type\": \"string\"\n          },\n          \"token\":
-    {\n            \"type\": \"string\"\n          },\n          \"user\": {\n            \"type\":
-    \"string\"\n          }\n        }\n      },\n      \"api.MigrationWave\": {\n
-    \       \"type\": \"object\",\n        \"properties\": {\n          \"applications\":
-    {\n            \"type\": \"array\",\n            \"items\": {\n              \"$ref\":
-    \"#/components/schemas/api.Ref\"\n            }\n          },\n          \"createTime\":
-    {\n            \"type\": \"string\"\n          },\n          \"createUser\": {\n
-    \           \"type\": \"string\"\n          },\n          \"endDate\": {\n            \"type\":
-    \"string\"\n          },\n          \"id\": {\n            \"type\": \"integer\"\n
-    \         },\n          \"name\": {\n            \"type\": \"string\"\n          },\n
-    \         \"stakeholderGroups\": {\n            \"type\": \"array\",\n            \"items\":
-    {\n              \"$ref\": \"#/components/schemas/api.Ref\"\n            }\n          },\n
-    \         \"stakeholders\": {\n            \"type\": \"array\",\n            \"items\":
-    {\n              \"$ref\": \"#/components/schemas/api.Ref\"\n            }\n          },\n
-    \         \"startDate\": {\n            \"type\": \"string\"\n          },\n          \"updateUser\":
-    {\n            \"type\": \"string\"\n          }\n        }\n      },\n      \"api.Project\":
-    {\n        \"type\": \"object\",\n        \"properties\": {\n          \"id\":
-    {\n            \"type\": \"string\"\n          },\n          \"name\": {\n            \"type\":
-    \"string\"\n          }\n        }\n      },\n      \"api.Proxy\": {\n        \"type\":
-    \"object\",\n        \"properties\": {\n          \"createTime\": {\n            \"type\":
-    \"string\"\n          },\n          \"createUser\": {\n            \"type\": \"string\"\n
-    \         },\n          \"enabled\": {\n            \"type\": \"boolean\"\n          },\n
-    \         \"excluded\": {\n            \"type\": \"array\",\n            \"items\":
-    {\n              \"type\": \"string\"\n            }\n          },\n          \"host\":
-    {\n            \"type\": \"string\"\n          },\n          \"id\": {\n            \"type\":
-    \"integer\"\n          },\n          \"identity\": {\n            \"$ref\": \"#/components/schemas/api.Ref\"\n
-    \         },\n          \"kind\": {\n            \"type\": \"string\",\n            \"enum\":
-    [\n              \"http\",\n              \"https\"\n            ]\n          },\n
-    \         \"port\": {\n            \"type\": \"integer\"\n          },\n          \"updateUser\":
-    {\n            \"type\": \"string\"\n          }\n        }\n      },\n      \"api.Questionnaire\":
-    {\n        \"required\": [\n          \"name\",\n          \"riskMessages\",\n
-    \         \"sections\",\n          \"thresholds\"\n        ],\n        \"type\":
-    \"object\",\n        \"properties\": {\n          \"builtin\": {\n            \"type\":
-    \"boolean\"\n          },\n          \"createTime\": {\n            \"type\":
-    \"string\"\n          },\n          \"createUser\": {\n            \"type\": \"string\"\n
-    \         },\n          \"description\": {\n            \"type\": \"string\"\n
-    \         },\n          \"id\": {\n            \"type\": \"integer\"\n          },\n
-    \         \"name\": {\n            \"type\": \"string\"\n          },\n          \"required\":
-    {\n            \"type\": \"boolean\"\n          },\n          \"riskMessages\":
-    {\n            \"$ref\": \"#/components/schemas/assessment.RiskMessages\"\n          },\n
-    \         \"sections\": {\n            \"type\": \"array\",\n            \"items\":
-    {\n              \"$ref\": \"#/components/schemas/assessment.Section\"\n            }\n
-    \         },\n          \"thresholds\": {\n            \"$ref\": \"#/components/schemas/assessment.Thresholds\"\n
-    \         },\n          \"updateUser\": {\n            \"type\": \"string\"\n
-    \         }\n        }\n      },\n      \"api.Ref\": {\n        \"required\":
-    [\n          \"id\"\n        ],\n        \"type\": \"object\",\n        \"properties\":
-    {\n          \"id\": {\n            \"type\": \"integer\"\n          },\n          \"name\":
-    {\n            \"type\": \"string\"\n          }\n        }\n      },\n      \"api.Repository\":
-    {\n        \"type\": \"object\",\n        \"properties\": {\n          \"branch\":
-    {\n            \"type\": \"string\"\n          },\n          \"kind\": {\n            \"type\":
-    \"string\"\n          },\n          \"path\": {\n            \"type\": \"string\"\n
-    \         },\n          \"tag\": {\n            \"type\": \"string\"\n          },\n
-    \         \"url\": {\n            \"type\": \"string\"\n          }\n        }\n
-    \     },\n      \"api.Review\": {\n        \"type\": \"object\",\n        \"properties\":
-    {\n          \"application\": {\n            \"$ref\": \"#/components/schemas/api.Ref\"\n
-    \         },\n          \"archetype\": {\n            \"$ref\": \"#/components/schemas/api.Ref\"\n
-    \         },\n          \"businessCriticality\": {\n            \"type\": \"integer\"\n
-    \         },\n          \"comments\": {\n            \"type\": \"string\"\n          },\n
-    \         \"createTime\": {\n            \"type\": \"string\"\n          },\n
-    \         \"createUser\": {\n            \"type\": \"string\"\n          },\n
-    \         \"effortEstimate\": {\n            \"type\": \"string\"\n          },\n
-    \         \"id\": {\n            \"type\": \"integer\"\n          },\n          \"proposedAction\":
-    {\n            \"type\": \"string\"\n          },\n          \"updateUser\": {\n
-    \           \"type\": \"string\"\n          },\n          \"workPriority\": {\n
-    \           \"type\": \"integer\"\n          }\n        }\n      },\n      \"api.Rule\":
-    {\n        \"type\": \"object\",\n        \"properties\": {\n          \"createTime\":
-    {\n            \"type\": \"string\"\n          },\n          \"createUser\": {\n
-    \           \"type\": \"string\"\n          },\n          \"description\": {\n
-    \           \"type\": \"string\"\n          },\n          \"file\": {\n            \"$ref\":
-    \"#/components/schemas/api.Ref\"\n          },\n          \"id\": {\n            \"type\":
-    \"integer\"\n          },\n          \"labels\": {\n            \"type\": \"array\",\n
-    \           \"items\": {\n              \"type\": \"string\"\n            }\n
-    \         },\n          \"name\": {\n            \"type\": \"string\"\n          },\n
-    \         \"updateUser\": {\n            \"type\": \"string\"\n          }\n        }\n
-    \     },\n      \"api.RuleReport\": {\n        \"type\": \"object\",\n        \"properties\":
-    {\n          \"applications\": {\n            \"type\": \"integer\"\n          },\n
-    \         \"category\": {\n            \"type\": \"string\"\n          },\n          \"description\":
-    {\n            \"type\": \"string\"\n          },\n          \"effort\": {\n            \"type\":
-    \"integer\"\n          },\n          \"labels\": {\n            \"type\": \"array\",\n
-    \           \"items\": {\n              \"type\": \"string\"\n            }\n
-    \         },\n          \"links\": {\n            \"type\": \"array\",\n            \"items\":
-    {\n              \"$ref\": \"#/components/schemas/api.Link\"\n            }\n
-    \         },\n          \"name\": {\n            \"type\": \"string\"\n          },\n
-    \         \"rule\": {\n            \"type\": \"string\"\n          },\n          \"ruleset\":
-    {\n            \"type\": \"string\"\n          }\n        }\n      },\n      \"api.RuleSet\":
-    {\n        \"type\": \"object\",\n        \"properties\": {\n          \"createTime\":
-    {\n            \"type\": \"string\"\n          },\n          \"createUser\": {\n
-    \           \"type\": \"string\"\n          },\n          \"dependsOn\": {\n            \"type\":
-    \"array\",\n            \"items\": {\n              \"$ref\": \"#/components/schemas/api.Ref\"\n
-    \           }\n          },\n          \"description\": {\n            \"type\":
-    \"string\"\n          },\n          \"id\": {\n            \"type\": \"integer\"\n
-    \         },\n          \"identity\": {\n            \"$ref\": \"#/components/schemas/api.Ref\"\n
-    \         },\n          \"kind\": {\n            \"type\": \"string\"\n          },\n
-    \         \"name\": {\n            \"type\": \"string\"\n          },\n          \"repository\":
-    {\n            \"$ref\": \"#/components/schemas/api.Repository\"\n          },\n
-    \         \"rules\": {\n            \"type\": \"array\",\n            \"items\":
-    {\n              \"$ref\": \"#/components/schemas/api.Rule\"\n            }\n
-    \         },\n          \"updateUser\": {\n            \"type\": \"string\"\n
-    \         }\n        }\n      },\n      \"api.Schema\": {\n        \"type\": \"object\",\n
-    \       \"properties\": {\n          \"paths\": {\n            \"type\": \"array\",\n
-    \           \"items\": {\n              \"type\": \"string\"\n            }\n
-    \         },\n          \"version\": {\n            \"type\": \"string\"\n          }\n
-    \       }\n      },\n      \"api.Setting\": {\n        \"type\": \"object\",\n
-    \       \"properties\": {\n          \"key\": {\n            \"type\": \"string\"\n
-    \         },\n          \"value\": {\n            \"type\": \"object\"\n          }\n
-    \       }\n      },\n      \"api.Stakeholder\": {\n        \"required\": [\n          \"email\",\n
-    \         \"name\"\n        ],\n        \"type\": \"object\",\n        \"properties\":
-    {\n          \"businessServices\": {\n            \"type\": \"array\",\n            \"items\":
-    {\n              \"$ref\": \"#/components/schemas/api.Ref\"\n            }\n          },\n
-    \         \"contributes\": {\n            \"type\": \"array\",\n            \"items\":
-    {\n              \"$ref\": \"#/components/schemas/api.Ref\"\n            }\n          },\n
-    \         \"createTime\": {\n            \"type\": \"string\"\n          },\n
-    \         \"createUser\": {\n            \"type\": \"string\"\n          },\n
-    \         \"email\": {\n            \"type\": \"string\"\n          },\n          \"id\":
-    {\n            \"type\": \"integer\"\n          },\n          \"jobFunction\":
-    {\n            \"$ref\": \"#/components/schemas/api.Ref\"\n          },\n          \"migrationWaves\":
-    {\n            \"type\": \"array\",\n            \"items\": {\n              \"$ref\":
-    \"#/components/schemas/api.Ref\"\n            }\n          },\n          \"name\":
-    {\n            \"type\": \"string\"\n          },\n          \"owns\": {\n            \"type\":
-    \"array\",\n            \"items\": {\n              \"$ref\": \"#/components/schemas/api.Ref\"\n
-    \           }\n          },\n          \"stakeholderGroups\": {\n            \"type\":
-    \"array\",\n            \"items\": {\n              \"$ref\": \"#/components/schemas/api.Ref\"\n
-    \           }\n          },\n          \"updateUser\": {\n            \"type\":
-    \"string\"\n          }\n        }\n      },\n      \"api.StakeholderGroup\":
-    {\n        \"required\": [\n          \"name\"\n        ],\n        \"type\":
-    \"object\",\n        \"properties\": {\n          \"createTime\": {\n            \"type\":
-    \"string\"\n          },\n          \"createUser\": {\n            \"type\": \"string\"\n
-    \         },\n          \"description\": {\n            \"type\": \"string\"\n
-    \         },\n          \"id\": {\n            \"type\": \"integer\"\n          },\n
-    \         \"migrationWaves\": {\n            \"type\": \"array\",\n            \"items\":
-    {\n              \"$ref\": \"#/components/schemas/api.Ref\"\n            }\n          },\n
-    \         \"name\": {\n            \"type\": \"string\"\n          },\n          \"stakeholders\":
-    {\n            \"type\": \"array\",\n            \"items\": {\n              \"$ref\":
-    \"#/components/schemas/api.Ref\"\n            }\n          },\n          \"updateUser\":
-    {\n            \"type\": \"string\"\n          }\n        }\n      },\n      \"api.Stakeholders\":
-    {\n        \"type\": \"object\",\n        \"properties\": {\n          \"contributors\":
-    {\n            \"type\": \"array\",\n            \"items\": {\n              \"$ref\":
-    \"#/components/schemas/api.Ref\"\n            }\n          },\n          \"owner\":
-    {\n            \"$ref\": \"#/components/schemas/api.Ref\"\n          }\n        }\n
-    \     },\n      \"api.TTL\": {\n        \"type\": \"object\",\n        \"properties\":
-    {\n          \"created\": {\n            \"type\": \"integer\"\n          },\n
-    \         \"failed\": {\n            \"type\": \"integer\"\n          },\n          \"pending\":
-    {\n            \"type\": \"integer\"\n          },\n          \"postponed\": {\n
-    \           \"type\": \"integer\"\n          },\n          \"running\": {\n            \"type\":
-    \"integer\"\n          },\n          \"succeeded\": {\n            \"type\": \"integer\"\n
-    \         }\n        }\n      },\n      \"api.Tag\": {\n        \"required\":
-    [\n          \"category\",\n          \"name\"\n        ],\n        \"type\":
-    \"object\",\n        \"properties\": {\n          \"category\": {\n            \"$ref\":
-    \"#/components/schemas/api.Ref\"\n          },\n          \"createTime\": {\n
-    \           \"type\": \"string\"\n          },\n          \"createUser\": {\n
-    \           \"type\": \"string\"\n          },\n          \"id\": {\n            \"type\":
-    \"integer\"\n          },\n          \"name\": {\n            \"type\": \"string\"\n
-    \         },\n          \"updateUser\": {\n            \"type\": \"string\"\n
-    \         }\n        }\n      },\n      \"api.TagCategory\": {\n        \"required\":
-    [\n          \"name\"\n        ],\n        \"type\": \"object\",\n        \"properties\":
-    {\n          \"colour\": {\n            \"type\": \"string\"\n          },\n          \"createTime\":
-    {\n            \"type\": \"string\"\n          },\n          \"createUser\": {\n
-    \           \"type\": \"string\"\n          },\n          \"id\": {\n            \"type\":
-    \"integer\"\n          },\n          \"name\": {\n            \"type\": \"string\"\n
-    \         },\n          \"rank\": {\n            \"type\": \"integer\"\n          },\n
-    \         \"tags\": {\n            \"type\": \"array\",\n            \"items\":
-    {\n              \"$ref\": \"#/components/schemas/api.Ref\"\n            }\n          },\n
-    \         \"updateUser\": {\n            \"type\": \"string\"\n          },\n
-    \         \"username\": {\n            \"type\": \"string\"\n          }\n        }\n
-    \     },\n      \"api.TagRef\": {\n        \"required\": [\n          \"id\"\n
-    \       ],\n        \"type\": \"object\",\n        \"properties\": {\n          \"id\":
-    {\n            \"type\": \"integer\"\n          },\n          \"name\": {\n            \"type\":
-    \"string\"\n          },\n          \"source\": {\n            \"type\": \"string\"\n
-    \         },\n          \"virtual\": {\n            \"type\": \"boolean\"\n          }\n
-    \       }\n      },\n      \"api.Target\": {\n        \"type\": \"object\",\n
-    \       \"properties\": {\n          \"choice\": {\n            \"type\": \"boolean\"\n
-    \         },\n          \"createTime\": {\n            \"type\": \"string\"\n
-    \         },\n          \"createUser\": {\n            \"type\": \"string\"\n
-    \         },\n          \"custom\": {\n            \"type\": \"boolean\"\n          },\n
-    \         \"description\": {\n            \"type\": \"string\"\n          },\n
-    \         \"id\": {\n            \"type\": \"integer\"\n          },\n          \"image\":
-    {\n            \"$ref\": \"#/components/schemas/api.Ref\"\n          },\n          \"labels\":
-    {\n            \"type\": \"array\",\n            \"items\": {\n              \"$ref\":
-    \"#/components/schemas/api.Label\"\n            }\n          },\n          \"name\":
-    {\n            \"type\": \"string\"\n          },\n          \"provider\": {\n
-    \           \"type\": \"string\"\n          },\n          \"ruleset\": {\n            \"$ref\":
-    \"#/components/schemas/api.RuleSet\"\n          },\n          \"updateUser\":
-    {\n            \"type\": \"string\"\n          }\n        }\n      },\n      \"api.Task\":
-    {\n        \"required\": [\n          \"addon\",\n          \"data\"\n        ],\n
-    \       \"type\": \"object\",\n        \"properties\": {\n          \"activity\":
-    {\n            \"type\": \"array\",\n            \"items\": {\n              \"type\":
-    \"string\"\n            }\n          },\n          \"addon\": {\n            \"type\":
-    \"string\"\n          },\n          \"application\": {\n            \"$ref\":
-    \"#/components/schemas/api.Ref\"\n          },\n          \"bucket\": {\n            \"$ref\":
-    \"#/components/schemas/api.Ref\"\n          },\n          \"canceled\": {\n            \"type\":
-    \"boolean\"\n          },\n          \"createTime\": {\n            \"type\":
-    \"string\"\n          },\n          \"createUser\": {\n            \"type\": \"string\"\n
-    \         },\n          \"data\": {\n            \"type\": \"object\",\n            \"properties\":
-    {}\n          },\n          \"errors\": {\n            \"type\": \"array\",\n
-    \           \"items\": {\n              \"$ref\": \"#/components/schemas/api.TaskError\"\n
-    \           }\n          },\n          \"id\": {\n            \"type\": \"integer\"\n
-    \         },\n          \"image\": {\n            \"type\": \"string\"\n          },\n
-    \         \"locator\": {\n            \"type\": \"string\"\n          },\n          \"name\":
-    {\n            \"type\": \"string\"\n          },\n          \"pod\": {\n            \"type\":
-    \"string\"\n          },\n          \"policy\": {\n            \"type\": \"string\"\n
-    \         },\n          \"priority\": {\n            \"type\": \"integer\"\n          },\n
-    \         \"purged\": {\n            \"type\": \"boolean\"\n          },\n          \"retries\":
-    {\n            \"type\": \"integer\"\n          },\n          \"started\": {\n
-    \           \"type\": \"string\"\n          },\n          \"state\": {\n            \"type\":
-    \"string\"\n          },\n          \"terminated\": {\n            \"type\": \"string\"\n
-    \         },\n          \"ttl\": {\n            \"$ref\": \"#/components/schemas/api.TTL\"\n
-    \         },\n          \"updateUser\": {\n            \"type\": \"string\"\n
-    \         },\n          \"variant\": {\n            \"type\": \"string\"\n          }\n
-    \       }\n      },\n      \"api.TaskError\": {\n        \"type\": \"object\",\n
-    \       \"properties\": {\n          \"description\": {\n            \"type\":
-    \"string\"\n          },\n          \"severity\": {\n            \"type\": \"string\"\n
-    \         }\n        }\n      },\n      \"api.TaskGroup\": {\n        \"required\":
-    [\n          \"data\"\n        ],\n        \"type\": \"object\",\n        \"properties\":
-    {\n          \"addon\": {\n            \"type\": \"string\"\n          },\n          \"bucket\":
-    {\n            \"$ref\": \"#/components/schemas/api.Ref\"\n          },\n          \"createTime\":
-    {\n            \"type\": \"string\"\n          },\n          \"createUser\": {\n
-    \           \"type\": \"string\"\n          },\n          \"data\": {\n            \"type\":
-    \"object\",\n            \"properties\": {}\n          },\n          \"id\": {\n
-    \           \"type\": \"integer\"\n          },\n          \"name\": {\n            \"type\":
-    \"string\"\n          },\n          \"state\": {\n            \"type\": \"string\"\n
-    \         },\n          \"tasks\": {\n            \"type\": \"array\",\n            \"items\":
-    {\n              \"$ref\": \"#/components/schemas/api.Task\"\n            }\n
-    \         },\n          \"updateUser\": {\n            \"type\": \"string\"\n
-    \         }\n        }\n      },\n      \"api.TaskReport\": {\n        \"type\":
-    \"object\",\n        \"properties\": {\n          \"activity\": {\n            \"type\":
-    \"array\",\n            \"items\": {\n              \"type\": \"string\"\n            }\n
-    \         },\n          \"completed\": {\n            \"type\": \"integer\"\n
-    \         },\n          \"createTime\": {\n            \"type\": \"string\"\n
-    \         },\n          \"createUser\": {\n            \"type\": \"string\"\n
-    \         },\n          \"errors\": {\n            \"type\": \"array\",\n            \"items\":
-    {\n              \"$ref\": \"#/components/schemas/api.TaskError\"\n            }\n
-    \         },\n          \"id\": {\n            \"type\": \"integer\"\n          },\n
-    \         \"result\": {\n            \"type\": \"object\",\n            \"properties\":
-    {}\n          },\n          \"status\": {\n            \"type\": \"string\"\n
-    \         },\n          \"task\": {\n            \"type\": \"integer\"\n          },\n
-    \         \"total\": {\n            \"type\": \"integer\"\n          },\n          \"updateUser\":
-    {\n            \"type\": \"string\"\n          }\n        }\n      },\n      \"api.TechDependency\":
-    {\n        \"required\": [\n          \"name\"\n        ],\n        \"type\":
-    \"object\",\n        \"properties\": {\n          \"createTime\": {\n            \"type\":
-    \"string\"\n          },\n          \"createUser\": {\n            \"type\": \"string\"\n
-    \         },\n          \"id\": {\n            \"type\": \"integer\"\n          },\n
-    \         \"indirect\": {\n            \"type\": \"boolean\"\n          },\n          \"labels\":
-    {\n            \"type\": \"array\",\n            \"items\": {\n              \"type\":
-    \"string\"\n            }\n          },\n          \"name\": {\n            \"type\":
-    \"string\"\n          },\n          \"provider\": {\n            \"type\": \"string\"\n
-    \         },\n          \"sha\": {\n            \"type\": \"string\"\n          },\n
-    \         \"updateUser\": {\n            \"type\": \"string\"\n          },\n
-    \         \"version\": {\n            \"type\": \"string\"\n          }\n        }\n
-    \     },\n      \"api.Ticket\": {\n        \"required\": [\n          \"application\",\n
-    \         \"kind\",\n          \"parent\",\n          \"tracker\"\n        ],\n
-    \       \"type\": \"object\",\n        \"properties\": {\n          \"application\":
-    {\n            \"$ref\": \"#/components/schemas/api.Ref\"\n          },\n          \"createTime\":
-    {\n            \"type\": \"string\"\n          },\n          \"createUser\": {\n
-    \           \"type\": \"string\"\n          },\n          \"error\": {\n            \"type\":
-    \"boolean\"\n          },\n          \"fields\": {\n            \"$ref\": \"#/components/schemas/api.Fields\"\n
-    \         },\n          \"id\": {\n            \"type\": \"integer\"\n          },\n
-    \         \"kind\": {\n            \"type\": \"string\"\n          },\n          \"lastUpdated\":
-    {\n            \"type\": \"string\"\n          },\n          \"link\": {\n            \"type\":
-    \"string\"\n          },\n          \"message\": {\n            \"type\": \"string\"\n
-    \         },\n          \"parent\": {\n            \"type\": \"string\"\n          },\n
-    \         \"reference\": {\n            \"type\": \"string\"\n          },\n          \"status\":
-    {\n            \"type\": \"string\"\n          },\n          \"tracker\": {\n
-    \           \"$ref\": \"#/components/schemas/api.Ref\"\n          },\n          \"updateUser\":
-    {\n            \"type\": \"string\"\n          }\n        }\n      },\n      \"api.Tracker\":
-    {\n        \"required\": [\n          \"identity\",\n          \"kind\",\n          \"name\",\n
-    \         \"url\"\n        ],\n        \"type\": \"object\",\n        \"properties\":
-    {\n          \"connected\": {\n            \"type\": \"boolean\"\n          },\n
-    \         \"createTime\": {\n            \"type\": \"string\"\n          },\n
-    \         \"createUser\": {\n            \"type\": \"string\"\n          },\n
-    \         \"id\": {\n            \"type\": \"integer\"\n          },\n          \"identity\":
-    {\n            \"$ref\": \"#/components/schemas/api.Ref\"\n          },\n          \"insecure\":
-    {\n            \"type\": \"boolean\"\n          },\n          \"kind\": {\n            \"type\":
-    \"string\",\n            \"enum\": [\n              \"jira-cloud\",\n              \"jira-onprem\"\n
-    \           ]\n          },\n          \"lastUpdated\": {\n            \"type\":
-    \"string\"\n          },\n          \"message\": {\n            \"type\": \"string\"\n
-    \         },\n          \"name\": {\n            \"type\": \"string\"\n          },\n
-    \         \"updateUser\": {\n            \"type\": \"string\"\n          },\n
-    \         \"url\": {\n            \"type\": \"string\"\n          }\n        }\n
-    \     },\n      \"api.Vertex\": {\n        \"type\": \"object\",\n        \"properties\":
-    {\n          \"applicationId\": {\n            \"type\": \"integer\"\n          },\n
-    \         \"applicationName\": {\n            \"type\": \"string\"\n          },\n
-    \         \"decision\": {\n            \"type\": \"string\"\n          },\n          \"effort\":
-    {\n            \"type\": \"integer\"\n          },\n          \"effortEstimate\":
-    {\n            \"type\": \"string\"\n          },\n          \"positionX\": {\n
-    \           \"type\": \"integer\"\n          },\n          \"positionY\": {\n
-    \           \"type\": \"integer\"\n          }\n        }\n      },\n      \"assessment.Answer\":
-    {\n        \"required\": [\n          \"order\"\n        ],\n        \"type\":
-    \"object\",\n        \"properties\": {\n          \"applyTags\": {\n            \"type\":
-    \"array\",\n            \"items\": {\n              \"$ref\": \"#/components/schemas/assessment.CategorizedTag\"\n
-    \           }\n          },\n          \"autoAnswerFor\": {\n            \"type\":
-    \"array\",\n            \"items\": {\n              \"$ref\": \"#/components/schemas/assessment.CategorizedTag\"\n
-    \           }\n          },\n          \"autoAnswered\": {\n            \"type\":
-    \"boolean\"\n          },\n          \"mitigation\": {\n            \"type\":
-    \"string\"\n          },\n          \"order\": {\n            \"type\": \"integer\"\n
-    \         },\n          \"rationale\": {\n            \"type\": \"string\"\n          },\n
-    \         \"risk\": {\n            \"type\": \"string\",\n            \"enum\":
-    [\n              \"red\"\n            ]\n          },\n          \"selected\":
-    {\n            \"type\": \"boolean\"\n          },\n          \"text\": {\n            \"type\":
-    \"string\"\n          }\n        }\n      },\n      \"assessment.CategorizedTag\":
-    {\n        \"type\": \"object\",\n        \"properties\": {\n          \"category\":
-    {\n            \"type\": \"string\"\n          },\n          \"tag\": {\n            \"type\":
-    \"string\"\n          }\n        }\n      },\n      \"assessment.Question\": {\n
-    \       \"required\": [\n          \"order\"\n        ],\n        \"type\": \"object\",\n
-    \       \"properties\": {\n          \"answers\": {\n            \"type\": \"array\",\n
-    \           \"items\": {\n              \"$ref\": \"#/components/schemas/assessment.Answer\"\n
-    \           }\n          },\n          \"excludeFor\": {\n            \"type\":
-    \"array\",\n            \"items\": {\n              \"$ref\": \"#/components/schemas/assessment.CategorizedTag\"\n
-    \           }\n          },\n          \"explanation\": {\n            \"type\":
-    \"string\"\n          },\n          \"includeFor\": {\n            \"type\": \"array\",\n
-    \           \"items\": {\n              \"$ref\": \"#/components/schemas/assessment.CategorizedTag\"\n
-    \           }\n          },\n          \"order\": {\n            \"type\": \"integer\"\n
-    \         },\n          \"text\": {\n            \"type\": \"string\"\n          }\n
-    \       }\n      },\n      \"assessment.RiskMessages\": {\n        \"type\": \"object\",\n
-    \       \"properties\": {\n          \"green\": {\n            \"type\": \"string\"\n
-    \         },\n          \"red\": {\n            \"type\": \"string\"\n          },\n
-    \         \"unknown\": {\n            \"type\": \"string\"\n          },\n          \"yellow\":
-    {\n            \"type\": \"string\"\n          }\n        }\n      },\n      \"assessment.Section\":
-    {\n        \"required\": [\n          \"order\"\n        ],\n        \"type\":
-    \"object\",\n        \"properties\": {\n          \"comment\": {\n            \"type\":
-    \"string\"\n          },\n          \"name\": {\n            \"type\": \"string\"\n
-    \         },\n          \"order\": {\n            \"type\": \"integer\"\n          },\n
-    \         \"questions\": {\n            \"type\": \"array\",\n            \"items\":
-    {\n              \"$ref\": \"#/components/schemas/assessment.Question\"\n            }\n
-    \         }\n        }\n      },\n      \"assessment.Thresholds\": {\n        \"type\":
-    \"object\",\n        \"properties\": {\n          \"red\": {\n            \"type\":
-    \"integer\"\n          },\n          \"unknown\": {\n            \"type\": \"integer\"\n
-    \         },\n          \"yellow\": {\n            \"type\": \"integer\"\n          }\n
-    \       }\n      }\n    }, \n    \"securitySchemes\": {\n      \"bearerAuth\":
-    {\n        \"type\": \"http\",\n        \"scheme\": \"bearer\",\n        \"bearerFormat\":
-    \"JWT\"\n      }\n    }\n  },\n  \"x-original-swagger-version\": \"2.0\"\n}\n"
-  notifications.json: |-
+  mta.json: |-
     {
-        "openapi": "3.0.3",
-        "info": {
-          "title": "Notifications Plugin - OpenAPI Specs",
-          "description": "Notifications Plugin - OpenAPI Specs",
-          "version": "1.0.0"
+      "openapi": "3.0.1",
+      "info": {
+        "title": "Konveyor Hub API",
+        "contact": {},
+        "license": {
+          "name": "Apache 2.0",
+          "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
         },
-        "tags": [
-          {
-            "name": "notifications",
-            "description": "notifications plugin"
-          }
-        ],
-        "servers": [
-          {
-            "url": "http://localhost:7007/api/notifications"
-          }
-        ],
-        "paths": {
-          "/notifications": {
-            "post": {
-              "tags": [
-                "notifications"
-              ],
-              "summary": "Create notification",
-              "description": "Create notification",
-              "operationId": "createNotification",
-              "requestBody": {
-                "description": "Create a new notification",
+        "version": "0.3.z"
+      },
+      "servers": [
+        {
+          "url": "/"
+        }
+      ],
+      "paths": {
+        "/hub/migrationwaves": {
+          "get": {
+            "operationId": "getMigrationwaves",
+            "tags": [
+              "migrationwaves"
+            ],
+            "summary": "List all migration waves.",
+            "description": "List all migration waves.",
+            "responses": {
+              "200": {
+                "description": "OK",
                 "content": {
                   "application/json": {
                     "schema": {
-                      "$ref": "#/components/schemas/CreateBody"
-                    }
-                  }
-                }
-              },
-              "responses": {
-                "200": {
-                  "description": "Successful operation",
-                  "content": {
-                    "application/json": {
-                      "schema": {
-                        "type": "object",
-                        "properties": {
-                          "messageId": {
-                            "type": "string",
-                            "example": "bc9f19de-8b7b-49a8-9262-c5036a1ed35e"
-                          }
-                        },
-                        "required": [
-                          "messageId"
-                        ]
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/api.MigrationWave"
                       }
                     }
                   }
                 }
               }
             },
-            "get": {
-              "tags": [
-                "notifications"
-              ],
-              "summary": "Gets notifications",
-              "description": "Gets notifications",
-              "operationId": "getNotifications",
-              "parameters": [
-                {
-                  "name": "pageSize",
-                  "in": "query",
-                  "description": "Page size of the result",
-                  "required": false,
+            "security": [
+              {
+                "bearerAuth": []
+              }
+            ]
+          },
+          "post": {
+            "operationId": "createMigrationwave",
+            "tags": [
+              "migrationwaves"
+            ],
+            "summary": "Create a migration wave.",
+            "description": "Create a migration wave.",
+            "requestBody": {
+              "description": "Migration Wave data",
+              "content": {
+                "application/json": {
                   "schema": {
-                    "type": "integer",
-                    "minimum": 0
-                  }
-                },
-                {
-                  "name": "pageNumber",
-                  "in": "query",
-                  "description": "Page number of the result",
-                  "required": false,
-                  "schema": {
-                    "type": "integer",
-                    "minimum": 0
-                  }
-                },
-                {
-                  "name": "orderBy",
-                  "in": "query",
-                  "description": "order by field. e.g. created, origin.",
-                  "required": false,
-                  "schema": {
-                    "type": "string",
-                    "enum": [
-                      "title",
-                      "message",
-                      "created",
-                      "topic",
-                      "origin"
-                    ]
-                  }
-                },
-                {
-                  "name": "orderByDirec",
-                  "in": "query",
-                  "description": "order ascending or descending",
-                  "required": false,
-                  "schema": {
-                    "type": "string",
-                    "enum": [
-                      "asc",
-                      "desc"
-                    ]
-                  }
-                },
-                {
-                  "name": "containsText",
-                  "in": "query",
-                  "description": "Filter notifications whose either title or message contains the provided string",
-                  "required": false,
-                  "schema": {
-                    "type": "string"
-                  }
-                },
-                {
-                  "name": "createdAfter",
-                  "in": "query",
-                  "description": "Only notifications created after this timestamp will be included",
-                  "required": false,
-                  "schema": {
-                    "type": "string",
-                    "format": "date-time"
-                  }
-                },
-                {
-                  "name": "messageScope",
-                  "in": "query",
-                  "description": "retrieve either logged-in user messages, system messages or both",
-                  "required": false,
-                  "schema": {
-                    "type": "string",
-                    "enum": [
-                      "all",
-                      "user",
-                      "system"
-                    ]
-                  }
-                },
-                {
-                  "name": "read",
-                  "in": "query",
-                  "description": "Notifications read or not",
-                  "required": false,
-                  "schema": {
-                    "type": "boolean"
+                    "$ref": "#/components/schemas/api.MigrationWave"
                   }
                 }
-              ],
-              "responses": {
-                "200": {
-                  "description": "Successful operation",
-                  "content": {
-                    "application/json": {
-                      "schema": {
-                        "$ref": "#/components/schemas/Notifications"
+              },
+              "required": true
+            },
+            "responses": {
+              "201": {
+                "description": "Created",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "$ref": "#/components/schemas/api.MigrationWave"
+                    }
+                  }
+                }
+              }
+            },
+            "security": [
+              {
+                "bearerAuth": []
+              }
+            ],
+            "x-codegen-request-body-name": "migrationwave"
+          }
+        },
+        "/hub/migrationwaves/{id}": {
+          "get": {
+            "operationId": "getMigrationwave",
+            "tags": [
+              "migrationwaves"
+            ],
+            "summary": "Get a migration wave by ID.",
+            "description": "Get a migration wave by ID.",
+            "parameters": [
+              {
+                "name": "id",
+                "in": "path",
+                "description": "Migration Wave ID",
+                "required": true,
+                "schema": {
+                  "type": "integer"
+                }
+              }
+            ],
+            "responses": {
+              "200": {
+                "description": "OK",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "$ref": "#/components/schemas/api.MigrationWave"
+                    }
+                  }
+                }
+              }
+            },
+            "security": [
+              {
+                "bearerAuth": []
+              }
+            ]
+          }
+        },
+        "/hub/taskgroups/{id}/submit": {
+          "put": {
+            "operationId": "submitTaskgroup",
+            "tags": [
+              "taskgroups"
+            ],
+            "summary": "Submit a task group.",
+            "description": "Submit a task group.",
+            "parameters": [
+              {
+                "name": "id",
+                "in": "path",
+                "description": "TaskGroup ID",
+                "required": true,
+                "schema": {
+                  "type": "integer"
+                }
+              }
+            ],
+            "requestBody": {
+              "description": "TaskGroup data (optional)",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/api.TaskGroup"
+                  }
+                }
+              },
+              "required": false
+            },
+            "responses": {
+              "204": {
+                "description": "No Content",
+                "content": {}
+              }
+            },
+            "security": [
+              {
+                "bearerAuth": []
+              }
+            ],
+            "x-codegen-request-body-name": "taskgroup"
+          }
+        },
+        "/hub/trackers": {
+          "get": {
+            "operationId": "getTrackers",
+            "tags": [
+              "trackers"
+            ],
+            "summary": "List all trackers.",
+            "description": "List all trackers.",
+            "responses": {
+              "200": {
+                "description": "OK",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/api.Tracker"
                       }
                     }
                   }
                 }
               }
-            }
-          },
-          "/notifications/count": {
-            "get": {
-              "tags": [
-                "notifications"
-              ],
-              "summary": "Get notifications count",
-              "description": "Gets notifications count",
-              "operationId": "getNotificationsCount",
-              "parameters": [
-                {
-                  "name": "containsText",
-                  "in": "query",
-                  "description": "Filter notifications whose either title or message contains the provided string",
-                  "required": false,
-                  "schema": {
-                    "type": "string"
-                  }
-                },
-                {
-                  "name": "createdAfter",
-                  "in": "query",
-                  "description": "Only notifications created after this timestamp will be included",
-                  "required": false,
-                  "schema": {
-                    "type": "string",
-                    "format": "date-time"
-                  }
-                },
-                {
-                  "name": "messageScope",
-                  "in": "query",
-                  "description": "retrieve either logged-in user messages, system messages or both",
-                  "required": false,
-                  "schema": {
-                    "type": "string",
-                    "enum": [
-                      "all",
-                      "user",
-                      "system"
-                    ]
-                  }
-                },
-                {
-                  "name": "read",
-                  "in": "query",
-                  "description": "Notifications read or not",
-                  "required": false,
-                  "schema": {
-                    "type": "boolean"
+            },
+            "security": [
+              {
+                "bearerAuth": []
+              }
+            ]
+          }
+        },
+        "/hub/trackers/{id}": {
+          "get": {
+            "operationId": "getTracker",
+            "tags": [
+              "trackers"
+            ],
+            "summary": "Get a tracker by ID.",
+            "description": "Get a tracker by ID.",
+            "parameters": [
+              {
+                "name": "id",
+                "in": "path",
+                "description": "Tracker ID",
+                "required": true,
+                "schema": {
+                  "type": "integer"
+                }
+              }
+            ],
+            "responses": {
+              "200": {
+                "description": "OK",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "$ref": "#/components/schemas/api.Tracker"
+                    }
                   }
                 }
-              ],
-              "responses": {
-                "200": {
-                  "description": "Successful operation",
-                  "content": {
-                    "application/json": {
-                      "schema": {
-                        "type": "object",
-                        "properties": {
-                          "count": {
-                            "type": "number"
-                          }
-                        },
-                        "required": [
-                          "count"
-                        ]
+              }
+            },
+            "security": [
+              {
+                "bearerAuth": []
+              }
+            ]
+          }
+        },
+        "/hub/applications": {
+          "get": {
+            "operationId": "getApplications",
+            "tags": [
+              "applications"
+            ],
+            "summary": "List all applications.",
+            "description": "List all applications.",
+            "responses": {
+              "200": {
+                "description": "OK",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/api.Application"
                       }
                     }
                   }
                 }
               }
-            }
+            },
+            "security": [
+              {
+                "bearerAuth": []
+              }
+            ]
           },
-          "/notifications/read": {
-            "put": {
-              "tags": [
-                "notifications"
-              ],
-              "summary": "Set notification as read/unread",
-              "description": "Set notification as read/unread",
-              "operationId": "setRead",
-              "parameters": [
-                {
-                  "name": "messageId",
-                  "in": "query",
-                  "description": "The message ID",
-                  "required": true,
+          "post": {
+            "operationId": "createApplication",
+            "tags": [
+              "applications"
+            ],
+            "summary": "Create an application.",
+            "description": "Create an application.",
+            "requestBody": {
+              "description": "Application data",
+              "content": {
+                "application/json": {
                   "schema": {
-                    "type": "string"
-                  }
-                },
-                {
-                  "name": "read",
-                  "in": "query",
-                  "description": "read/unread",
-                  "required": true,
-                  "schema": {
-                    "type": "boolean"
+                    "$ref": "#/components/schemas/api.Application"
                   }
                 }
-              ],
-              "responses": {
-                "200": {
-                  "description": "Successful operation"
+              },
+              "required": true
+            },
+            "responses": {
+              "201": {
+                "description": "Created",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "$ref": "#/components/schemas/api.Application"
+                    }
+                  }
+                }
+              }
+            },
+            "security": [
+              {
+                "bearerAuth": []
+              }
+            ],
+            "x-codegen-request-body-name": "application"
+          }
+        },
+        "/hub/applications/{id}": {
+          "get": {
+            "operationId": "getApplication",
+            "tags": [
+              "applications"
+            ],
+            "summary": "Get an application by ID.",
+            "description": "Get an application by ID.",
+            "parameters": [
+              {
+                "name": "id",
+                "in": "path",
+                "description": "Application ID",
+                "required": true,
+                "schema": {
+                  "type": "integer"
+                }
+              }
+            ],
+            "responses": {
+              "200": {
+                "description": "OK",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "$ref": "#/components/schemas/api.Application"
+                    }
+                  }
+                }
+              }
+            },
+            "security": [
+              {
+                "bearerAuth": []
+              }
+            ]
+          },
+          "put": {
+            "operationId": "updateApplication",
+            "tags": [
+              "applications"
+            ],
+            "summary": "Update an application.",
+            "description": "Update an application.",
+            "parameters": [
+              {
+                "name": "id",
+                "in": "path",
+                "description": "Application id",
+                "required": true,
+                "schema": {
+                  "type": "integer"
+                }
+              }
+            ],
+            "requestBody": {
+              "description": "Application data",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/api.Application"
+                  }
+                }
+              },
+              "required": true
+            },
+            "responses": {
+              "204": {
+                "description": "No Content",
+                "content": {}
+              }
+            },
+            "security": [
+              {
+                "bearerAuth": []
+              }
+            ],
+            "x-codegen-request-body-name": "application"
+          },
+          "delete": {
+            "operationId": "deleteApplication",
+            "tags": [
+              "applications"
+            ],
+            "summary": "Delete an application.",
+            "description": "Delete an application.",
+            "parameters": [
+              {
+                "name": "id",
+                "in": "path",
+                "description": "Application id",
+                "required": true,
+                "schema": {
+                  "type": "integer"
+                }
+              }
+            ],
+            "responses": {
+              "204": {
+                "description": "No Content",
+                "content": {}
+              }
+            },
+            "security": [
+              {
+                "bearerAuth": []
+              }
+            ]
+          }
+        },
+        "/hub/applications/{id}/analysis": {
+          "get": {
+            "tags": [
+              "analyses"
+            ],
+            "operationId": "getApplicationAnalysis",
+            "summary": "Get the latest analysis.",
+            "description": "Get the latest analysis for an application.",
+            "parameters": [
+              {
+                "name": "id",
+                "in": "path",
+                "description": "Application ID",
+                "required": true,
+                "schema": {
+                  "type": "integer"
+                }
+              }
+            ],
+            "responses": {
+              "200": {
+                "description": "OK",
+                "content": {
+                  "application/octet-stream": {
+                    "schema": {
+                      "$ref": "#/components/schemas/api.Analysis"
+                    }
+                  }
                 }
               }
             }
           }
         },
-        "components": {
-          "schemas": {
-            "Notifications": {
-              "type": "array",
-              "items": {
-                "$ref": "#/components/schemas/Notification"
+        "/hub/taskgroups": {
+          "get": {
+            "operationId": "getTaskgroups",
+            "tags": [
+              "taskgroups"
+            ],
+            "summary": "List all task groups.",
+            "description": "List all task groups.",
+            "responses": {
+              "200": {
+                "description": "OK",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/api.TaskGroup"
+                      }
+                    }
+                  }
+                }
               }
             },
-            "Notification": {
-              "properties": {
-                "id": {
-                  "type": "string"
-                },
-                "created": {
-                  "type": "string",
-                  "format": "date-time"
-                },
-                "readByUser": {
-                  "type": "boolean"
-                },
-                "isSystem": {
-                  "type": "boolean"
-                },
-                "origin": {
-                  "type": "string"
-                },
-                "title": {
-                  "type": "string"
-                },
-                "message": {
-                  "type": "string"
-                },
-                "topic": {
-                  "type": "string"
-                },
-                "actions": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/Action"
+            "security": [
+              {
+                "bearerAuth": []
+              }
+            ]
+          },
+          "post": {
+            "operationId": "createTaskgroup",
+            "tags": [
+              "taskgroups"
+            ],
+            "summary": "Create a task group.",
+            "description": "Create a task group.",
+            "requestBody": {
+              "description": "TaskGroup data",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/api.TaskGroup"
                   }
                 }
               },
-              "required": [
-                "id",
-                "created",
-                "readByUser",
-                "isSystem",
-                "origin",
-                "title",
-                "actions"
-              ]
+              "required": true
             },
-            "Action": {
-              "properties": {
-                "id": {
-                  "type": "string"
-                },
-                "title": {
-                  "type": "string"
-                },
-                "url": {
-                  "type": "string"
+            "responses": {
+              "201": {
+                "description": "Created",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "$ref": "#/components/schemas/api.TaskGroup"
+                    }
+                  }
+                }
+              }
+            },
+            "security": [
+              {
+                "bearerAuth": []
+              }
+            ],
+            "x-codegen-request-body-name": "taskgroup"
+          }
+        },
+        "/hub/taskgroups/{id}": {
+          "get": {
+            "operationId": "getTaskgroup",
+            "tags": [
+              "taskgroups"
+            ],
+            "summary": "Get a task group by ID.",
+            "description": "Get a task group by ID.",
+            "parameters": [
+              {
+                "name": "id",
+                "in": "path",
+                "description": "TaskGroup ID",
+                "required": true,
+                "schema": {
+                  "type": "integer"
+                }
+              }
+            ],
+            "responses": {
+              "200": {
+                "description": "OK",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "$ref": "#/components/schemas/api.TaskGroup"
+                    }
+                  }
+                }
+              }
+            },
+            "security": [
+              {
+                "bearerAuth": []
+              }
+            ]
+          },
+          "put": {
+            "operationId": "updateTaskGroups",
+            "tags": [
+              "taskgroups"
+            ],
+            "summary": "Update a task group.",
+            "description": "Update a task group.",
+            "parameters": [
+              {
+                "name": "id",
+                "in": "path",
+                "description": "Task ID",
+                "required": true,
+                "schema": {
+                  "type": "integer"
+                }
+              }
+            ],
+            "requestBody": {
+              "description": "Task data",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/api.TaskGroup"
+                  }
                 }
               },
-              "required": [
-                "id",
-                "title",
-                "url"
-              ]
+              "required": true
             },
-            "CreateBody": {
-              "properties": {
-                "origin": {
-                  "type": "string"
-                },
-                "title": {
-                  "type": "string"
-                },
-                "message": {
-                  "type": "string"
-                },
-                "actions": {
-                  "type": "array",
-                  "items": {
-                    "type": "object",
-                    "properties": {
-                      "title": {
-                        "type": "string"
-                      },
-                      "url": {
-                        "type": "string"
+            "responses": {
+              "204": {
+                "description": "No Content",
+                "content": {}
+              }
+            },
+            "security": [
+              {
+                "bearerAuth": []
+              }
+            ],
+            "x-codegen-request-body-name": "task"
+          },
+          "delete": {
+            "operationId": "deleteTaskGroup",
+            "tags": [
+              "taskgroups"
+            ],
+            "summary": "Delete a task group.",
+            "description": "Delete a task group.",
+            "parameters": [
+              {
+                "name": "id",
+                "in": "path",
+                "description": "TaskGroup ID",
+                "required": true,
+                "schema": {
+                  "type": "integer"
+                }
+              }
+            ],
+            "responses": {
+              "204": {
+                "description": "No Content",
+                "content": {}
+              }
+            },
+            "security": [
+              {
+                "bearerAuth": []
+              }
+            ]
+          }
+        },
+        "/hub/tickets": {
+          "post": {
+            "operationId": "createTicket",
+            "tags": [
+              "tickets"
+            ],
+            "summary": "Create a ticket.",
+            "description": "Create a ticket.",
+            "requestBody": {
+              "description": "Ticket data",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/api.Ticket"
+                  }
+                }
+              },
+              "required": true
+            },
+            "responses": {
+              "201": {
+                "description": "Created",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "$ref": "#/components/schemas/api.Ticket"
+                    }
+                  }
+                }
+              }
+            },
+            "security": [
+              {
+                "bearerAuth": []
+              }
+            ],
+            "x-codegen-request-body-name": "ticket"
+          },
+          "get": {
+            "operationId": "getTickets",
+            "tags": [
+              "tickets"
+            ],
+            "summary": "List all tickets.",
+            "description": "List all tickets.",
+            "responses": {
+              "200": {
+                "description": "OK",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/api.Ticket"
                       }
-                    },
-                    "required": [
-                      "title",
-                      "url"
-                    ]
+                    }
                   }
-                },
-                "topic": {
-                  "type": "string"
-                },
-                "targetUsers": {
-                  "type": "array",
-                  "items": {
-                    "type": "string"
+                }
+              }
+            },
+            "security": [
+              {
+                "bearerAuth": []
+              }
+            ]
+          }
+        },
+        "/hub/tickets/{id}": {
+          "get": {
+            "operationId": "getTicket",
+            "tags": [
+              "tickets"
+            ],
+            "summary": "Get a ticket by ID.",
+            "description": "Get a ticket by ID.",
+            "parameters": [
+              {
+                "name": "id",
+                "in": "path",
+                "description": "Ticket ID",
+                "required": true,
+                "schema": {
+                  "type": "integer"
+                }
+              }
+            ],
+            "responses": {
+              "200": {
+                "description": "OK",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "$ref": "#/components/schemas/api.Ticket"
+                    }
                   }
-                },
-                "targetGroups": {
-                  "type": "array",
-                  "items": {
-                    "type": "string"
+                }
+              }
+            },
+            "security": [
+              {
+                "bearerAuth": []
+              }
+            ]
+          }
+        },
+        "/hub/batch/tickets": {
+          "post": {
+            "operationId": "batchCreateTickets",
+            "tags": [
+              "batch",
+              "tickets"
+            ],
+            "summary": "Batch-create Tickets.",
+            "description": "Batch-create Tickets.",
+            "requestBody": {
+              "description": "Tickets data",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/api.Ticket"
+                    }
                   }
                 }
               },
-              "required": [
-                "origin",
-                "title"
-              ]
-            }
+              "required": true
+            },
+            "responses": {
+              "200": {
+                "description": "OK",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/api.Ticket"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "security": [
+              {
+                "bearerAuth": []
+              }
+            ],
+            "x-codegen-request-body-name": "tickets"
+          }
+        },
+        "/hub/trackers/{id}/projects": {
+          "get": {
+            "operationId": "getTrackerProjects",
+            "tags": [
+              "trackers"
+            ],
+            "summary": "List a tracker's projects.",
+            "description": "List a tracker's projects.",
+            "parameters": [
+              {
+                "name": "id",
+                "in": "path",
+                "description": "Tracker ID",
+                "required": true,
+                "schema": {
+                  "type": "integer"
+                }
+              }
+            ],
+            "responses": {
+              "200": {
+                "description": "OK",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/api.Project"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "security": [
+              {
+                "bearerAuth": []
+              }
+            ]
+          }
+        },
+        "/hub/trackers/{id}/projects/{id2}": {
+          "get": {
+            "operationId": "getTrackerProject",
+            "tags": [
+              "trackers"
+            ],
+            "summary": "Get a tracker project by ID.",
+            "description": "Get a tracker project by ID.",
+            "parameters": [
+              {
+                "name": "id",
+                "in": "path",
+                "description": "Tracker ID",
+                "required": true,
+                "schema": {
+                  "type": "integer"
+                }
+              },
+              {
+                "name": "id2",
+                "in": "path",
+                "description": "Project ID",
+                "required": true,
+                "schema": {
+                  "type": "string"
+                }
+              }
+            ],
+            "responses": {
+              "200": {
+                "description": "OK",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "$ref": "#/components/schemas/api.Project"
+                    }
+                  }
+                }
+              }
+            },
+            "security": [
+              {
+                "bearerAuth": []
+              }
+            ]
+          }
+        },
+        "/hub/trackers/{id}/projects/{id2}/issuetypes": {
+          "get": {
+            "operationId": "getTrackerProjectIssueTypes",
+            "tags": [
+              "trackers"
+            ],
+            "summary": "List a tracker project's issue types.",
+            "description": "List a tracker project's issue types.",
+            "parameters": [
+              {
+                "name": "id",
+                "in": "path",
+                "description": "Tracker ID",
+                "required": true,
+                "schema": {
+                  "type": "integer"
+                }
+              },
+              {
+                "name": "id2",
+                "in": "path",
+                "description": "Project ID",
+                "required": true,
+                "schema": {
+                  "type": "string"
+                }
+              }
+            ],
+            "responses": {
+              "200": {
+                "description": "OK",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/api.IssueType"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "security": [
+              {
+                "bearerAuth": []
+              }
+            ]
           }
         }
-      }
+      },
+      "components": {
+        "schemas": {
+          "api.Addon": {
+            "type": "object",
+            "properties": {
+              "image": {
+                "type": "string"
+              },
+              "name": {
+                "type": "string"
+              }
+            }
+          },
+          "api.Analysis": {
+            "type": "object",
+            "properties": {
+              "archived": {
+                "type": "boolean"
+              },
+              "createTime": {
+                "type": "string"
+              },
+              "createUser": {
+                "type": "string"
+              },
+              "dependencies": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/api.TechDependency"
+                }
+              },
+              "effort": {
+                "type": "integer"
+              },
+              "id": {
+                "type": "integer"
+              },
+              "issues": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/api.Issue"
+                }
+              },
+              "summary": {
+                "type": "object",
+                "properties": {}
+              },
+              "updateUser": {
+                "type": "string"
+              }
+            }
+          },
+          "api.Application": {
+            "required": [
+              "name"
+            ],
+            "type": "object",
+            "properties": {
+              "archetypes": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/api.Ref"
+                }
+              },
+              "assessed": {
+                "type": "boolean"
+              },
+              "assessments": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/api.Ref"
+                }
+              },
+              "binary": {
+                "type": "string"
+              },
+              "bucket": {
+                "$ref": "#/components/schemas/api.Ref"
+              },
+              "businessService": {
+                "$ref": "#/components/schemas/api.Ref"
+              },
+              "comments": {
+                "type": "string"
+              },
+              "confidence": {
+                "type": "integer"
+              },
+              "contributors": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/api.Ref"
+                }
+              },
+              "createTime": {
+                "type": "string"
+              },
+              "createUser": {
+                "type": "string"
+              },
+              "description": {
+                "type": "string"
+              },
+              "effort": {
+                "type": "integer"
+              },
+              "id": {
+                "type": "integer"
+              },
+              "identities": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/api.Ref"
+                }
+              },
+              "migrationWave": {
+                "$ref": "#/components/schemas/api.Ref"
+              },
+              "name": {
+                "type": "string"
+              },
+              "owner": {
+                "$ref": "#/components/schemas/api.Ref"
+              },
+              "repository": {
+                "$ref": "#/components/schemas/api.Repository"
+              },
+              "review": {
+                "$ref": "#/components/schemas/api.Ref"
+              },
+              "risk": {
+                "type": "string"
+              },
+              "tags": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/api.TagRef"
+                }
+              },
+              "updateUser": {
+                "type": "string"
+              }
+            }
+          },
+          "api.Archetype": {
+            "type": "object",
+            "properties": {
+              "applications": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/api.Ref"
+                }
+              },
+              "assessed": {
+                "type": "boolean"
+              },
+              "assessments": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/api.Ref"
+                }
+              },
+              "comments": {
+                "type": "string"
+              },
+              "confidence": {
+                "type": "integer"
+              },
+              "createTime": {
+                "type": "string"
+              },
+              "createUser": {
+                "type": "string"
+              },
+              "criteria": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/api.TagRef"
+                }
+              },
+              "description": {
+                "type": "string"
+              },
+              "id": {
+                "type": "integer"
+              },
+              "name": {
+                "type": "string"
+              },
+              "review": {
+                "$ref": "#/components/schemas/api.Ref"
+              },
+              "risk": {
+                "type": "string"
+              },
+              "stakeholderGroups": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/api.Ref"
+                }
+              },
+              "stakeholders": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/api.Ref"
+                }
+              },
+              "tags": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/api.TagRef"
+                }
+              },
+              "updateUser": {
+                "type": "string"
+              }
+            }
+          },
+          "api.Assessment": {
+            "required": [
+              "questionnaire"
+            ],
+            "type": "object",
+            "properties": {
+              "application": {
+                "$ref": "#/components/schemas/api.Ref"
+              },
+              "archetype": {
+                "$ref": "#/components/schemas/api.Ref"
+              },
+              "confidence": {
+                "type": "integer"
+              },
+              "createTime": {
+                "type": "string"
+              },
+              "createUser": {
+                "type": "string"
+              },
+              "id": {
+                "type": "integer"
+              },
+              "questionnaire": {
+                "$ref": "#/components/schemas/api.Ref"
+              },
+              "risk": {
+                "type": "string",
+                "description": "read only"
+              },
+              "riskMessages": {
+                "$ref": "#/components/schemas/assessment.RiskMessages"
+              },
+              "sections": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/assessment.Section"
+                }
+              },
+              "stakeholderGroups": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/api.Ref"
+                }
+              },
+              "stakeholders": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/api.Ref"
+                }
+              },
+              "status": {
+                "type": "string"
+              },
+              "thresholds": {
+                "$ref": "#/components/schemas/assessment.Thresholds"
+              },
+              "updateUser": {
+                "type": "string"
+              }
+            }
+          },
+          "api.Bucket": {
+            "type": "object",
+            "properties": {
+              "createTime": {
+                "type": "string"
+              },
+              "createUser": {
+                "type": "string"
+              },
+              "expiration": {
+                "type": "string"
+              },
+              "id": {
+                "type": "integer"
+              },
+              "path": {
+                "type": "string"
+              },
+              "updateUser": {
+                "type": "string"
+              }
+            }
+          },
+          "api.BusinessService": {
+            "required": [
+              "name"
+            ],
+            "type": "object",
+            "properties": {
+              "createTime": {
+                "type": "string"
+              },
+              "createUser": {
+                "type": "string"
+              },
+              "description": {
+                "type": "string"
+              },
+              "id": {
+                "type": "integer"
+              },
+              "name": {
+                "type": "string"
+              },
+              "owner": {
+                "$ref": "#/components/schemas/api.Ref"
+              },
+              "updateUser": {
+                "type": "string"
+              }
+            }
+          },
+          "api.Cache": {
+            "type": "object",
+            "properties": {
+              "capacity": {
+                "type": "string"
+              },
+              "exists": {
+                "type": "boolean"
+              },
+              "path": {
+                "type": "string"
+              },
+              "used": {
+                "type": "string"
+              }
+            }
+          },
+          "api.CopyRequest": {
+            "required": [
+              "sourceReview",
+              "targetApplications"
+            ],
+            "type": "object",
+            "properties": {
+              "sourceReview": {
+                "type": "integer"
+              },
+              "targetApplications": {
+                "type": "array",
+                "items": {
+                  "type": "integer"
+                }
+              }
+            }
+          },
+          "api.DepAppReport": {
+            "type": "object",
+            "properties": {
+              "businessService": {
+                "type": "string"
+              },
+              "dependency": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "integer"
+                  },
+                  "indirect": {
+                    "type": "boolean"
+                  },
+                  "labels": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "name": {
+                    "type": "string"
+                  },
+                  "provider": {
+                    "type": "string"
+                  },
+                  "sha": {
+                    "type": "string"
+                  },
+                  "version": {
+                    "type": "string"
+                  }
+                }
+              },
+              "description": {
+                "type": "string"
+              },
+              "id": {
+                "type": "integer"
+              },
+              "name": {
+                "type": "string"
+              }
+            }
+          },
+          "api.Dependency": {
+            "type": "object",
+            "properties": {
+              "createTime": {
+                "type": "string"
+              },
+              "createUser": {
+                "type": "string"
+              },
+              "from": {
+                "$ref": "#/components/schemas/api.Ref"
+              },
+              "id": {
+                "type": "integer"
+              },
+              "to": {
+                "$ref": "#/components/schemas/api.Ref"
+              },
+              "updateUser": {
+                "type": "string"
+              }
+            }
+          },
+          "api.Fact": {
+            "type": "object",
+            "properties": {
+              "key": {
+                "type": "string"
+              },
+              "source": {
+                "type": "string"
+              },
+              "value": {
+                "type": "object"
+              }
+            }
+          },
+          "api.FactMap": {
+            "type": "object",
+            "additionalProperties": true
+          },
+          "api.Fields": {
+            "type": "object",
+            "additionalProperties": true
+          },
+          "api.File": {
+            "type": "object",
+            "properties": {
+              "createTime": {
+                "type": "string"
+              },
+              "createUser": {
+                "type": "string"
+              },
+              "expiration": {
+                "type": "string"
+              },
+              "id": {
+                "type": "integer"
+              },
+              "name": {
+                "type": "string"
+              },
+              "path": {
+                "type": "string"
+              },
+              "updateUser": {
+                "type": "string"
+              }
+            }
+          },
+          "api.FileReport": {
+            "type": "object",
+            "properties": {
+              "effort": {
+                "type": "integer"
+              },
+              "file": {
+                "type": "string"
+              },
+              "incidents": {
+                "type": "integer"
+              },
+              "issueId": {
+                "type": "integer"
+              }
+            }
+          },
+          "api.Identity": {
+            "required": [
+              "kind",
+              "name"
+            ],
+            "type": "object",
+            "properties": {
+              "createTime": {
+                "type": "string"
+              },
+              "createUser": {
+                "type": "string"
+              },
+              "description": {
+                "type": "string"
+              },
+              "id": {
+                "type": "integer"
+              },
+              "key": {
+                "type": "string"
+              },
+              "kind": {
+                "type": "string"
+              },
+              "name": {
+                "type": "string"
+              },
+              "password": {
+                "type": "string"
+              },
+              "settings": {
+                "type": "string"
+              },
+              "updateUser": {
+                "type": "string"
+              },
+              "user": {
+                "type": "string"
+              }
+            }
+          },
+          "api.Import": {
+            "type": "object",
+            "additionalProperties": true
+          },
+          "api.ImportSummary": {
+            "type": "object",
+            "properties": {
+              "createEntities": {
+                "type": "boolean"
+              },
+              "createTime": {
+                "type": "string"
+              },
+              "createUser": {
+                "type": "string"
+              },
+              "filename": {
+                "type": "string"
+              },
+              "id": {
+                "type": "integer"
+              },
+              "importStatus": {
+                "type": "string"
+              },
+              "importTime": {
+                "type": "string"
+              },
+              "invalidCount": {
+                "type": "integer"
+              },
+              "updateUser": {
+                "type": "string"
+              },
+              "validCount": {
+                "type": "integer"
+              }
+            }
+          },
+          "api.Incident": {
+            "type": "object",
+            "properties": {
+              "codeSnip": {
+                "type": "string"
+              },
+              "createTime": {
+                "type": "string"
+              },
+              "createUser": {
+                "type": "string"
+              },
+              "facts": {
+                "$ref": "#/components/schemas/api.FactMap"
+              },
+              "file": {
+                "type": "string"
+              },
+              "id": {
+                "type": "integer"
+              },
+              "line": {
+                "type": "integer"
+              },
+              "message": {
+                "type": "string"
+              },
+              "updateUser": {
+                "type": "string"
+              }
+            }
+          },
+          "api.Issue": {
+            "required": [
+              "category",
+              "name",
+              "rule",
+              "ruleset"
+            ],
+            "type": "object",
+            "properties": {
+              "category": {
+                "type": "string"
+              },
+              "createTime": {
+                "type": "string"
+              },
+              "createUser": {
+                "type": "string"
+              },
+              "description": {
+                "type": "string"
+              },
+              "effort": {
+                "type": "integer"
+              },
+              "facts": {
+                "$ref": "#/components/schemas/api.FactMap"
+              },
+              "id": {
+                "type": "integer"
+              },
+              "incidents": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/api.Incident"
+                }
+              },
+              "labels": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "links": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/api.Link"
+                }
+              },
+              "name": {
+                "type": "string"
+              },
+              "rule": {
+                "type": "string"
+              },
+              "ruleset": {
+                "type": "string"
+              },
+              "updateUser": {
+                "type": "string"
+              }
+            }
+          },
+          "api.IssueAppReport": {
+            "type": "object",
+            "properties": {
+              "businessService": {
+                "type": "string"
+              },
+              "description": {
+                "type": "string"
+              },
+              "effort": {
+                "type": "integer"
+              },
+              "files": {
+                "type": "integer"
+              },
+              "id": {
+                "type": "integer"
+              },
+              "incidents": {
+                "type": "integer"
+              },
+              "issue": {
+                "type": "object",
+                "properties": {
+                  "description": {
+                    "type": "string"
+                  },
+                  "id": {
+                    "type": "integer"
+                  },
+                  "name": {
+                    "type": "string"
+                  },
+                  "rule": {
+                    "type": "string"
+                  },
+                  "ruleset": {
+                    "type": "string"
+                  }
+                }
+              },
+              "name": {
+                "type": "string"
+              }
+            }
+          },
+          "api.IssueReport": {
+            "type": "object",
+            "properties": {
+              "category": {
+                "type": "string"
+              },
+              "description": {
+                "type": "string"
+              },
+              "effort": {
+                "type": "integer"
+              },
+              "files": {
+                "type": "integer"
+              },
+              "id": {
+                "type": "integer"
+              },
+              "labels": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "links": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/api.Link"
+                }
+              },
+              "name": {
+                "type": "string"
+              },
+              "rule": {
+                "type": "string"
+              },
+              "ruleset": {
+                "type": "string"
+              }
+            }
+          },
+          "api.IssueType": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "name": {
+                "type": "string"
+              }
+            }
+          },
+          "api.JobFunction": {
+            "required": [
+              "name"
+            ],
+            "type": "object",
+            "properties": {
+              "createTime": {
+                "type": "string"
+              },
+              "createUser": {
+                "type": "string"
+              },
+              "id": {
+                "type": "integer"
+              },
+              "name": {
+                "type": "string"
+              },
+              "stakeholders": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/api.Ref"
+                }
+              },
+              "updateUser": {
+                "type": "string"
+              }
+            }
+          },
+          "api.Label": {
+            "type": "object",
+            "properties": {
+              "label": {
+                "type": "string"
+              },
+              "name": {
+                "type": "string"
+              }
+            }
+          },
+          "api.Link": {
+            "type": "object",
+            "properties": {
+              "title": {
+                "type": "string"
+              },
+              "url": {
+                "type": "string"
+              }
+            }
+          },
+          "api.Login": {
+            "type": "object",
+            "properties": {
+              "expiry": {
+                "type": "integer"
+              },
+              "password": {
+                "type": "string"
+              },
+              "refresh": {
+                "type": "string"
+              },
+              "token": {
+                "type": "string"
+              },
+              "user": {
+                "type": "string"
+              }
+            }
+          },
+          "api.MigrationWave": {
+            "type": "object",
+            "properties": {
+              "applications": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/api.Ref"
+                }
+              },
+              "createTime": {
+                "type": "string"
+              },
+              "createUser": {
+                "type": "string"
+              },
+              "endDate": {
+                "type": "string"
+              },
+              "id": {
+                "type": "integer"
+              },
+              "name": {
+                "type": "string"
+              },
+              "stakeholderGroups": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/api.Ref"
+                }
+              },
+              "stakeholders": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/api.Ref"
+                }
+              },
+              "startDate": {
+                "type": "string"
+              },
+              "updateUser": {
+                "type": "string"
+              }
+            }
+          },
+          "api.Project": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "name": {
+                "type": "string"
+              }
+            }
+          },
+          "api.Proxy": {
+            "type": "object",
+            "properties": {
+              "createTime": {
+                "type": "string"
+              },
+              "createUser": {
+                "type": "string"
+              },
+              "enabled": {
+                "type": "boolean"
+              },
+              "excluded": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "host": {
+                "type": "string"
+              },
+              "id": {
+                "type": "integer"
+              },
+              "identity": {
+                "$ref": "#/components/schemas/api.Ref"
+              },
+              "kind": {
+                "type": "string",
+                "enum": [
+                  "http",
+                  "https"
+                ]
+              },
+              "port": {
+                "type": "integer"
+              },
+              "updateUser": {
+                "type": "string"
+              }
+            }
+          },
+          "api.Questionnaire": {
+            "required": [
+              "name",
+              "riskMessages",
+              "sections",
+              "thresholds"
+            ],
+            "type": "object",
+            "properties": {
+              "builtin": {
+                "type": "boolean"
+              },
+              "createTime": {
+                "type": "string"
+              },
+              "createUser": {
+                "type": "string"
+              },
+              "description": {
+                "type": "string"
+              },
+              "id": {
+                "type": "integer"
+              },
+              "name": {
+                "type": "string"
+              },
+              "required": {
+                "type": "boolean"
+              },
+              "riskMessages": {
+                "$ref": "#/components/schemas/assessment.RiskMessages"
+              },
+              "sections": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/assessment.Section"
+                }
+              },
+              "thresholds": {
+                "$ref": "#/components/schemas/assessment.Thresholds"
+              },
+              "updateUser": {
+                "type": "string"
+              }
+            }
+          },
+          "api.Ref": {
+            "required": [
+              "id"
+            ],
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "integer"
+              },
+              "name": {
+                "type": "string"
+              }
+            }
+          },
+          "api.Repository": {
+            "type": "object",
+            "properties": {
+              "branch": {
+                "type": "string"
+              },
+              "kind": {
+                "type": "string"
+              },
+              "path": {
+                "type": "string"
+              },
+              "tag": {
+                "type": "string"
+              },
+              "url": {
+                "type": "string"
+              }
+            }
+          },
+          "api.Review": {
+            "type": "object",
+            "properties": {
+              "application": {
+                "$ref": "#/components/schemas/api.Ref"
+              },
+              "archetype": {
+                "$ref": "#/components/schemas/api.Ref"
+              },
+              "businessCriticality": {
+                "type": "integer"
+              },
+              "comments": {
+                "type": "string"
+              },
+              "createTime": {
+                "type": "string"
+              },
+              "createUser": {
+                "type": "string"
+              },
+              "effortEstimate": {
+                "type": "string"
+              },
+              "id": {
+                "type": "integer"
+              },
+              "proposedAction": {
+                "type": "string"
+              },
+              "updateUser": {
+                "type": "string"
+              },
+              "workPriority": {
+                "type": "integer"
+              }
+            }
+          },
+          "api.Rule": {
+            "type": "object",
+            "properties": {
+              "createTime": {
+                "type": "string"
+              },
+              "createUser": {
+                "type": "string"
+              },
+              "description": {
+                "type": "string"
+              },
+              "file": {
+                "$ref": "#/components/schemas/api.Ref"
+              },
+              "id": {
+                "type": "integer"
+              },
+              "labels": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "name": {
+                "type": "string"
+              },
+              "updateUser": {
+                "type": "string"
+              }
+            }
+          },
+          "api.RuleReport": {
+            "type": "object",
+            "properties": {
+              "applications": {
+                "type": "integer"
+              },
+              "category": {
+                "type": "string"
+              },
+              "description": {
+                "type": "string"
+              },
+              "effort": {
+                "type": "integer"
+              },
+              "labels": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "links": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/api.Link"
+                }
+              },
+              "name": {
+                "type": "string"
+              },
+              "rule": {
+                "type": "string"
+              },
+              "ruleset": {
+                "type": "string"
+              }
+            }
+          },
+          "api.RuleSet": {
+            "type": "object",
+            "properties": {
+              "createTime": {
+                "type": "string"
+              },
+              "createUser": {
+                "type": "string"
+              },
+              "dependsOn": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/api.Ref"
+                }
+              },
+              "description": {
+                "type": "string"
+              },
+              "id": {
+                "type": "integer"
+              },
+              "identity": {
+                "$ref": "#/components/schemas/api.Ref"
+              },
+              "kind": {
+                "type": "string"
+              },
+              "name": {
+                "type": "string"
+              },
+              "repository": {
+                "$ref": "#/components/schemas/api.Repository"
+              },
+              "rules": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/api.Rule"
+                }
+              },
+              "updateUser": {
+                "type": "string"
+              }
+            }
+          },
+          "api.Schema": {
+            "type": "object",
+            "properties": {
+              "paths": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "version": {
+                "type": "string"
+              }
+            }
+          },
+          "api.Setting": {
+            "type": "object",
+            "properties": {
+              "key": {
+                "type": "string"
+              },
+              "value": {
+                "type": "object"
+              }
+            }
+          },
+          "api.Stakeholder": {
+            "required": [
+              "email",
+              "name"
+            ],
+            "type": "object",
+            "properties": {
+              "businessServices": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/api.Ref"
+                }
+              },
+              "contributes": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/api.Ref"
+                }
+              },
+              "createTime": {
+                "type": "string"
+              },
+              "createUser": {
+                "type": "string"
+              },
+              "email": {
+                "type": "string"
+              },
+              "id": {
+                "type": "integer"
+              },
+              "jobFunction": {
+                "$ref": "#/components/schemas/api.Ref"
+              },
+              "migrationWaves": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/api.Ref"
+                }
+              },
+              "name": {
+                "type": "string"
+              },
+              "owns": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/api.Ref"
+                }
+              },
+              "stakeholderGroups": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/api.Ref"
+                }
+              },
+              "updateUser": {
+                "type": "string"
+              }
+            }
+          },
+          "api.StakeholderGroup": {
+            "required": [
+              "name"
+            ],
+            "type": "object",
+            "properties": {
+              "createTime": {
+                "type": "string"
+              },
+              "createUser": {
+                "type": "string"
+              },
+              "description": {
+                "type": "string"
+              },
+              "id": {
+                "type": "integer"
+              },
+              "migrationWaves": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/api.Ref"
+                }
+              },
+              "name": {
+                "type": "string"
+              },
+              "stakeholders": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/api.Ref"
+                }
+              },
+              "updateUser": {
+                "type": "string"
+              }
+            }
+          },
+          "api.Stakeholders": {
+            "type": "object",
+            "properties": {
+              "contributors": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/api.Ref"
+                }
+              },
+              "owner": {
+                "$ref": "#/components/schemas/api.Ref"
+              }
+            }
+          },
+          "api.TTL": {
+            "type": "object",
+            "properties": {
+              "created": {
+                "type": "integer"
+              },
+              "failed": {
+                "type": "integer"
+              },
+              "pending": {
+                "type": "integer"
+              },
+              "postponed": {
+                "type": "integer"
+              },
+              "running": {
+                "type": "integer"
+              },
+              "succeeded": {
+                "type": "integer"
+              }
+            }
+          },
+          "api.Tag": {
+            "required": [
+              "category",
+              "name"
+            ],
+            "type": "object",
+            "properties": {
+              "category": {
+                "$ref": "#/components/schemas/api.Ref"
+              },
+              "createTime": {
+                "type": "string"
+              },
+              "createUser": {
+                "type": "string"
+              },
+              "id": {
+                "type": "integer"
+              },
+              "name": {
+                "type": "string"
+              },
+              "updateUser": {
+                "type": "string"
+              }
+            }
+          },
+          "api.TagCategory": {
+            "required": [
+              "name"
+            ],
+            "type": "object",
+            "properties": {
+              "colour": {
+                "type": "string"
+              },
+              "createTime": {
+                "type": "string"
+              },
+              "createUser": {
+                "type": "string"
+              },
+              "id": {
+                "type": "integer"
+              },
+              "name": {
+                "type": "string"
+              },
+              "rank": {
+                "type": "integer"
+              },
+              "tags": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/api.Ref"
+                }
+              },
+              "updateUser": {
+                "type": "string"
+              },
+              "username": {
+                "type": "string"
+              }
+            }
+          },
+          "api.TagRef": {
+            "required": [
+              "id"
+            ],
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "integer"
+              },
+              "name": {
+                "type": "string"
+              },
+              "source": {
+                "type": "string"
+              },
+              "virtual": {
+                "type": "boolean"
+              }
+            }
+          },
+          "api.Target": {
+            "type": "object",
+            "properties": {
+              "choice": {
+                "type": "boolean"
+              },
+              "createTime": {
+                "type": "string"
+              },
+              "createUser": {
+                "type": "string"
+              },
+              "custom": {
+                "type": "boolean"
+              },
+              "description": {
+                "type": "string"
+              },
+              "id": {
+                "type": "integer"
+              },
+              "image": {
+                "$ref": "#/components/schemas/api.Ref"
+              },
+              "labels": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/api.Label"
+                }
+              },
+              "name": {
+                "type": "string"
+              },
+              "provider": {
+                "type": "string"
+              },
+              "ruleset": {
+                "$ref": "#/components/schemas/api.RuleSet"
+              },
+              "updateUser": {
+                "type": "string"
+              }
+            }
+          },
+          "api.Task": {
+            "required": [
+              "addon",
+              "data"
+            ],
+            "type": "object",
+            "properties": {
+              "activity": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "addon": {
+                "type": "string"
+              },
+              "application": {
+                "$ref": "#/components/schemas/api.Ref"
+              },
+              "bucket": {
+                "$ref": "#/components/schemas/api.Ref"
+              },
+              "canceled": {
+                "type": "boolean"
+              },
+              "createTime": {
+                "type": "string"
+              },
+              "createUser": {
+                "type": "string"
+              },
+              "data": {
+                "type": "object",
+                "properties": {}
+              },
+              "errors": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/api.TaskError"
+                }
+              },
+              "id": {
+                "type": "integer"
+              },
+              "image": {
+                "type": "string"
+              },
+              "locator": {
+                "type": "string"
+              },
+              "name": {
+                "type": "string"
+              },
+              "pod": {
+                "type": "string"
+              },
+              "policy": {
+                "type": "string"
+              },
+              "priority": {
+                "type": "integer"
+              },
+              "purged": {
+                "type": "boolean"
+              },
+              "retries": {
+                "type": "integer"
+              },
+              "started": {
+                "type": "string"
+              },
+              "state": {
+                "type": "string"
+              },
+              "terminated": {
+                "type": "string"
+              },
+              "ttl": {
+                "$ref": "#/components/schemas/api.TTL"
+              },
+              "updateUser": {
+                "type": "string"
+              },
+              "variant": {
+                "type": "string"
+              }
+            }
+          },
+          "api.TaskError": {
+            "type": "object",
+            "properties": {
+              "description": {
+                "type": "string"
+              },
+              "severity": {
+                "type": "string"
+              }
+            }
+          },
+          "api.TaskGroup": {
+            "required": [
+              "data"
+            ],
+            "type": "object",
+            "properties": {
+              "addon": {
+                "type": "string"
+              },
+              "bucket": {
+                "$ref": "#/components/schemas/api.Ref"
+              },
+              "createTime": {
+                "type": "string"
+              },
+              "createUser": {
+                "type": "string"
+              },
+              "data": {
+                "type": "object",
+                "properties": {}
+              },
+              "id": {
+                "type": "integer"
+              },
+              "name": {
+                "type": "string"
+              },
+              "state": {
+                "type": "string"
+              },
+              "tasks": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/api.Task"
+                }
+              },
+              "updateUser": {
+                "type": "string"
+              }
+            }
+          },
+          "api.TaskReport": {
+            "type": "object",
+            "properties": {
+              "activity": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "completed": {
+                "type": "integer"
+              },
+              "createTime": {
+                "type": "string"
+              },
+              "createUser": {
+                "type": "string"
+              },
+              "errors": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/api.TaskError"
+                }
+              },
+              "id": {
+                "type": "integer"
+              },
+              "result": {
+                "type": "object",
+                "properties": {}
+              },
+              "status": {
+                "type": "string"
+              },
+              "task": {
+                "type": "integer"
+              },
+              "total": {
+                "type": "integer"
+              },
+              "updateUser": {
+                "type": "string"
+              }
+            }
+          },
+          "api.TechDependency": {
+            "required": [
+              "name"
+            ],
+            "type": "object",
+            "properties": {
+              "createTime": {
+                "type": "string"
+              },
+              "createUser": {
+                "type": "string"
+              },
+              "id": {
+                "type": "integer"
+              },
+              "indirect": {
+                "type": "boolean"
+              },
+              "labels": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "name": {
+                "type": "string"
+              },
+              "provider": {
+                "type": "string"
+              },
+              "sha": {
+                "type": "string"
+              },
+              "updateUser": {
+                "type": "string"
+              },
+              "version": {
+                "type": "string"
+              }
+            }
+          },
+          "api.Ticket": {
+            "required": [
+              "application",
+              "kind",
+              "parent",
+              "tracker"
+            ],
+            "type": "object",
+            "properties": {
+              "application": {
+                "$ref": "#/components/schemas/api.Ref"
+              },
+              "createTime": {
+                "type": "string"
+              },
+              "createUser": {
+                "type": "string"
+              },
+              "error": {
+                "type": "boolean"
+              },
+              "fields": {
+                "$ref": "#/components/schemas/api.Fields"
+              },
+              "id": {
+                "type": "integer"
+              },
+              "kind": {
+                "type": "string"
+              },
+              "lastUpdated": {
+                "type": "string"
+              },
+              "link": {
+                "type": "string"
+              },
+              "message": {
+                "type": "string"
+              },
+              "parent": {
+                "type": "string"
+              },
+              "reference": {
+                "type": "string"
+              },
+              "status": {
+                "type": "string"
+              },
+              "tracker": {
+                "$ref": "#/components/schemas/api.Ref"
+              },
+              "updateUser": {
+                "type": "string"
+              }
+            }
+          },
+          "api.Tracker": {
+            "required": [
+              "identity",
+              "kind",
+              "name",
+              "url"
+            ],
+            "type": "object",
+            "properties": {
+              "connected": {
+                "type": "boolean"
+              },
+              "createTime": {
+                "type": "string"
+              },
+              "createUser": {
+                "type": "string"
+              },
+              "id": {
+                "type": "integer"
+              },
+              "identity": {
+                "$ref": "#/components/schemas/api.Ref"
+              },
+              "insecure": {
+                "type": "boolean"
+              },
+              "kind": {
+                "type": "string",
+                "enum": [
+                  "jira-cloud",
+                  "jira-onprem"
+                ]
+              },
+              "lastUpdated": {
+                "type": "string"
+              },
+              "message": {
+                "type": "string"
+              },
+              "name": {
+                "type": "string"
+              },
+              "updateUser": {
+                "type": "string"
+              },
+              "url": {
+                "type": "string"
+              }
+            }
+          },
+          "api.Vertex": {
+            "type": "object",
+            "properties": {
+              "applicationId": {
+                "type": "integer"
+              },
+              "applicationName": {
+                "type": "string"
+              },
+              "decision": {
+                "type": "string"
+              },
+              "effort": {
+                "type": "integer"
+              },
+              "effortEstimate": {
+                "type": "string"
+              },
+              "positionX": {
+                "type": "integer"
+              },
+              "positionY": {
+                "type": "integer"
+              }
+            }
+          },
+          "assessment.Answer": {
+            "required": [
+              "order"
+            ],
+            "type": "object",
+            "properties": {
+              "applyTags": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/assessment.CategorizedTag"
+                }
+              },
+              "autoAnswerFor": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/assessment.CategorizedTag"
+                }
+              },
+              "autoAnswered": {
+                "type": "boolean"
+              },
+              "mitigation": {
+                "type": "string"
+              },
+              "order": {
+                "type": "integer"
+              },
+              "rationale": {
+                "type": "string"
+              },
+              "risk": {
+                "type": "string",
+                "enum": [
+                  "red"
+                ]
+              },
+              "selected": {
+                "type": "boolean"
+              },
+              "text": {
+                "type": "string"
+              }
+            }
+          },
+          "assessment.CategorizedTag": {
+            "type": "object",
+            "properties": {
+              "category": {
+                "type": "string"
+              },
+              "tag": {
+                "type": "string"
+              }
+            }
+          },
+          "assessment.Question": {
+            "required": [
+              "order"
+            ],
+            "type": "object",
+            "properties": {
+              "answers": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/assessment.Answer"
+                }
+              },
+              "excludeFor": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/assessment.CategorizedTag"
+                }
+              },
+              "explanation": {
+                "type": "string"
+              },
+              "includeFor": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/assessment.CategorizedTag"
+                }
+              },
+              "order": {
+                "type": "integer"
+              },
+              "text": {
+                "type": "string"
+              }
+            }
+          },
+          "assessment.RiskMessages": {
+            "type": "object",
+            "properties": {
+              "green": {
+                "type": "string"
+              },
+              "red": {
+                "type": "string"
+              },
+              "unknown": {
+                "type": "string"
+              },
+              "yellow": {
+                "type": "string"
+              }
+            }
+          },
+          "assessment.Section": {
+            "required": [
+              "order"
+            ],
+            "type": "object",
+            "properties": {
+              "comment": {
+                "type": "string"
+              },
+              "name": {
+                "type": "string"
+              },
+              "order": {
+                "type": "integer"
+              },
+              "questions": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/assessment.Question"
+                }
+              }
+            }
+          },
+          "assessment.Thresholds": {
+            "type": "object",
+            "properties": {
+              "red": {
+                "type": "integer"
+              },
+              "unknown": {
+                "type": "integer"
+              },
+              "yellow": {
+                "type": "integer"
+              }
+            }
+          }
+        },
+        "securitySchemes": {
+          "bearerAuth": {
+            "type": "http",
+            "scheme": "bearer",
+            "bearerFormat": "JWT"
+          }
+        }
+      },
+      "x-original-swagger-version": "2.0"
+    }
 kind: ConfigMap
 metadata:
   creationTimestamp: null
