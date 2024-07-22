@@ -4,7 +4,7 @@ metadata:
   annotations:
     sonataflow.org/description: ""
     sonataflow.org/expressionLang: jq
-    sonataflow.org/profile: dev
+    sonataflow.org/profile: prod
     sonataflow.org/version: 0.0.1
   creationTimestamp: null
   labels:
@@ -14,163 +14,176 @@ metadata:
 spec:
   flow:
     annotations:
-    - workflow-type/infrastructure
+      - workflow-type/infrastructure
     dataInputSchema:
       failOnValidationErrors: true
       schema: schemas/ticket-escalation-schema.json
     errors:
-    - code: TimedOut
-      name: timeoutError
-    - code: "404"
-      name: notAvailable
+      - code: TimedOut
+        name: timeoutError
+      - code: "404"
+        name: notAvailable
     events:
-    - dataOnly: true
-      kind: consumed
-      name: approvalEvent
-      source: ticket.listener
-      type: dev.parodos.escalation
+      - dataOnly: true
+        kind: consumed
+        name: approvalEvent
+        source: ticket.listener
+        type: dev.parodos.escalation
     functions:
-    - name: createNotification
-      operation: notifications#createNotification
-      type: rest
-    - name: createK8sNamespace
-      operation: specs/kube.yaml#createCoreV1Namespace
-      type: rest
-    - name: logInfo
-      operation: sysout:INFO
-      type: custom
+      - name: createNotification
+        operation: notifications#createNotification
+        type: rest
+      - name: createK8sNamespace
+        operation: specs/kube.yaml#createCoreV1Namespace
+        type: rest
+      - name: logInfo
+        operation: sysout:INFO
+        type: custom
     start:
       stateName: CreateTicket
     states:
-    - actionMode: sequential
-      actions:
-      - actionDataFilter:
-          toStateData: .createResponse
-          useResults: true
-        subFlowRef:
-          invoke: sync
-          onParentComplete: terminate
-          workflowId: ticketingService
-      name: CreateTicket
-      stateDataFilter:
-        input: '. += { request: {type: "create", namespace: .namespace, parentId:
-          $WORKFLOW.instanceId} }'
-      transition:
-        nextState: WaitForApprovalEvent
-      type: operation
-    - actionMode: sequential
-      actions:
-      - actionDataFilter:
-          toStateData: .getResponse
-          useResults: true
-        subFlowRef:
-          invoke: sync
-          onParentComplete: terminate
-          workflowId: ticketingService
-      name: GetTicket
-      stateDataFilter:
-        input: '. += { request: { type: "get", ticketId: .createResponse.ticketId,
-          ticket: .createResponse.ticket} }'
-      transition:
-        nextState: CheckTicketState
-      type: operation
-    - dataConditions:
-      - condition: (.getResponse.status == "Approved")
-        transition:
-          nextState: CreateK8sNamespace
-      defaultCondition:
+      - actionMode: sequential
+        actions:
+          - actionDataFilter:
+              toStateData: .createResponse
+              useResults: true
+            subFlowRef:
+              invoke: sync
+              onParentComplete: terminate
+              workflowId: ticketingService
+        name: CreateTicket
+        stateDataFilter:
+          input: '. += { request: {type: "create", namespace: .namespace, parentId: $WORKFLOW.instanceId} }'
         transition:
           nextState: WaitForApprovalEvent
-      name: CheckTicketState
-      type: switch
-    - action:
-        actionDataFilter:
-          useResults: true
-        functionRef:
-          arguments:
-            message: '"Waiting for approvalEvent: \(.)"'
-          invoke: sync
-          refName: logInfo
-      eventRef: approvalEvent
-      name: WaitForApprovalEvent
-      onErrors:
-      - errorRef: timeoutError
+        type: operation
+      - actionMode: sequential
+        actions:
+          - actionDataFilter:
+              toStateData: .getResponse
+              useResults: true
+            subFlowRef:
+              invoke: sync
+              onParentComplete: terminate
+              workflowId: ticketingService
+        name: GetTicket
+        stateDataFilter:
+          input: '. += { request: { type: "get", ticketId: .createResponse.ticketId, ticket: .createResponse.ticket} }'
         transition:
-          nextState: Escalate
-      timeouts:
-        eventTimeout: PT10S
-      transition:
-        nextState: CreateK8sNamespace
-      type: callback
-    - actionMode: sequential
-      actions:
-      - actionDataFilter:
-          useResults: true
-        functionRef:
-          arguments:
-            message: '"Invoking escalation: \(.)"'
-          invoke: sync
-          refName: logInfo
-        name: printAction
-      - actionDataFilter:
-          useResults: true
-        functionRef:
-          arguments:
-            payload:
-              description: '"Please manage escalation ticket " + .createResponse.ticketId '
-              link: .createResponse.browseUrl
-              scope: Escalation Workflow
-              title: '"ATTN: Escalation for ticket - " + .createResponse.ticketId'
-              topic: Escalation Workflow
-            recipients:
-              type: broadcast
-          invoke: sync
-          refName: createNotification
-        name: createNotification
-      name: Escalate
-      onErrors:
-      - errorRef: notAvailable
+          nextState: CheckTicketState
+        type: operation
+      - dataConditions:
+          - condition: (.getResponse.status == "Approved")
+            transition:
+              nextState: CreateK8sNamespace
+        defaultCondition:
+          transition:
+            nextState: WaitForApprovalEvent
+        name: CheckTicketState
+        type: switch
+      - action:
+          actionDataFilter:
+            useResults: true
+          functionRef:
+            arguments:
+              message: '"Waiting for approvalEvent: \(.)"'
+            invoke: sync
+            refName: logInfo
+        eventRef: approvalEvent
+        name: WaitForApprovalEvent
+        onErrors:
+          - errorRef: timeoutError
+            transition:
+              nextState: Escalate
+        timeouts:
+          eventTimeout: PT10S
+        transition:
+          nextState: CreateK8sNamespace
+        type: callback
+      - actionMode: sequential
+        actions:
+          - actionDataFilter:
+              useResults: true
+            functionRef:
+              arguments:
+                message: '"Invoking escalation: \(.)"'
+              invoke: sync
+              refName: logInfo
+            name: printAction
+          - actionDataFilter:
+              useResults: true
+            functionRef:
+              arguments:
+                payload:
+                  description: '"Please manage escalation ticket " + .createResponse.ticketId '
+                  link: .createResponse.browseUrl
+                  scope: Escalation Workflow
+                  title: '"ATTN: Escalation for ticket - " + .createResponse.ticketId'
+                  topic: Escalation Workflow
+                recipients:
+                  type: broadcast
+              invoke: sync
+              refName: createNotification
+            name: createNotification
+        name: Escalate
+        onErrors:
+          - errorRef: notAvailable
+            transition:
+              nextState: GetTicket
         transition:
           nextState: GetTicket
-      transition:
-        nextState: GetTicket
-      type: operation
-    - actionMode: sequential
-      actions:
-      - actionDataFilter:
-          toStateData: .createdNamespace
-          useResults: true
-        functionRef:
-          arguments:
-            apiVersion: v1
-            kind: Namespace
-            metadata:
-              name: .namespace
-          invoke: sync
-          refName: createK8sNamespace
-      end:
-        terminate: true
-      name: CreateK8sNamespace
-      stateDataFilter:
-        output: '{createdNamespace: .createdNamespace}'
-      type: operation
+        type: operation
+      - actionMode: sequential
+        actions:
+          - actionDataFilter:
+              toStateData: .createdNamespace
+              useResults: true
+            functionRef:
+              arguments:
+                apiVersion: v1
+                kind: Namespace
+                metadata:
+                  name: .namespace
+              invoke: sync
+              refName: createK8sNamespace
+        end:
+          terminate: true
+        name: CreateK8sNamespace
+        stateDataFilter:
+          output: '{createdNamespace: .createdNamespace}'
+        type: operation
     timeouts:
       workflowExecTimeout:
         duration: PT24H
   podTemplate:
     container:
       resources: {}
+      image: quay.io/orchestrator/serverless-workflow-escalation:28ba2999
+      envFrom:
+        - secretRef:
+            name: ticketescalation-creds
   resources:
     configMaps:
-    - configMap:
-        name: 01-ticketescalation-resources
-      workflowPath: subflows
-    - configMap:
-        name: 02-ticketescalation-resources
-      workflowPath: schemas
-    - configMap:
-        name: 03-ticketescalation-resources
-      workflowPath: specs
+      - configMap:
+          name: 01-ticketescalation-resources
+        workflowPath: subflows
+      - configMap:
+          name: 02-ticketescalation-resources
+        workflowPath: schemas
+      - configMap:
+          name: 03-ticketescalation-resources
+        workflowPath: specs
+  persistence:
+    postgresql:
+      secretRef:
+        name: sonataflow-psql-postgresql
+        userKey: postgres-username
+        passwordKey: postgres-password
+      serviceRef:
+        name: sonataflow-psql-postgresql
+        port: 5432
+        databaseName: sonataflow
+        databaseSchema: escalation
 status:
   address: {}
   lastTimeRecoverAttempt: null
