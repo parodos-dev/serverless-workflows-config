@@ -1,12 +1,17 @@
-Move2kube
-===========
+# Move2kube Workflow
 
-# Configuration
+## Configuration
+The list of the overridable values can be found in our [git repository](https://github.com/parodos-dev/serverless-workflows-config/blob/main/charts/move2kube/values.yaml)
+
+You can also view the [Move2Kube README on GitHub](https://github.com/parodos-dev/serverless-workflows-config/blob/main/charts/move2kube/README.md)
+
+## Prerequisites 
 Set `TARGET_NS` to the target namespace:
 ```console
 TARGET_NS=sonataflow-infra
 ```
 
+### For Knative
 We need to use `initContainers` and `securityContext` in our Knative services to allow SSH key exchange in move2kube workflow, we have to tell Knative to enable that feature:
 ```bash
   oc patch configmap/config-features \
@@ -15,7 +20,7 @@ We need to use `initContainers` and `securityContext` in our Knative services to
     -p '{"data":{"kubernetes.podspec-init-containers": "enabled", "kubernetes.podspec-securitycontext": "enabled"}}'
 
 ```
-
+### For move2kube instance
 Also, `move2kube` instance runs as root so we need to allow the `default` service account to use `runAsUser`:
 ```console
 oc -n ${TARGET_NS} adm policy add-scc-to-user anyuid -z default
@@ -25,85 +30,47 @@ Create the secret that holds the ssh keys:
 ```console
 oc -n ${TARGET_NS} create secret generic sshkeys --from-file=id_rsa=${HOME}/.ssh/id_rsa --from-file=id_rsa.pub=${HOME}/.ssh/id_rsa.pub
 ```
-If you change the name of the secret, you will also have to updated the value of `sshSecretName` in [values.yaml](values.yaml)
+If you change the name of the secret, you will also have to provide the value of `sshSecretName` when installing the helm chart(`--set sshSecretName=<name of the secret>`)
 
-If you want to use other ssh keys you should update the `from-file` parameters values to match your own.
+If you want to use other ssh keys you should update the `from-file` parameter values to match your own.
 
 If you do not have ssh keys, you can generate them with `ssh-keygen` command. You can for instance refer to https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent 
 
-Note that those ssh keys needs to be added in your git repository as well. For bitbucket it should be on the account level (https://bitbucket.org/account/settings/ssh-keys/)
+Note that those ssh keys need to be added to your git repository as well. For bitbucket, it should be on the [account level](https://bitbucket.org/account/settings/ssh-keys/)
 
-# Installation
-## Persistence pre-requisites
-If persistence is enbaled, you must have a PostgreSQL instance running in the cluster, in the same `namespace` as the workflows.
+View the [Move2Kube README](https://github.com/parodos-dev/serverless-workflows-config/blob/main/charts/move2kube/README.md) on GitHub.
 
-A `secret` containing the instance credentials must exists as well. 
+## Installation
 
-See https://www.parodos.dev/orchestrator-helm-chart/postgresql on how to install a PostgreSQL instance. Please follow the section detailing how to install using helm. In this document, a `secret` holding the credentials is created.
-
-
-## Installing helm chart 
-From `charts` folder run 
+Run 
 ```console
-helm install move2kube workflows/move2kube --namespace=${TARGET_NS}
+helm repo add orchestrator-workflows https://parodos.dev/serverless-workflows-config
+helm install move2kube orchestrator-workflows/move2kube -n ${TARGET_NS}
 ```
 
+## Post-installation
 
-You need to edit the `sonataflow` resource to set the correct value for the `persistence` `spec`.
-The defaults are:
-```
-persistence:
-  postgresql:
-    secretRef:
-      name: sonataflow-psql-postgresql
-      userKey: postgres-username
-      passwordKey: postgres-password
-    serviceRef:
-      name: sonataflow-psql-postgresql
-      port: 5432
-      databaseName: sonataflow
-      databaseSchema: m2k
-```
-
-Make sure the above values match what is deployed on your namespace `TARGET_NS`.
-
-You can patch the resource by running (update it if needed with your own values):
-```bash
-  oc patch sonataflow/m2k \
-    -n ${TARGET_NS} \
-    --type merge \
-    -p '
-    {
-      "spec": {
-        "persistence": {
-          "postgresql": {
-            "secretRef": {
-              "name": "sonataflow-psql-postgresql",
-              "userKey": "postgres-username",
-              "passwordKey": "postgres-password"
-            },
-            "serviceRef": {
-              "name": "sonataflow-psql-postgresql",
-              "port": 5432,
-              "databaseName": "sonataflow",
-              "databaseSchema": "m2k"
-            }
-          }
-        }
-      }
-    }'
-```
-
-
-Run the following command to apply it to the `move2kubeURL` parameter:
+### Set `M2K_ROUTE` and `BROKER_URL`
+Run the following command or follow the steps prompted at the end of the workflow installation to apply it to the `move2kubeURL` parameter:
 ```console
 M2K_ROUTE=$(oc -n ${TARGET_NS} get routes move2kube-route -o yaml | yq -r .spec.host)
 oc -n ${TARGET_NS} delete ksvc m2k-save-transformation-func &&
-helm upgrade move2kube move2kube --namespace=${TARGET_NS} --set workflow.move2kubeURL=https://${M2K_ROUTE}
+  helm upgrade move2kube orchestrator-workflows/move2kube -n ${TARGET_NS} --set workflow.move2kubeURL=https://${M2K_ROUTE}
 ```
 
-Run the following to set K_SINK and MOVE2KUBE_URL environment variables in the workflow:
+Run the following to set `K_SINK` and `MOVE2KUBE_URL` environment variable in the workflow:
 ```console
 BROKER_URL=$(oc -n ${TARGET_NS} get broker -o yaml | yq -r .items[0].status.address.url)
 oc -n ${TARGET_NS} patch sonataflow m2k --type merge -p '{"spec": { "podTemplate": { "container": { "env": [{"name": "K_SINK", "value": "'${BROKER_URL}'"}, {"name": "MOVE2KUBE_URL", "value": "https://'${M2K_ROUTE}'"}]}}}}'
 ```
+
+### Edit the `${WORKFLOW_NAME}-creds` Secret
+The token for sending notifications from the m2k workflow to RHDH notifications service needs to be provided to the workflow.
+
+Edit the secret `${WORKFLOW_NAME}-creds` and set the value of `NOTIFICATIONS_BEARER_TOKEN`:
+```
+WORKFLOW_NAME=m2k
+oc -n ${TARGET_NS} patch secret "${WORKFLOW_NAME}-creds" --type merge -p '{"data": { "NOTIFICATIONS_BEARER_TOKEN": "'$(oc get secrets -n rhdh-operator backstage-backend-auth-secret -o go-template='{{ .data.BACKEND_SECRET  }}')'"}}'
+```
+
+This secret is used in the `sonataflow` CR to inject the token as an environment variable that will be used by the workflow.
