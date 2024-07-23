@@ -158,7 +158,7 @@ spec:
   podTemplate:
     container:
       resources: {}
-      image: quay.io/orchestrator/serverless-workflow-escalation:28ba2999
+      image: quay.io/orchestrator/serverless-workflow-escalation:2ac24370
       envFrom:
         - secretRef:
             name: ticketescalation-creds
@@ -166,13 +166,13 @@ spec:
     configMaps:
       - configMap:
           name: 01-ticketescalation-resources
-        workflowPath: schemas
+        workflowPath: subflows
       - configMap:
           name: 02-ticketescalation-resources
-        workflowPath: specs
+        workflowPath: schemas
       - configMap:
           name: 03-ticketescalation-resources
-        workflowPath: subflows
+        workflowPath: specs
   persistence:
     postgresql:
       secretRef:
