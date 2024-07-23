@@ -103,7 +103,6 @@ spec:
               arguments:
                 payload:
                   description: '"MTV migration " + .migrationName + " failed. Error: " + .migrationErrorMessage'
-                  scope: SonataFlow
                   title: MTV migration failed
                   topic: MTV migration workflow
                 recipients:
@@ -126,7 +125,6 @@ spec:
               arguments:
                 payload:
                   description: '"MTV migration " + .migrationName + " succeeded"'
-                  scope: SonataFlow
                   title: MTV migration successful
                   topic: MTV migration workflow
                 recipients:
@@ -144,7 +142,7 @@ spec:
   podTemplate:
     container:
       resources: {}
-      image: quay.io/orchestrator/serverless-workflow-mtv-migration:8d2b65c28a3fd8545283aa92fc4412eed5b0a6e5
+      image: quay.io/orchestrator/serverless-workflow-mtv-migration:c573d9a0a05ddf25395da384d95525d2f0cbaf74
       envFrom:
         - secretRef:
             name: mtv-migration-creds
@@ -152,10 +150,10 @@ spec:
     configMaps:
       - configMap:
           name: 01-mtv-migration-resources
-        workflowPath: schemas
+        workflowPath: specs
       - configMap:
           name: 02-mtv-migration-resources
-        workflowPath: specs
+        workflowPath: schemas
   persistence:
     postgresql:
       secretRef:
