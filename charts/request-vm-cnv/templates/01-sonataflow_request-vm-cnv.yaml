@@ -74,7 +74,6 @@ spec:
                 payload:
                   description: '"JIRA ticket created to request authorization to create VM " + .vm_name + " in namespace "+.vm_namespace'
                   link: $SECRET.jira_url + "/jira/servicedesk/projects/" + .projectKey + "/issues/" + .jiraCreateIssueResult.key
-                  scope: SonataFlow
                   title: '"JIRA ticket created for VM " + .vm_name'
                   topic: Request CM on CNV workflow
                 recipients:
@@ -136,7 +135,6 @@ spec:
                   arguments:
                     payload:
                       description: '"Authorization granted to create VM" + .vm_name + " in namespace "+.vm_namespace + " using image "+ .vm_image +". A notification will be sent once the VM is ready."'
-                      scope: SonataFlow
                       title: '"Authorization granted to create VM" + .vm_name + " in namespace "+.vm_namespace'
                       topic: Request CM on CNV workflow
                     recipients:
@@ -296,7 +294,6 @@ spec:
                     payload:
                       description: '"VM" + .vm_name + " in namespace "+.vm_namespace + " using image "+ .vm_image +" ready and running."'
                       link: $SECRET.cluster_console_url + "/k8s/ns/" + .vm_namespace + "/kubevirt.io~v1~VirtualMachine/" + .vm_name + "/console/standalone"
-                      scope: SonataFlow
                       title: '"VM" + .vm_name + " in namespace "+.vm_namespace + " ready"'
                       topic: Request CM on CNV workflow
                     recipients:
@@ -330,7 +327,6 @@ spec:
                   arguments:
                     payload:
                       description: '"VM" + .vm_name + " in namespace "+.vm_namespace + " using image "+ .vm_image +" not ready after "+.vmStatusRunningRetries+" retries: " + .vm.status'
-                      scope: SonataFlow
                       title: '"VM" + .vm_name + " in namespace "+.vm_namespace + " not ready"'
                       topic: Request CM on CNV workflow
                     recipients:
@@ -365,7 +361,6 @@ spec:
                     payload:
                       description: '"Authorization denied to create VM" + .vm_name + " in namespace "+.vm_namespace + " using image "+ .vm_image '
                       link: $SECRET.jira_url + "/jira/servicedesk/projects/" + .projectKey + "/issues/" + .jiraCreateIssueResult.key
-                      scope: SonataFlow
                       title: '"Authorization denied to create VM" + .vm_name + " in namespace "+.vm_namespace'
                       topic: Request CM on CNV workflow
                     recipients:
@@ -384,7 +379,7 @@ spec:
   podTemplate:
     container:
       resources: {}
-      image: quay.io/orchestrator/serverless-workflow-request-vm-cnv:e847316c8608b2d7616b320006293f342672b8d3
+      image: quay.io/orchestrator/serverless-workflow-request-vm-cnv:c573d9a0a05ddf25395da384d95525d2f0cbaf74
       envFrom:
         - secretRef:
             name: request-vm-cnv-creds
@@ -392,10 +387,10 @@ spec:
     configMaps:
       - configMap:
           name: 01-request-vm-cnv-resources
-        workflowPath: schemas
+        workflowPath: specs
       - configMap:
           name: 02-request-vm-cnv-resources
-        workflowPath: specs
+        workflowPath: schemas
   persistence:
     postgresql:
       secretRef:
