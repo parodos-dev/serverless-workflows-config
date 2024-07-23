@@ -604,6 +604,17 @@ entries:
   mtv-migration:
   - apiVersion: v2
     appVersion: 1.16.0
+    created: "2024-07-23T12:03:07.189545688Z"
+    description: A Helm chart for the MTV Migration serverless workflow
+    digest: cc6bc1801e38bd0d33e4f12b41cbdddb2e07cb3a17928118eae77b2ddce12237
+    icon: https://raw.githubusercontent.com/parodos-dev/parodos-dev.github.io/main/assets/images/WO_black.svg
+    name: mtv-migration
+    type: application
+    urls:
+    - https://github.com/parodos-dev/serverless-workflows-config/releases/download/mtv-migration-0.0.3/mtv-migration-0.0.3.tgz
+    version: 0.0.3
+  - apiVersion: v2
+    appVersion: 1.16.0
     created: "2024-06-24T10:58:10.856081239Z"
     description: A Helm chart for the MTV Migration serverless workflow
     digest: b8f90940df4e804fba6fd1acad8e5c6d32186d992626e4129b9600be645d5494
@@ -1139,4 +1150,4 @@ entries:
     urls:
     - https://github.com/rgolangh/serverless-workflows-config/releases/download/workflows-0.1.0/workflows-0.1.0.tgz
     version: 0.1.0
-generated: "2024-07-23T11:48:51.003953235Z"
+generated: "2024-07-23T12:03:07.189668859Z"
