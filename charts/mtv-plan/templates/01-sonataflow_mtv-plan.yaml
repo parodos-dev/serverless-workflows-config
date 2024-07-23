@@ -116,7 +116,6 @@ spec:
               arguments:
                 payload:
                   description: '"MTV plan " + .migrationName + " is not ready for migration. Error: " + .planErrorMessage'
-                  scope: SonataFlow
                   title: MTV plan is not ready for migration
                   topic: MTV plan assessment workflow
                 recipients:
@@ -139,7 +138,6 @@ spec:
               arguments:
                 payload:
                   description: '"MTV plan " + .migrationName + " is ready for migration"'
-                  scope: SonataFlow
                   title: MTV plan is ready for migration
                   topic: MTV plan assessment workflow
                 recipients:
@@ -157,7 +155,7 @@ spec:
   podTemplate:
     container:
       resources: {}
-      image: quay.io/orchestrator/serverless-workflow-mtv-plan:8d2b65c28a3fd8545283aa92fc4412eed5b0a6e5
+      image: quay.io/orchestrator/serverless-workflow-mtv-plan:c573d9a0a05ddf25395da384d95525d2f0cbaf74
       envFrom:
         - secretRef:
             name: mtv-plan-creds
