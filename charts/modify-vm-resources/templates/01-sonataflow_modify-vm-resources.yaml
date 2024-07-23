@@ -105,7 +105,6 @@ spec:
                 payload:
                   description: '"JIRA ticket created to request update for VM " + .vm_name + " in namespace " + .vm_namespace'
                   link: $SECRET.jira_url + "/jira/servicedesk/projects/" + .projectKey + "/issues/" + .jiraCreateIssueResult.key
-                  scope: SonataFlow
                   title: '"JIRA ticket created for VM " + .vm_name'
                   topic: Modify VM Resources workflow
                 recipients:
@@ -167,7 +166,6 @@ spec:
                   arguments:
                     payload:
                       description: '"Authorization granted to update VM " + .vm_name + " in namespace " + .vm_namespace + ". Memory: " + .vm_new_memory + ". CPU cores: " + (.vm_new_cpu_cores|tostring) + ". CPU threads: " + (.vm_new_cpu_threads|tostring) + ". CPU sockets: " + (.vm_new_cpu_sockets|tostring) + ". Auto restart: " + (if .vm_auto_restart == true then "yes" else "no" end)'
-                      scope: SonataFlow
                       title: '"Authorization granted to update VM" + .vm_name + " in namespace " + .vm_namespace'
                       topic: Modify VM Resources workflow
                     recipients:
@@ -304,7 +302,6 @@ spec:
                     payload:
                       description: '"VM" + .vm_name + " in namespace " + .vm_namespace + " updated."'
                       link: $SECRET.cluster_console_url + "/k8s/ns/" + .vm_namespace + "/kubevirt.io~v1~VirtualMachine/" + .vm_name + "/console/standalone"
-                      scope: SonataFlow
                       title: '"VM" + .vm_name + " in namespace " + .vm_namespace + " updated and ready"'
                       topic: Modify VM Resources workflow
                     recipients:
@@ -338,7 +335,6 @@ spec:
                   arguments:
                     payload:
                       description: '"VM" + .vm_name + " in namespace " + .vm_namespace + " not ready after the update after checking" +.vmStatusRunningRetries+" times: " + .vm.status'
-                      scope: SonataFlow
                       title: '"VM" + .vm_name + " in namespace " + .vm_namespace + " not ready"'
                       topic: Modify VM Resources workflow
                     recipients:
@@ -373,7 +369,6 @@ spec:
                     payload:
                       description: '"Authorization denied to update VM " + .vm_name + " in namespace " + .vm_namespace + ". Memory: " + .vm_new_memory + ". CPU cores: " + (.vm_new_cpu_cores|tostring) + ". CPU threads: " + (.vm_new_cpu_threads|tostring) + ". CPU sockets: " + (.vm_new_cpu_sockets|tostring)'
                       link: $SECRET.jira_url + "/jira/servicedesk/projects/" + .projectKey + "/issues/" + .jiraCreateIssueResult.key
-                      scope: SonataFlow
                       title: '"Authorization denied to create VM" + .vm_name + " in namespace " + .vm_namespace'
                       topic: Modify VM Resources workflow
                     recipients:
@@ -392,7 +387,7 @@ spec:
   podTemplate:
     container:
       resources: {}
-      image: quay.io/orchestrator/serverless-workflow-modify-vm-resources:e847316c8608b2d7616b320006293f342672b8d3
+      image: quay.io/orchestrator/serverless-workflow-modify-vm-resources:c573d9a0a05ddf25395da384d95525d2f0cbaf74
       envFrom:
         - secretRef:
             name: modify-vm-resources-creds
