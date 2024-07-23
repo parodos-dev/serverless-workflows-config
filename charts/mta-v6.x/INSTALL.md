@@ -1,4 +1,4 @@
-MTA
+MTA v6.x Workflow
 ===========
 
 # Installation
