@@ -192,7 +192,7 @@ spec:
               arguments:
                 payload:
                   description: '"MTA analysis is completed and the report for " + .application.repository.url + " is ready."'
-                  link: $SECRET.mta.url + "/hub/applications/" + (.application.id|tostring) + "/bucket/" + .data.output
+                  link: $SECRET.mta.url + "/hub/applications/" + (.application.id|tostring) + "/bucket/windup/report/"
                   scope: MTA Analysis Workflow
                   title: MTA analysis completed
                   topic: MTA Analysis Workflow
@@ -247,7 +247,10 @@ spec:
   podTemplate:
     container:
       resources: {}
-      image: quay.io/orchestrator/serverless-workflow-mta:b32fd3683febc9d8ab954efe92bf4af94671a965
+      image: quay.io/orchestrator/serverless-workflow-mta:e847316c8608b2d7616b320006293f342672b8d3
+      envFrom:
+        - secretRef:
+            name: mtaanalysis-creds
   resources:
     configMaps:
       - configMap:
