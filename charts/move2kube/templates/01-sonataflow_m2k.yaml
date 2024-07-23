@@ -154,7 +154,6 @@ spec:
                 payload:
                   description: '"Please go to your move2kube instance and answer the questions in order to continue the Move2Kube workflow"'
                   link: '$SECRET.move2kube_url + "/workspaces/"+ .workspaceId + "/projects/" + .projectId + "/outputs/"+ .transformId '
-                  scope: Move2Kube Workflow
                   title: ' "Transformation " + .transformationId + " waiting for Q&A" '
                   topic: Move2Kube Workflow
                 recipients:
@@ -220,7 +219,6 @@ spec:
                   arguments:
                     payload:
                       description: '"Move2Kube workflow  " + $WORKFLOW.instanceId + " on workspace " + .workspaceId + " and project " + .projectId + " failed with exit message: "+ .exitMessage + " -- Plan retries: "  + (.planRetries|tostring) + " -- Error: "  + .error'
-                      scope: Move2Kube Workflow
                       title: '"Move2Kube workflow " + $WORKFLOW.instanceId + " failed"'
                       topic: Move2Kube Workflow
                     recipients:
@@ -254,7 +252,6 @@ spec:
                   arguments:
                     payload:
                       description: '"Move2Kube workflow  " + $WORKFLOW.instanceId + " on workspace " + .workspaceId + " and project " + .projectId + " was successful; the output is available in the branch " + .targetBranch + " of your git repository "+ .repositoryURL'
-                      scope: Move2Kube Workflow
                       title: '"Move2Kube workflow " + $WORKFLOW.instanceId + " succeeded"'
                       topic: Move2Kube Workflow
                     recipients:
@@ -273,7 +270,7 @@ spec:
   podTemplate:
     container:
       resources: {}
-      image: quay.io/orchestrator/serverless-workflow-move2kube:e847316c8608b2d7616b320006293f342672b8d3
+      image: quay.io/orchestrator/serverless-workflow-move2kube:c573d9a0a05ddf25395da384d95525d2f0cbaf74
       envFrom:
         - secretRef:
             name: m2k-creds
