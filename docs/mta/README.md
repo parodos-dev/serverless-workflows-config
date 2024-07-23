@@ -32,7 +32,7 @@ echo "https://"$(oc -n openshift-mta get route mta -o yaml | yq -r .spec.host)
 ```
 
 ### Edit the `${WORKFLOW_NAME}-creds` Secret
-The token for sending notifications from the m2k workflow to RHDH notifications service needs to be provided to the workflow.
+The token for sending notifications from the mta workflow to RHDH notifications service needs to be provided to the workflow.
 
 Edit the secret `${WORKFLOW_NAME}-creds` and set the value of `NOTIFICATIONS_BEARER_TOKEN`:
 ```
