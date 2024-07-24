@@ -21,8 +21,8 @@ From `charts` folder run
 ```console
 helm install mtv-migration mtv-migration --namespace=${TARGET_NS}
 ```
-
-
+### Post-installation
+#### Persistence
 You need to edit the `sonataflow` resource to set the correct value for the `persistence` `spec`.
 The defaults are:
 ```
@@ -68,10 +68,44 @@ You can patch the resource by running (update it if needed with your own values)
     }'
 ```
 
+#### Environment variables
 
-Run the following to set environment variables in the workflow:
+##### ConfigMap
+Run the following to set the following environment variables values in the workflow:
 ```console
-oc -n ${TARGET_NS} patch sonataflow mtv-migration --type merge -p '{"spec": { "podTemplate": { "container": { "env": [{"name": "OCP_API_SERVER_URL", "value": "<Target openshift URL>"}, {"name": "OCP_API_SERVER_TOKEN", "value": "<Token to access the target OCP cluster>"}]}}}}'
+oc -n sonataflow-infra patch sonataflow mtv-migration --type merge -p '{
+  "spec": {
+    "podTemplate": {
+      "container": {
+        "env": [
+          {
+            "name": "OCP_API_SERVER_URL",
+            "value": "<Target openshift URL>"
+          }
+        ]
+      }
+    }
+  }
+}
+'
+```
+
+#### Secret
+
+We also need to set the following environment variables:
+* OCP_API_SERVER_TOKEN
+
+To do so, edit the secret `${WORKFLOW_NAME}-creds` and set those values and the one of `NOTIFICATIONS_BEARER_TOKEN`:
+```
+WORKFLOW_NAME=mtv-migration
+oc -n sonataflow-infra patch secret "${WORKFLOW_NAME}-creds" --type merge -p '{
+   "data":{
+      "NOTIFICATIONS_BEARER_TOKEN":"'$(oc get secrets -n rhdh-operator backstage-backend-auth-secret -o go-template='{{ .data.BACKEND_SECRET  }}')'"
+   },
+   "stringData":{
+      "OCP_API_SERVER_TOKEN":"<Token to access the target OCP cluster>"
+   }
+}'
 ```
 
 The `OCP_API_SERVER_TOKEN` should be associated with a service account.
