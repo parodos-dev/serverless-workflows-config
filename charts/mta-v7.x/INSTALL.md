@@ -28,7 +28,8 @@ while [[ $retry_count -lt 5 ]]; do
     oc -n openshift-mta get route mta && break || sleep 60
     retry_count=$((retry_count + 1))
 done
-echo "https://"$(oc -n openshift-mta get route mta -o yaml | yq -r .spec.host)
+MTA_ROUTE=$(oc -n openshift-mta get route mta -o yaml | yq -r .spec.host)
+oc -n ${TARGET_NS} patch sonataflow mta-analysis-v7 --type merge -p '{"spec": { "podTemplate": { "container": { "env": [{"name": "MTA_URL", "value": "https://'${MTA_ROUTE}'"}]}}}}'
 ```
 
 ### Edit the `${WORKFLOW_NAME}-creds` Secret
