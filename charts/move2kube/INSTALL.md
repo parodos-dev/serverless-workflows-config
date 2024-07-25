@@ -22,8 +22,13 @@ We need to use `initContainers` and `securityContext` in our Knative services to
 ```
 ### For move2kube instance
 Also, `move2kube` instance runs as root so we need to allow the `default` service account to use `runAsUser`:
+To know which scc is to be set to the default service account, run:
 ```console
-oc -n ${TARGET_NS} adm policy add-scc-to-user anyuid -z default
+oc get deployments.apps m2k-save-transformation-func-v1-deployment -oyaml | oc adm policy scc-subject-review --filename -
+```
+Then copy the `ALLOWED BY` value and use it in the following command:
+```console
+oc -n ${TARGET_NS} adm policy add-scc-to-user <ALLOWED BY> -z default
 ```
 
 Create the secret that holds the ssh keys:
@@ -61,7 +66,7 @@ oc -n ${TARGET_NS} delete ksvc m2k-save-transformation-func &&
 Run the following to set `K_SINK` and `MOVE2KUBE_URL` environment variable in the workflow:
 ```console
 BROKER_URL=$(oc -n ${TARGET_NS} get broker -o yaml | yq -r .items[0].status.address.url)
-oc -n ${TARGET_NS} patch sonataflow m2k --type merge -p '{"spec": { "podTemplate": { "container": { "env": [{"name": "K_SINK", "value": "'${BROKER_URL}'"}, {"name": "MOVE2KUBE_URL", "value": "https://'${M2K_ROUTE}'"}]}}}}'
+oc -n ${TARGET_NS} patch sonataflow m2k --type merge -p '{"spec": { "podTemplate": { "container": { "env": [{"name": "MOVE2KUBE_URL", "value": "https://'${M2K_ROUTE}'"}]}}}}'
 ```
 
 ### Edit the `${WORKFLOW_NAME}-creds` Secret
