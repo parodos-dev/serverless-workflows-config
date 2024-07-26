@@ -50,6 +50,9 @@ spec:
       - name: increasePlanRetries
         operation: .planRetries=.planRetries + 1
         type: expression
+      - name: formatTransformationErrorExitMessage
+        operation: '{ exitMessage: "Error while saving transformation output: " + (if .error == null then "timeout exception was thrown." else .error end) }'
+        type: expression
     start:
       stateName: StartPlanning
     states:
@@ -189,12 +192,17 @@ spec:
         transition:
           nextState: PrintExitSuccessMessage
         type: inject
-      - data:
-          exitMessage: '"Error while saving transformation output. If no context, it was due to timeout expiration"'
+      - actionMode: sequential
+        actions:
+          - actionDataFilter:
+              useResults: true
+            functionRef:
+              invoke: sync
+              refName: formatTransformationErrorExitMessage
         name: TransformationError
         transition:
           nextState: PrintExitErrorMessage
-        type: inject
+        type: operation
       - data:
           exitMessage: '"Get plan retries exceeded, an error probably occurred, check the move2kube instance logs"'
         name: GetPlanRetryExceededError
@@ -207,7 +215,7 @@ spec:
                   useResults: true
                 functionRef:
                   arguments:
-                    message: '${"m2k workflow: " + $WORKFLOW.instanceId + " has finalized with error. Exit message: " + .exitMessage + " -- Plan retries: " + (.planRetries|tostring) + " -- Context: "  + .error }'
+                    message: '"m2k workflow: " + $WORKFLOW.instanceId + " has finalized with error. Exit message: " + .exitMessage + " -- Plan retries: " + (.planRetries|tostring)'
                   invoke: sync
                   refName: systemOut
                 name: printSystemOut
@@ -218,7 +226,7 @@ spec:
                 functionRef:
                   arguments:
                     payload:
-                      description: '"Move2Kube workflow  " + $WORKFLOW.instanceId + " on workspace " + .workspaceId + " and project " + .projectId + " failed with exit message: "+ .exitMessage + " -- Plan retries: "  + (.planRetries|tostring) + " -- Error: "  + .error'
+                      description: '"Move2Kube workflow  " + $WORKFLOW.instanceId + " on workspace " + .workspaceId + " and project " + .projectId + " failed with exit message: "+ .exitMessage + " -- Plan retries: "  + (.planRetries|tostring)'
                       title: '"Move2Kube workflow " + $WORKFLOW.instanceId + " failed"'
                       topic: Move2Kube Workflow
                     recipients:
@@ -270,7 +278,7 @@ spec:
   podTemplate:
     container:
       resources: {}
-      image: quay.io/orchestrator/serverless-workflow-move2kube:c573d9a0a05ddf25395da384d95525d2f0cbaf74
+      image: quay.io/orchestrator/serverless-workflow-move2kube:4785d7ede2fe1805a728465ea41db39cda6eed80
       envFrom:
         - secretRef:
             name: m2k-creds
