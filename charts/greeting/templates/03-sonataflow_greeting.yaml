@@ -17,7 +17,7 @@ spec:
       - workflow-type/infrastructure
     dataInputSchema:
       failOnValidationErrors: true
-      schema: specs/greeting.sw.input-schema.json
+      schema: schemas/greeting.sw.input-schema.json
     functions:
       - name: greetFunction
         operation: sysout
@@ -66,12 +66,12 @@ spec:
   podTemplate:
     container:
       resources: {}
-      image: quay.io/orchestrator/serverless-workflow-greeting:e847316c8608b2d7616b320006293f342672b8d3
+      image: quay.io/orchestrator/serverless-workflow-greeting:67f743039643807ca6e6e7a284c22658856c92c7
   resources:
     configMaps:
       - configMap:
-          name: 01-greeting-resources
-        workflowPath: specs
+          name: 01-greeting-resources-schemas
+        workflowPath: schemas
   persistence:
     postgresql:
       secretRef:

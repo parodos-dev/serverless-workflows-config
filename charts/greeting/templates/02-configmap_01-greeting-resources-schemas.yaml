@@ -17,4 +17,4 @@ data:
 kind: ConfigMap
 metadata:
   creationTimestamp: null
-  name: 01-greeting-resources
+  name: 01-greeting-resources-schemas

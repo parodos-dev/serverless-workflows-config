@@ -17,7 +17,7 @@ spec:
       - workflow-type/assessment
     dataInputSchema:
       failOnValidationErrors: true
-      schema: schema/mta-input.json
+      schema: schemas/mta-input.json
     functions:
       - name: filterApplication
         operation: '{application: .applications|map(select(.repository.url == .repositoryURL))[0]}'
@@ -245,14 +245,17 @@ spec:
   podTemplate:
     container:
       resources: {}
-      image: quay.io/orchestrator/serverless-workflow-mta:c573d9a0a05ddf25395da384d95525d2f0cbaf74
+      image: quay.io/orchestrator/serverless-workflow-mta:67f743039643807ca6e6e7a284c22658856c92c7
       envFrom:
         - secretRef:
             name: mtaanalysis-creds
   resources:
     configMaps:
       - configMap:
-          name: 01-mtaanalysis-resources
+          name: 01-mtaanalysis-resources-schemas
+        workflowPath: schemas
+      - configMap:
+          name: 02-mtaanalysis-resources-specs
         workflowPath: specs
   persistence:
     postgresql:

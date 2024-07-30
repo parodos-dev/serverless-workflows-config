@@ -687,4 +687,4 @@ data:
 kind: ConfigMap
 metadata:
   creationTimestamp: null
-  name: 01-mtaanalysis-resources
+  name: 02-mtaanalysis-resources-specs
