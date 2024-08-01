@@ -843,4 +843,4 @@ data:
 kind: ConfigMap
 metadata:
   creationTimestamp: null
-  name: 02-mta-analysis-v6-resources
+  name: 02-mta-analysis-v6-resources-specs

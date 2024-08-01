@@ -8,9 +8,9 @@ metadata:
     sonataflow.org/version: "1.0"
   creationTimestamp: null
   labels:
-    app: mta-analysis-v6
-    sonataflow.org/workflow-app: mta-analysis-v6
-  name: mta-analysis-v6
+    app: mta-analysis-v7
+    sonataflow.org/workflow-app: mta-analysis-v7
+  name: mta-analysis-v7
 spec:
   flow:
     annotations:
@@ -24,6 +24,9 @@ spec:
         type: expression
       - name: getApplication
         operation: specs/mta.json#getApplications
+        type: rest
+      - name: getApplicationAnalysis
+        operation: specs/mta.json#getApplicationAnalysis
         type: rest
       - name: createApplication
         operation: specs/mta.json#createApplication
@@ -79,6 +82,12 @@ spec:
       - name: logInfo
         operation: sysout:INFO
         type: custom
+      - name: countMandatoriesIncidents
+        operation: .applicationAnalysis | [select (.issues[].category=="mandatory")][0] | [.issues[]?.incidents //[]] | .[-1][-1].id
+        type: expression
+      - name: countNonMandatoriesIncidents
+        operation: .applicationAnalysis | [select (.issues[].category!="mandatory")][0] | [.issues[]?.incidents //[]] | .[-1][-1].id
+        type: expression
     start:
       stateName: GetApplication
     states:
@@ -131,24 +140,20 @@ spec:
               useResults: true
             functionRef:
               arguments:
-                addon: windup
+                addon: analyzer
                 data:
                   mode:
                     binary: false
-                    diva: false
                     withDeps: false
-                  output: /windup/report
                   rules:
                     labels:
-                      - konveyor.io/target=cloud-readiness
-                    rulesets:
-                      - id: 2
-                        name: Containerization
+                      included:
+                        - konveyor.io/target=cloud-readiness
                   scope:
-                    withKnown: false
+                    withKnownLibs: false
                   tagger:
                     enabled: true
-                name: taskgroup.windup
+                name: taskgroup.analyzer
               invoke: sync
               refName: createTaskgroup
             name: createTaskgroup
@@ -162,19 +167,20 @@ spec:
               useResults: true
             functionRef:
               arguments:
-                addon: windup
+                addon: analyzer
                 bucket:
                   id: .application.bucket.id
                 createUser: admin
                 data: .taskgroup.data
                 id: .taskgroup.id
-                name: taskgroup.windup
+                name: taskgroup.analyzer
                 state: Created
                 tasks:
                   - application:
                       id: .application.id
                       name: .application.name
-                    name: .application.name + ".1.windup"
+                    name: .application.name + ".1.analyzer"
+                updateUser: ""
               invoke: sync
               refName: submitTaskgroup
             name: submitTaskgroup
@@ -216,22 +222,89 @@ spec:
           nextState: checkReportDone
         type: operation
       - dataConditions:
-          - condition: (.taskgroup.state == "Ready" and (.taskgroup.tasks[0].state == "Running" or .taskgroup.tasks[0].state == "Pending"))
+          - condition: (.taskgroup.state == "Ready" and (.taskgroup.tasks[0].state == "Running" or (.taskgroup.tasks[0].state == "Pending" or .taskgroup.tasks[0].state == "Postponed")))
+            name: taskNotCompleted
             transition:
               nextState: pollResults
-          - condition: (.taskgroup.state == "Ready" and .exportToIssueManager == "true" and .taskgroup.tasks[0].state == "Succeeded")
-            transition:
-              nextState: GetTrackers
-          - condition: (.taskgroup.state == "Ready" and .exportToIssueManager == "false" and .taskgroup.tasks[0].state == "Succeeded")
-            transition:
-              nextState: NotifyCompletion
           - condition: (.taskgroup.state == "Ready" and .taskgroup.tasks[0].state == "Failed")
+            name: taskFailed
             transition:
               nextState: NotifyFailureBackstage
         defaultCondition:
           transition:
-            nextState: NotifyCompletion
+            nextState: GetApplicationAnalysis
         name: checkReportDone
+        type: switch
+      - actionMode: sequential
+        actions:
+          - actionDataFilter:
+              toStateData: .applicationAnalysis
+              useResults: true
+            functionRef:
+              arguments:
+                id: .application.id
+              invoke: sync
+              refName: getApplicationAnalysis
+            name: getApp
+        name: GetApplicationAnalysis
+        transition:
+          nextState: CountMandatoriesIncidents
+        type: operation
+      - actionMode: sequential
+        actions:
+          - actionDataFilter:
+              toStateData: .application.mandatoriesIncidents
+              useResults: true
+            functionRef:
+              invoke: sync
+              refName: countMandatoriesIncidents
+            name: countApplicationMandatoryIncident
+          - actionDataFilter:
+              useResults: true
+            functionRef:
+              arguments:
+                message: '"Mandatory incidents: \(.application.mandatoriesIncidents|tostring)"'
+              invoke: sync
+              refName: logInfo
+            name: logMandatoriesIncidents
+        name: CountMandatoriesIncidents
+        transition:
+          nextState: CountNonMandatoriesIncidents
+        type: operation
+      - actionMode: sequential
+        actions:
+          - actionDataFilter:
+              toStateData: .application.nonMandatoriesIncidents
+              useResults: true
+            functionRef:
+              invoke: sync
+              refName: countNonMandatoriesIncidents
+            name: countApplicationNotMandatoryIncident
+          - actionDataFilter:
+              useResults: true
+            functionRef:
+              arguments:
+                message: '"Non-mandatory incidents: \(.application.nonMandatoriesIncidents|tostring)"'
+              invoke: sync
+              refName: logInfo
+            name: logNonMandatoriesIncidents
+        name: CountNonMandatoriesIncidents
+        transition:
+          nextState: CheckMandatoriesIncidents
+        type: operation
+      - dataConditions:
+          - condition: .application.mandatoriesIncidents > 0
+            name: hasMandatoriesIncidents
+            transition:
+              nextState: NotifyMandatoriesIncidentsInApplication
+          - condition: (.application.mandatoriesIncidents == 0 and .exportToIssueManager == "true")
+            name: NotifyTracker
+            transition:
+              nextState: GetTrackers
+        defaultCondition:
+          transition:
+            nextState: NotifyCompletion
+        name: CheckMandatoriesIncidents
         type: switch
       - actionMode: sequential
         actions:
@@ -474,7 +547,8 @@ spec:
               arguments:
                 payload:
                   description: '"MTA analysis is completed and the report for " + .application.repository.url + " is ready."'
-                  link: $SECRET.mta.url + "/hub/applications/" + (.application.id|tostring) + "/bucket/windup/report/"
+                  link: $SECRET.mta.url + "/hub/applications/" + (.application.id|tostring) + "/analysis/report"
+                  severity: normal
                   title: MTA analysis completed
                   topic: MTA Analysis Workflow
                 recipients:
@@ -501,7 +575,29 @@ spec:
             functionRef:
               arguments:
                 payload:
+                  description: '"MTA analysis for " + .application.repository.url + " completed with " + (.application.mandatoriesIncidents|tostring) +" incidents in mandatories issues. Check the analysis report."'
+                  link: $SECRET.mta.url + "/hub/applications/" + (.application.id|tostring) + "/analysis/report"
+                  severity: high
+                  title: MTA analysis completed with incidents in mandatory issues.
+                  topic: MTA Analysis Workflow
+                recipients:
+                  entityRef: .recipients
+                  type: entity
+              invoke: sync
+              refName: createNotification
+        end:
+          terminate: true
+        name: NotifyMandatoriesIncidentsInApplication
+        type: operation
+      - actionMode: sequential
+        actions:
+          - actionDataFilter:
+              useResults: true
+            functionRef:
+              arguments:
+                payload:
                   description: '"MTA analysis for " + .application.repository.url + " failed. Check logs of task pod: " + .taskgroup.tasks[0].pod'
+                  severity: critical
                   title: MTA analysis failed
                   topic: MTA Analysis Workflow
                 recipients:
@@ -519,17 +615,17 @@ spec:
   podTemplate:
     container:
       resources: {}
-      image: quay.io/orchestrator/serverless-workflow-mta-v6.x:c573d9a0a05ddf25395da384d95525d2f0cbaf74
+      image: quay.io/orchestrator/serverless-workflow-mta-v7.x:ddca7fa22829a8289f065b48d2abd7133af5f6a1
       envFrom:
         - secretRef:
-            name: mta-analysis-v6-creds
+            name: mta-analysis-v7-creds
   resources:
     configMaps:
       - configMap:
-          name: 01-mta-analysis-v6-resources
+          name: 01-mta-analysis-v7-resources-schemas
         workflowPath: schemas
       - configMap:
-          name: 02-mta-analysis-v6-resources
+          name: 02-mta-analysis-v7-resources-specs
         workflowPath: specs
   persistence:
     postgresql:
@@ -541,7 +637,7 @@ spec:
         name: sonataflow-psql-postgresql
         port: 5432
         databaseName: sonataflow
-        databaseSchema: mta-v6.x
+        databaseSchema: mta-v7.x
 status:
   address: {}
   lastTimeRecoverAttempt: null

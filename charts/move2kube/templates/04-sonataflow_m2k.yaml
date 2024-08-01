@@ -157,6 +157,7 @@ spec:
                 payload:
                   description: '"Please go to your move2kube instance and answer the questions in order to continue the Move2Kube workflow"'
                   link: '$SECRET.move2kube_url + "/workspaces/"+ .workspaceId + "/projects/" + .projectId + "/outputs/"+ .transformId '
+                  severity: normal
                   title: ' "Transformation " + .transformationId + " waiting for Q&A" '
                   topic: Move2Kube Workflow
                 recipients:
@@ -227,6 +228,7 @@ spec:
                   arguments:
                     payload:
                       description: '"Move2Kube workflow  " + $WORKFLOW.instanceId + " on workspace " + .workspaceId + " and project " + .projectId + " failed with exit message: "+ .exitMessage + " -- Plan retries: "  + (.planRetries|tostring)'
+                      severity: critical
                       title: '"Move2Kube workflow " + $WORKFLOW.instanceId + " failed"'
                       topic: Move2Kube Workflow
                     recipients:
@@ -260,6 +262,7 @@ spec:
                   arguments:
                     payload:
                       description: '"Move2Kube workflow  " + $WORKFLOW.instanceId + " on workspace " + .workspaceId + " and project " + .projectId + " was successful; the output is available in the branch " + .targetBranch + " of your git repository "+ .repositoryURL'
+                      severity: normal
                       title: '"Move2Kube workflow " + $WORKFLOW.instanceId + " succeeded"'
                       topic: Move2Kube Workflow
                     recipients:
@@ -278,7 +281,7 @@ spec:
   podTemplate:
     container:
       resources: {}
-      image: quay.io/orchestrator/serverless-workflow-move2kube:880745e27b9c8c8e82debd675f6454a4b28a5fa0
+      image: quay.io/orchestrator/serverless-workflow-move2kube:ddca7fa22829a8289f065b48d2abd7133af5f6a1
       envFrom:
         - secretRef:
             name: m2k-creds

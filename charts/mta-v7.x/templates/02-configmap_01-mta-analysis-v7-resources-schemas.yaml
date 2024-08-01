@@ -42,4 +42,4 @@ data:
 kind: ConfigMap
 metadata:
   creationTimestamp: null
-  name: 01-mta-analysis-v7-resources
+  name: 01-mta-analysis-v7-resources-schemas
