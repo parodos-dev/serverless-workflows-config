@@ -548,6 +548,7 @@ spec:
                 payload:
                   description: '"MTA analysis is completed and the report for " + .application.repository.url + " is ready."'
                   link: $SECRET.mta.url + "/hub/applications/" + (.application.id|tostring) + "/analysis/report"
+                  severity: normal
                   title: MTA analysis completed
                   topic: MTA Analysis Workflow
                 recipients:
@@ -576,6 +577,7 @@ spec:
                 payload:
                   description: '"MTA analysis for " + .application.repository.url + " completed with " + (.application.mandatoriesIncidents|tostring) +" incidents in mandatories issues. Check the analysis report."'
                   link: $SECRET.mta.url + "/hub/applications/" + (.application.id|tostring) + "/analysis/report"
+                  severity: high
                   title: MTA analysis completed with incidents in mandatory issues.
                   topic: MTA Analysis Workflow
                 recipients:
@@ -595,6 +597,7 @@ spec:
               arguments:
                 payload:
                   description: '"MTA analysis for " + .application.repository.url + " failed. Check logs of task pod: " + .taskgroup.tasks[0].pod'
+                  severity: critical
                   title: MTA analysis failed
                   topic: MTA Analysis Workflow
                 recipients:
@@ -612,7 +615,7 @@ spec:
   podTemplate:
     container:
       resources: {}
-      image: quay.io/orchestrator/serverless-workflow-mta-v7.x:3a44704bd51aa7ffbc5fe5de24b00123073e4f23
+      image: quay.io/orchestrator/serverless-workflow-mta-v7.x:ddca7fa22829a8289f065b48d2abd7133af5f6a1
       envFrom:
         - secretRef:
             name: mta-analysis-v7-creds
