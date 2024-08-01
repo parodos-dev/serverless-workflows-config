@@ -101,6 +101,7 @@ spec:
                 payload:
                   description: Jira ticket created
                   link: $SECRET.jira_url + "/jira/servicedesk/projects/" + .operationsProjectKey + "/issues/" + .operationsJiraCreateIssueResult.key
+                  severity: normal
                   title: Jira ticket created
                   topic: Create OCP Project workflow
                 recipients:
@@ -200,6 +201,7 @@ spec:
               arguments:
                 payload:
                   description: '"Project " + .projectName + " active"'
+                  severity: normal
                   title: '"Project " + .projectName + " active"'
                   topic: Create OCP Project workflow
                 recipients:
@@ -220,6 +222,7 @@ spec:
               arguments:
                 payload:
                   description: '"Project " + .projectName + " inactive"'
+                  severity: high
                   title: '"Project " + .projectName + " inactive"'
                   topic: Create OCP Project workflow
                 recipients:
@@ -295,7 +298,7 @@ spec:
   podTemplate:
     container:
       resources: {}
-      image: quay.io/orchestrator/serverless-workflow-create-ocp-project:754490b6bd838d6f074b6f6a392cadfb78ab8216
+      image: quay.io/orchestrator/serverless-workflow-create-ocp-project:ddca7fa22829a8289f065b48d2abd7133af5f6a1
       envFrom:
         - secretRef:
             name: create-ocp-project-creds
