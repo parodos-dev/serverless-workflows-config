@@ -10,4 +10,4 @@ kfunction:
   image: quay.io/orchestrator/serverless-workflow-m2k-kfunc:ddca7fa22829a8289f065b48d2abd7133af5f6a1 # image of the knative function
 instance:
   name: move2kube # name of the move2kube instance deployment
-  image: quay.io/konveyor/move2kube-ui:v0.3.13 # image of the move2kube instance
+  image: quay.io/konveyor/move2kube-ui:v0.3.14-rc.0 # image of the move2kube instance
