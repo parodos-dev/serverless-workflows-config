@@ -105,6 +105,7 @@ spec:
                 payload:
                   description: '"JIRA ticket created to request update for VM " + .vm_name + " in namespace " + .vm_namespace'
                   link: $SECRET.jira_url + "/jira/servicedesk/projects/" + .projectKey + "/issues/" + .jiraCreateIssueResult.key
+                  severity: normal
                   title: '"JIRA ticket created for VM " + .vm_name'
                   topic: Modify VM Resources workflow
                 recipients:
@@ -166,6 +167,7 @@ spec:
                   arguments:
                     payload:
                       description: '"Authorization granted to update VM " + .vm_name + " in namespace " + .vm_namespace + ". Memory: " + .vm_new_memory + ". CPU cores: " + (.vm_new_cpu_cores|tostring) + ". CPU threads: " + (.vm_new_cpu_threads|tostring) + ". CPU sockets: " + (.vm_new_cpu_sockets|tostring) + ". Auto restart: " + (if .vm_auto_restart == true then "yes" else "no" end)'
+                      severity: normal
                       title: '"Authorization granted to update VM" + .vm_name + " in namespace " + .vm_namespace'
                       topic: Modify VM Resources workflow
                     recipients:
@@ -302,6 +304,7 @@ spec:
                     payload:
                       description: '"VM" + .vm_name + " in namespace " + .vm_namespace + " updated."'
                       link: $SECRET.cluster_console_url + "/k8s/ns/" + .vm_namespace + "/kubevirt.io~v1~VirtualMachine/" + .vm_name + "/console/standalone"
+                      severity: normal
                       title: '"VM" + .vm_name + " in namespace " + .vm_namespace + " updated and ready"'
                       topic: Modify VM Resources workflow
                     recipients:
@@ -335,6 +338,7 @@ spec:
                   arguments:
                     payload:
                       description: '"VM" + .vm_name + " in namespace " + .vm_namespace + " not ready after the update after checking" +.vmStatusRunningRetries+" times: " + .vm.status'
+                      severity: high
                       title: '"VM" + .vm_name + " in namespace " + .vm_namespace + " not ready"'
                       topic: Modify VM Resources workflow
                     recipients:
@@ -369,6 +373,7 @@ spec:
                     payload:
                       description: '"Authorization denied to update VM " + .vm_name + " in namespace " + .vm_namespace + ". Memory: " + .vm_new_memory + ". CPU cores: " + (.vm_new_cpu_cores|tostring) + ". CPU threads: " + (.vm_new_cpu_threads|tostring) + ". CPU sockets: " + (.vm_new_cpu_sockets|tostring)'
                       link: $SECRET.jira_url + "/jira/servicedesk/projects/" + .projectKey + "/issues/" + .jiraCreateIssueResult.key
+                      severity: high
                       title: '"Authorization denied to create VM" + .vm_name + " in namespace " + .vm_namespace'
                       topic: Modify VM Resources workflow
                     recipients:
@@ -387,7 +392,7 @@ spec:
   podTemplate:
     container:
       resources: {}
-      image: quay.io/orchestrator/serverless-workflow-modify-vm-resources:754490b6bd838d6f074b6f6a392cadfb78ab8216
+      image: quay.io/orchestrator/serverless-workflow-modify-vm-resources:ddca7fa22829a8289f065b48d2abd7133af5f6a1
       envFrom:
         - secretRef:
             name: modify-vm-resources-creds
