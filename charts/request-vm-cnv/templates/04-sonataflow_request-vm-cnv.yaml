@@ -74,6 +74,7 @@ spec:
                 payload:
                   description: '"JIRA ticket created to request authorization to create VM " + .vm_name + " in namespace "+.vm_namespace'
                   link: $SECRET.jira_url + "/jira/servicedesk/projects/" + .projectKey + "/issues/" + .jiraCreateIssueResult.key
+                  severity: normal
                   title: '"JIRA ticket created for VM " + .vm_name'
                   topic: Request CM on CNV workflow
                 recipients:
@@ -135,6 +136,7 @@ spec:
                   arguments:
                     payload:
                       description: '"Authorization granted to create VM" + .vm_name + " in namespace "+.vm_namespace + " using image "+ .vm_image +". A notification will be sent once the VM is ready."'
+                      severity: normal
                       title: '"Authorization granted to create VM" + .vm_name + " in namespace "+.vm_namespace'
                       topic: Request CM on CNV workflow
                     recipients:
@@ -294,6 +296,7 @@ spec:
                     payload:
                       description: '"VM" + .vm_name + " in namespace "+.vm_namespace + " using image "+ .vm_image +" ready and running."'
                       link: $SECRET.cluster_console_url + "/k8s/ns/" + .vm_namespace + "/kubevirt.io~v1~VirtualMachine/" + .vm_name + "/console/standalone"
+                      severity: normal
                       title: '"VM" + .vm_name + " in namespace "+.vm_namespace + " ready"'
                       topic: Request CM on CNV workflow
                     recipients:
@@ -327,6 +330,7 @@ spec:
                   arguments:
                     payload:
                       description: '"VM" + .vm_name + " in namespace "+.vm_namespace + " using image "+ .vm_image +" not ready after "+.vmStatusRunningRetries+" retries: " + .vm.status'
+                      severity: high
                       title: '"VM" + .vm_name + " in namespace "+.vm_namespace + " not ready"'
                       topic: Request CM on CNV workflow
                     recipients:
@@ -361,6 +365,7 @@ spec:
                     payload:
                       description: '"Authorization denied to create VM" + .vm_name + " in namespace "+.vm_namespace + " using image "+ .vm_image '
                       link: $SECRET.jira_url + "/jira/servicedesk/projects/" + .projectKey + "/issues/" + .jiraCreateIssueResult.key
+                      severity: high
                       title: '"Authorization denied to create VM" + .vm_name + " in namespace "+.vm_namespace'
                       topic: Request CM on CNV workflow
                     recipients:
@@ -379,7 +384,7 @@ spec:
   podTemplate:
     container:
       resources: {}
-      image: quay.io/orchestrator/serverless-workflow-request-vm-cnv:754490b6bd838d6f074b6f6a392cadfb78ab8216
+      image: quay.io/orchestrator/serverless-workflow-request-vm-cnv:ddca7fa22829a8289f065b48d2abd7133af5f6a1
       envFrom:
         - secretRef:
             name: request-vm-cnv-creds
