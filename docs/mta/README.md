@@ -31,7 +31,7 @@ while [[ $retry_count -lt 5 ]]; do
 done
 echo "https://"$(oc -n openshift-mta get route mta -o yaml | yq -r .spec.host)
 ```
-Set the value of `quarkus.rest-client.mta_json.url~` to `http://mta-ui.openshift-mta.svc.cluster.local:8080/hub`
+Set the value of `quarkus.rest-client.mta_json.url` to `http://mta-ui.openshift-mta.svc.cluster.local:8080/hub`
 
 The mtaanalysis-props configmap should be similar to this:
 ```console
