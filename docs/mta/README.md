@@ -18,10 +18,11 @@ helm install mta orchestrator-workflows/mta -n sonataflow-infra
 ## Post-installation
 ### Edit the `mtaanalysis-props` ConfigMap:
 
-There is one variable required to be set in the `mtaanalysis-props` ConfigMap:
+There are two variables required to be set in the `mtaanalysis-props` ConfigMap:
 * **mta.url** - The URL to the MTA application
+* **quarkus.rest-client.mta_json.url** - MTA hub api
 
-To set the `mta.url` with the value of the following command:
+Set the `mta.url` with the value of the following command:
 - **Please note** that it may take several minutes for the MTA Operator to become available and for the route to be reachable.
 ```console
 while [[ $retry_count -lt 5 ]]; do
@@ -30,6 +31,16 @@ while [[ $retry_count -lt 5 ]]; do
 done
 echo "https://"$(oc -n openshift-mta get route mta -o yaml | yq -r .spec.host)
 ```
+Set the value of `quarkus.rest-client.mta_json.url~` to `http://mta-ui.openshift-mta.svc.cluster.local:8080/hub`
+
+The mtaanalysis-props configmap should be similar to this:
+```console
+---
+mta.url = ${MTA_URL:https://<output-of-command-above>}
+quarkus.rest-client.mta_json.url = http://mta-ui.openshift-mta.svc.cluster.local:8080/hub
+---
+```
+
 
 ### Edit the `${WORKFLOW_NAME}-creds` Secret
 The token for sending notifications from the MTA workflow to RHDH notifications service needs to be provided to the workflow.
@@ -42,7 +53,7 @@ oc -n sonataflow-infra patch secret "${WORKFLOW_NAME}-creds" --type merge -p '{"
 
 This secret is used in the `sonataflow` CR to inject the token as an environment variable that will be used by the workflow.
 
-### Validate instalation
+### Validate installation
 
 - Verify MTA resources and workflow are ready:
 ```console
@@ -51,3 +62,9 @@ oc wait --for=jsonpath='{.status.phase}=Succeeded' -n openshift-mta csv/mta-oper
 oc wait --for=condition=Ready=true pods -l "app.kubernetes.io/name=mta-ui" -n openshift-mta --timeout=2m
 oc wait -n sonataflow-infra sonataflow/mtaanalysis --for=condition=Running --timeout=2m
 ```
+
+### Troubleshooting
+If you happen into `valid certification path` error, follow the [[troubleshooting guide](https://www.parodos.dev/docs/serverless-workflows/troubleshooting/)] to resolve the issue.
+
+`sun.security.provider.certpath.SunCertPathBuilderException - unable to find valid certification path to requested target
+`
