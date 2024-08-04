@@ -89,32 +89,8 @@ spec:
         operation: .applicationAnalysis | [select (.issues[].category!="mandatory")][0] | [.issues[]?.incidents //[]] | .[-1][-1].id
         type: expression
     start:
-      stateName: GetApplication
+      stateName: CreateApplication
     states:
-      - actionMode: sequential
-        actions:
-          - actionDataFilter:
-              toStateData: .applications
-              useResults: true
-            functionRef:
-              invoke: sync
-              refName: getApplication
-            name: getApp
-        name: GetApplication
-        stateDataFilter:
-          output: '{recipients: .recipients, repositoryURL: .repositoryURL, migrationStartDatetime: .migrationStartDatetime, migrationEndDatetime: .migrationEndDatetime, exportToIssueManager: .exportToIssueManager, application: .repositoryURL as $r| if .applications == null then null else .applications|map(select(.repository.url == $r))[0] end}'
-        transition:
-          nextState: AppExist
-        type: operation
-      - dataConditions:
-          - condition: .application != null
-            transition:
-              nextState: CreateTaskgroup
-        defaultCondition:
-          transition:
-            nextState: CreateApplication
-        name: AppExist
-        type: switch
       - actionMode: sequential
         actions:
           - actionDataFilter:
@@ -122,7 +98,7 @@ spec:
               useResults: true
             functionRef:
               arguments:
-                name: .repositoryURL
+                name: $WORKFLOW.instanceId + "_" + .repositoryURL
                 repository:
                   kind: git
                   url: .repositoryURL
@@ -297,7 +273,7 @@ spec:
             name: hasMandatoriesIncidents
             transition:
               nextState: NotifyMandatoriesIncidentsInApplication
-          - condition: (.application.mandatoriesIncidents == 0 and .exportToIssueManager == "true")
+          - condition: .exportToIssueManager == "true"
             name: NotifyTracker
             transition:
               nextState: GetTrackers
@@ -482,7 +458,7 @@ spec:
             name: getTickets
         name: GetJiraTickets
         stateDataFilter:
-          output: '{repositoryURL: .repositoryURL, tracker: .tracker, trackerProject: .trackerProject, trackerProjectIssueTypes: .trackerProjectIssueTypes, application: .application, migrationWaveJiraTicket: .repositoryURL as $r| if .jiraTickets == null then null else .jiraTickets|map(select(.application.name == $r))[0] end}'
+          output: '{recipients: .recipients, repositoryURL: .repositoryURL, tracker: .tracker, trackerProject: .trackerProject, trackerProjectIssueTypes: .trackerProjectIssueTypes, application: .application, migrationWaveJiraTicket: .repositoryURL as $r| if .jiraTickets == null then null else .jiraTickets|map(select(.application.name == $r))[0] end}'
         transition:
           nextState: MigrationWaveJiraTicketExists
         type: operation
@@ -537,8 +513,18 @@ spec:
             name: GetMigrationWaveJiraTicket
         name: CreateJira
         transition:
-          nextState: NotifyCompletion
+          nextState: CheckMandatoriesIncidentsAfterIssueCreation
         type: operation
+      - dataConditions:
+          - condition: .application.mandatoriesIncidents > 0
+            name: hasMandatoriesIncidents
+            transition:
+              nextState: NotifyMandatoriesIncidentsInApplication
+        defaultCondition:
+          transition:
+            nextState: NotifyCompletion
+        name: CheckMandatoriesIncidentsAfterIssueCreation
+        type: switch
       - actionMode: sequential
         actions:
           - actionDataFilter:
@@ -546,7 +532,7 @@ spec:
             functionRef:
               arguments:
                 payload:
-                  description: '"MTA analysis is completed and the report for " + .application.repository.url + " is ready."'
+                  description: '"MTA analysis is completed and the report for " + .application.repository.url + " is ready." + (if .migrationWaveJiraTicket != null then "Application was exported to issue manager" else "" end)'
                   link: $SECRET.mta.url + "/hub/applications/" + (.application.id|tostring) + "/analysis/report"
                   severity: normal
                   title: MTA analysis completed
@@ -566,7 +552,7 @@ spec:
           terminate: true
         name: report
         stateDataFilter:
-          output: '{mtaAnalysisResultURL: ($SECRET.mta.url + "/hub/applications/" + (.application.id|tostring) + "/bucket/windup/report/"), migrationWaveJiraTicketURL: .migrationWaveJiraTicket.link, repositoryURL: .repositoryURL, workflowOptions: {migrationOptions: [{id: "m2k", name: "Move2Kube workflow"}]}}'
+          output: '{recipients: .recipients, mtaAnalysisResultURL: ($SECRET.mta.url + "/hub/applications/" + (.application.id|tostring) + "/bucket/windup/report/"), migrationWaveJiraTicketURL: .migrationWaveJiraTicket.link, repositoryURL: .repositoryURL, workflowOptions: {migrationOptions: [{id: "m2k", name: "Move2Kube workflow"}]}}'
         type: operation
       - actionMode: sequential
         actions:
@@ -575,7 +561,7 @@ spec:
             functionRef:
               arguments:
                 payload:
-                  description: '"MTA analysis for " + .application.repository.url + " completed with " + (.application.mandatoriesIncidents|tostring) +" incidents in mandatories issues. Check the analysis report."'
+                  description: '"MTA analysis for " + .application.repository.url + " completed with " + (.application.mandatoriesIncidents|tostring) +" incidents in mandatories issues. Check the analysis report." + (if .migrationWaveJiraTicket != null then "Application was exported to issue manager." else "" end)'
                   link: $SECRET.mta.url + "/hub/applications/" + (.application.id|tostring) + "/analysis/report"
                   severity: high
                   title: MTA analysis completed with incidents in mandatory issues.
@@ -615,7 +601,7 @@ spec:
   podTemplate:
     container:
       resources: {}
-      image: quay.io/orchestrator/serverless-workflow-mta-v7.x:ddca7fa22829a8289f065b48d2abd7133af5f6a1
+      image: quay.io/orchestrator/serverless-workflow-mta-v7.x:3e66e578f503a8115ff3d732b700ade22429d143
       envFrom:
         - secretRef:
             name: mta-analysis-v7-creds
