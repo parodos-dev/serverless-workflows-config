@@ -29,18 +29,9 @@ while [[ $retry_count -lt 5 ]]; do
     oc -n openshift-mta get route mta && break || sleep 60
     retry_count=$((retry_count + 1))
 done
-echo "https://"$(oc -n openshift-mta get route mta -o yaml | yq -r .spec.host)
+MTA_ROUTE=$(oc -n openshift-mta get route mta -o yaml | yq -r .spec.host)
+oc -n sonataflow-infra patch sonataflow mtaanalysis --type merge -p '{"spec": { "podTemplate": { "container": { "env": [{"name": "mta.url", "value": "https://'${MTA_ROUTE}'"}, {"name": "quarkus.rest-client.mta_json.url", "value": "://http://mta-ui.openshift-mta.svc.cluster.local:8080/hub"}]}}}}'
 ```
-Set the value of `quarkus.rest-client.mta_json.url` to `http://mta-ui.openshift-mta.svc.cluster.local:8080/hub`
-
-The mtaanalysis-props configmap should be similar to this:
-```console
----
-mta.url = ${MTA_URL:https://<output-of-command-above>}
-quarkus.rest-client.mta_json.url = http://mta-ui.openshift-mta.svc.cluster.local:8080/hub
----
-```
-
 
 ### Edit the `${WORKFLOW_NAME}-creds` Secret
 The token for sending notifications from the MTA workflow to RHDH notifications service needs to be provided to the workflow.
