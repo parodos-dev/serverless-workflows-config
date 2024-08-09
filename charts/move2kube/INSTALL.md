@@ -50,6 +50,19 @@ helm install move2kube orchestrator-workflows/move2kube -n ${TARGET_NS}
 
 ## Post-installation
 
+### Edit the `${WORKFLOW_NAME}-creds` Secret
+The token for sending notifications from the m2k workflow to RHDH notifications service needs to be provided to the workflow.
+
+Edit the secret `${WORKFLOW_NAME}-creds` and set the value of `NOTIFICATIONS_BEARER_TOKEN`:
+```
+WORKFLOW_NAME=m2k
+oc -n ${TARGET_NS} patch secret "${WORKFLOW_NAME}-creds" --type merge -p '{"data": { "NOTIFICATIONS_BEARER_TOKEN": "'$(oc get secrets -n rhdh-operator backstage-backend-auth-secret -o go-template='{{ .data.BACKEND_SECRET  }}')'"}}'
+```
+
+This secret is used in the `sonataflow` CR to inject the token as an environment variable that will be used by the workflow.
+
+Once the secret is updated, to have it applied, the pod shall be restarted. Note that if you are following the next section, no need for manual restart as any change to the sonataflow CR will restart the pod.
+
 ### Set `M2K_ROUTE` and `BROKER_URL`
 Run the following command or follow the steps prompted at the end of the workflow installation to apply it to the `move2kubeURL` parameter:
 ```console
@@ -63,14 +76,3 @@ Run the following to set `K_SINK` and `MOVE2KUBE_URL` environment variable in th
 BROKER_URL=$(oc -n ${TARGET_NS} get broker -o yaml | yq -r .items[0].status.address.url)
 oc -n ${TARGET_NS} patch sonataflow m2k --type merge -p '{"spec": { "podTemplate": { "container": { "env": [{"name": "K_SINK", "value": "'${BROKER_URL}'"}, {"name": "MOVE2KUBE_URL", "value": "https://'${M2K_ROUTE}'"}]}}}}'
 ```
-
-### Edit the `${WORKFLOW_NAME}-creds` Secret
-The token for sending notifications from the m2k workflow to RHDH notifications service needs to be provided to the workflow.
-
-Edit the secret `${WORKFLOW_NAME}-creds` and set the value of `NOTIFICATIONS_BEARER_TOKEN`:
-```
-WORKFLOW_NAME=m2k
-oc -n ${TARGET_NS} patch secret "${WORKFLOW_NAME}-creds" --type merge -p '{"data": { "NOTIFICATIONS_BEARER_TOKEN": "'$(oc get secrets -n rhdh-operator backstage-backend-auth-secret -o go-template='{{ .data.BACKEND_SECRET  }}')'"}}'
-```
-
-This secret is used in the `sonataflow` CR to inject the token as an environment variable that will be used by the workflow.

@@ -70,26 +70,6 @@ You can patch the resource by running (update it if needed with your own values)
 
 #### Environment variables
 
-##### ConfigMap
-Run the following to set the following environment variables values in the workflow:
-```console
-oc -n sonataflow-infra patch sonataflow mtv-migration --type merge -p '{
-  "spec": {
-    "podTemplate": {
-      "container": {
-        "env": [
-          {
-            "name": "OCP_API_SERVER_URL",
-            "value": "<Target openshift URL>"
-          }
-        ]
-      }
-    }
-  }
-}
-'
-```
-
 #### Secret
 
 We also need to set the following environment variables:
@@ -109,3 +89,25 @@ oc -n sonataflow-infra patch secret "${WORKFLOW_NAME}-creds" --type merge -p '{
 ```
 
 The `OCP_API_SERVER_TOKEN` should be associated with a service account.
+
+Once the secret is updated, to have it applied, the pod shall be restarted. Note that if you are following the next section, no need for manual restart as any change to the sonataflow CR will restart the pod.
+
+##### Sontaflow CR
+Run the following to set the following environment variables values in the workflow:
+```console
+oc -n sonataflow-infra patch sonataflow mtv-migration --type merge -p '{
+  "spec": {
+    "podTemplate": {
+      "container": {
+        "env": [
+          {
+            "name": "OCP_API_SERVER_URL",
+            "value": "<Target openshift URL>"
+          }
+        ]
+      }
+    }
+  }
+}
+'
+```
