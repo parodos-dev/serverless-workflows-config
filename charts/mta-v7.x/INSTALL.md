@@ -12,7 +12,7 @@ View the [MTA v7.X README on GitHub](https://github.com/parodos-dev/serverless-w
 - Run 
 ```console
 helm repo add orchestrator-workflows https://parodos.dev/serverless-workflows-config
-helm install mta orchestrator-workflows/mta-v7.x -n sonataflow-infra
+helm install mta orchestrator-workflows/mta-v7 -n sonataflow-infra
 ```
 
 ## Post-installation
