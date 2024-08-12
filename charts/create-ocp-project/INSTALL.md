@@ -70,8 +70,35 @@ You can patch the resource by running (update it if needed with your own values)
     }'
 ```
 #### Environment variables
+#### Secret
 
-##### ConfigMap
+We also need to set the following environment variables:
+* JIRA_API_TOKEN
+* OCP_API_SERVER_TOKEN
+
+To do so, edit the secret `${WORKFLOW_NAME}-creds` and set those values and the one of `NOTIFICATIONS_BEARER_TOKEN`:
+```
+WORKFLOW_NAME=create-ocp-project
+oc -n sonataflow-infra patch secret "${WORKFLOW_NAME}-creds" --type merge -p '{
+   "data":{
+      "NOTIFICATIONS_BEARER_TOKEN":"'$(oc get secrets -n rhdh-operator backstage-backend-auth-secret -o go-template='{{ .data.BACKEND_SECRET  }}')'"
+   },
+   "stringData":{
+      "JIRA_API_TOKEN":"{{ JIRA_API_TOKEN }}",
+      "OCP_API_SERVER_TOKEN":"{{ OCP_API_SERVER_TOKEN }}"
+   }
+}'
+```
+If you are using Jira cloud, you can generate the `JIRA_API_TOKEN` using https://id.atlassian.com/manage-profile/security/api-tokens 
+
+The `OCP_API_SERVER_TOKEN` should be associated with a service account.
+
+Once the secret is updated, to have it applied, the pod shall be restarted. 
+Note that the modification of the secret does not currently restart the pod, the action shall be performed manually or, if you are following the next section, any change to the sonataflow CR will restart the pod.
+
+Note that if you run the `helm upgrade` command, the values of the secret are reseted.
+
+##### Sontaflow CR
 Run the following to set the following environment variables values in the workflow:
 ```console
 oc -n sonataflow-infra patch sonataflow create-ocp-project --type merge -p '{
@@ -102,26 +129,3 @@ oc -n sonataflow-infra patch sonataflow create-ocp-project --type merge -p '{
 }
 '
 ```
-
-#### Secret
-
-We also need to set the following environment variables:
-* JIRA_API_TOKEN
-* OCP_API_SERVER_TOKEN
-
-To do so, edit the secret `${WORKFLOW_NAME}-creds` and set those values and the one of `NOTIFICATIONS_BEARER_TOKEN`:
-```
-WORKFLOW_NAME=create-ocp-project
-oc -n sonataflow-infra patch secret "${WORKFLOW_NAME}-creds" --type merge -p '{
-   "data":{
-      "NOTIFICATIONS_BEARER_TOKEN":"'$(oc get secrets -n rhdh-operator backstage-backend-auth-secret -o go-template='{{ .data.BACKEND_SECRET  }}')'"
-   },
-   "stringData":{
-      "JIRA_API_TOKEN":"{{ JIRA_API_TOKEN }}",
-      "OCP_API_SERVER_TOKEN":"{{ OCP_API_SERVER_TOKEN }}"
-   }
-}'
-```
-If you are using Jira cloud, you can generate the `JIRA_API_TOKEN` using https://id.atlassian.com/manage-profile/security/api-tokens 
-
-The `OCP_API_SERVER_TOKEN` should be associated with a service account.

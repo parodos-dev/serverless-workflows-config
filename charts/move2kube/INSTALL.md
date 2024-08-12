@@ -50,18 +50,14 @@ helm install move2kube orchestrator-workflows/move2kube -n ${TARGET_NS}
 
 ## Post-installation
 
-### Set `M2K_ROUTE` and `BROKER_URL`
+### Set `M2K_ROUTE` and `BROKER_URL` for the Knative service
+As the Knative service cannot be updated, we need to delete if first and then re-create it with the helm command.
+
 Run the following command or follow the steps prompted at the end of the workflow installation to apply it to the `move2kubeURL` parameter:
 ```console
 M2K_ROUTE=$(oc -n ${TARGET_NS} get routes move2kube-route -o yaml | yq -r .spec.host)
 oc -n ${TARGET_NS} delete ksvc m2k-save-transformation-func &&
   helm upgrade move2kube orchestrator-workflows/move2kube -n ${TARGET_NS} --set workflow.move2kubeURL=https://${M2K_ROUTE}
-```
-
-Run the following to set `K_SINK` and `MOVE2KUBE_URL` environment variable in the workflow:
-```console
-BROKER_URL=$(oc -n ${TARGET_NS} get broker -o yaml | yq -r .items[0].status.address.url)
-oc -n ${TARGET_NS} patch sonataflow m2k --type merge -p '{"spec": { "podTemplate": { "container": { "env": [{"name": "K_SINK", "value": "'${BROKER_URL}'"}, {"name": "MOVE2KUBE_URL", "value": "https://'${M2K_ROUTE}'"}]}}}}'
 ```
 
 ### Edit the `${WORKFLOW_NAME}-creds` Secret
@@ -74,3 +70,16 @@ oc -n ${TARGET_NS} patch secret "${WORKFLOW_NAME}-creds" --type merge -p '{"data
 ```
 
 This secret is used in the `sonataflow` CR to inject the token as an environment variable that will be used by the workflow.
+
+Once the secret is updated, to have it applied, the pod shall be restarted. 
+Note that the modification of the secret does not currently restart the pod, the action shall be performed manually or, if you are following the next section, any change to the sonataflow CR will restart the pod.
+
+Note that when you run the `helm upgrade` command, the values of the secret are reseted.
+
+### Set `M2K_ROUTE` and `K_SINK` for the Sonataflow CR
+
+Run the following to set `K_SINK` and `MOVE2KUBE_URL` environment variable in the workflow:
+```console
+BROKER_URL=$(oc -n ${TARGET_NS} get broker -o yaml | yq -r .items[0].status.address.url)
+oc -n ${TARGET_NS} patch sonataflow m2k --type merge -p '{"spec": { "podTemplate": { "container": { "env": [{"name": "K_SINK", "value": "'${BROKER_URL}'"}, {"name": "MOVE2KUBE_URL", "value": "https://'${M2K_ROUTE}'"}]}}}}'
+```

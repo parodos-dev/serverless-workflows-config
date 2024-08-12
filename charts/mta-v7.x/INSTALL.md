@@ -12,26 +12,10 @@ View the [MTA v7.X README on GitHub](https://github.com/parodos-dev/serverless-w
 - Run 
 ```console
 helm repo add orchestrator-workflows https://parodos.dev/serverless-workflows-config
-helm install mta orchestrator-workflows/mta-v7.x -n sonataflow-infra
+helm install mta orchestrator-workflows/mta-v7 -n sonataflow-infra
 ```
 
 ## Post-installation
-### Edit the `mta-analysis-v7-props` ConfigMap:
-
-There is one variable required to be set in the `mta-analysis-v7-props` ConfigMap:
-* **mta.url** - The URL to the MTA application
-
-To set the `mta.url` with the value of the following command:
-- **Please note** that it may take several minutes for the MTA Operator to become available and for the route to be reachable.
-```console
-while [[ $retry_count -lt 5 ]]; do
-    oc -n openshift-mta get route mta && break || sleep 60
-    retry_count=$((retry_count + 1))
-done
-MTA_ROUTE=$(oc -n openshift-mta get route mta -o yaml | yq -r .spec.host)
-oc -n ${TARGET_NS} patch sonataflow mta-analysis-v7 --type merge -p '{"spec": { "podTemplate": { "container": { "env": [{"name": "MTA_URL", "value": "https://'${MTA_ROUTE}'"}]}}}}'
-```
-
 ### Edit the `${WORKFLOW_NAME}-creds` Secret
 The token for sending notifications from the MTA-v7.x workflow to RHDH notifications service needs to be provided to the workflow.
 
@@ -43,12 +27,33 @@ oc -n sonataflow-infra patch secret "${WORKFLOW_NAME}-creds" --type merge -p '{"
 
 This secret is used in the `sonataflow` CR to inject the token as an environment variable that will be used by the workflow.
 
+Once the secret is updated, to have it applied, the pod shall be restarted. 
+Note that the modification of the secret does not currently restart the pod, the action shall be performed manually or, if you are following the next section, any change to the sonataflow CR will restart the pod.
+
+Note that if you run the `helm upgrade` command, the values of the secret are reseted.
+
+### Edit the `mta-analysis-v7` Sontaflow CR:
+
+There is one variable required to be set in the `mta-analysis-v7-props` ConfigMap:
+* **mta.url** - The URL to the MTA application
+
+We will not set this value directly as quarkus will first try to expand the value of `MTA_URL` to set its value. Isntead, we will set the environment variable in the `mta-analysis-v7` Sontaflow CR:
+- **Please note** that it may take several minutes for the MTA Operator to become available and for the route to be reachable.
+```console
+while [[ $retry_count -lt 5 ]]; do
+    oc -n openshift-mta get route mta && break || sleep 60
+    retry_count=$((retry_count + 1))
+done
+MTA_ROUTE=$(oc -n openshift-mta get route mta -o yaml | yq -r .spec.host)
+oc -n ${TARGET_NS} patch sonataflow mta-analysis-v7 --type merge -p '{"spec": { "podTemplate": { "container": { "env": [{"name": "MTA_URL", "value": "https://'${MTA_ROUTE}'"}]}}}}'
+```
+
 ### Validate instalation
 
 - Verify MTA resources and workflow are ready:
 ```console
 sleep 120s # to wait until the MTA operator has created all requested resources
-oc wait --for=jsonpath='{.status.phase}=Succeeded' -n openshift-mta csv/mta-operator.v6.2.2 --timeout=2m
+oc wait --for=jsonpath='{.status.phase}=Succeeded' -n openshift-mta csv/mta-operator.v7.0.3 --timeout=2m
 oc wait --for=condition=Ready=true pods -l "app.kubernetes.io/name=mta-ui" -n openshift-mta --timeout=2m
 oc wait -n sonataflow-infra sonataflow/mta-analysis-v7 --for=condition=Running --timeout=2m
 ```
