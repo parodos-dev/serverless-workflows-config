@@ -110,7 +110,7 @@ oc -n sonataflow-infra patch sonataflow request-vm-cnv --type merge -p '{
         "env": [
           {
             "name": "JIRA_URL",
-            "value": "<jira url>"
+            "value": "<jira url with schema prefix (http(s)://)>"
           },
           {
             "name": "JIRA_USERNAME",
@@ -118,11 +118,11 @@ oc -n sonataflow-infra patch sonataflow request-vm-cnv --type merge -p '{
           },
           {
             "name": "OCP_API_SERVER_URL",
-            "value": "<OCP API URL>"
+            "value": "<OCP API URL with schema prefix (http(s)://)>"
           },
           {
             "name": "OCP_CONSOLE_URL",
-            "value": "<OCP console URL>"
+            "value": "<OCP console URL with schema prefix (http(s)://)>"
           }
         ]
       }

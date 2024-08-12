@@ -105,7 +105,7 @@ oc -n sonataflow-infra patch sonataflow mtv-migration --type merge -p '{
         "env": [
           {
             "name": "OCP_API_SERVER_URL",
-            "value": "<Target openshift URL>"
+            "value": "<Target openshift URL with schema prefix (http(s)://)>"
           }
         ]
       }
