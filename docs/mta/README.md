@@ -47,7 +47,7 @@ This secret is used in the `sonataflow` CR to inject the token as an environment
 - Verify MTA resources and workflow are ready:
 ```console
 sleep 120s # to wait until the MTA operator has created all requested resources
-oc wait --for=jsonpath='{.status.phase}=Succeeded' -n openshift-mta csv/mta-operator.v6.2.2 --timeout=2m
+oc wait --for=jsonpath='{.status.phase}=Succeeded' -n openshift-mta csv/mta-operator.v6.2.3 --timeout=2m
 oc wait --for=condition=Ready=true pods -l "app.kubernetes.io/name=mta-ui" -n openshift-mta --timeout=2m
 oc wait -n sonataflow-infra sonataflow/mtaanalysis --for=condition=Running --timeout=2m
 ```
