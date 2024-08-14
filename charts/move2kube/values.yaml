@@ -11,3 +11,4 @@ kfunction:
 instance:
   name: move2kube # name of the move2kube instance deployment
   image: quay.io/konveyor/move2kube-ui:v0.3.14-rc.0 # image of the move2kube instance
+  namespace: move2kube
