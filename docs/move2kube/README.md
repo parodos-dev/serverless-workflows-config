@@ -11,6 +11,11 @@ Set `TARGET_NS` to the target namespace:
 TARGET_NS=sonataflow-infra
 ```
 
+Set `M2K_INSTANCE_NS` to the namespace hosting the move2kube instance:
+```console
+M2K_INSTANCE_NS=move2kube
+```
+
 ### For Knative
 We need to use `initContainers` and `securityContext` in our Knative services to allow SSH key exchange in move2kube workflow, we have to tell Knative to enable that feature:
 ```bash
@@ -45,23 +50,31 @@ View the [Move2Kube README](https://github.com/parodos-dev/serverless-workflows-
 Run 
 ```console
 helm repo add orchestrator-workflows https://parodos.dev/serverless-workflows-config
-helm install move2kube orchestrator-workflows/move2kube -n ${TARGET_NS}
+helm install move2kube orchestrator-workflows/move2kube -n ${TARGET_NS} --set instance.namespace=${M2K_INSTANCE_NS}
 ```
 
 ## Post-installation
 
-### Set `M2K_ROUTE` and `BROKER_URL`
-Run the following command or follow the steps prompted at the end of the workflow installation to apply it to the `move2kubeURL` parameter:
+### Configure move2kube instance
+To create SSH Keys secret for move2kube instance and connfigure SCC, run:
 ```console
-M2K_ROUTE=$(oc -n ${TARGET_NS} get routes move2kube-route -o yaml | yq -r .spec.host)
-oc -n ${TARGET_NS} delete ksvc m2k-save-transformation-func &&
-  helm upgrade move2kube orchestrator-workflows/move2kube -n ${TARGET_NS} --set workflow.move2kubeURL=https://${M2K_ROUTE}
+oc -n ${M2K_INSTANCE_NS} adm policy add-scc-to-user anyuid -z default
+oc -n ${M2K_INSTANCE_NS} create secret generic sshkeys --from-file=id_rsa=${HOME}/.ssh/id_rsa --from-file=id_rsa.pub=${HOME}/.ssh/id_rsa.pub
 ```
 
-Run the following to set `K_SINK` and `MOVE2KUBE_URL` environment variable in the workflow:
+Then force the pod to be recreated:
 ```console
-BROKER_URL=$(oc -n ${TARGET_NS} get broker -o yaml | yq -r .items[0].status.address.url)
-oc -n ${TARGET_NS} patch sonataflow m2k --type merge -p '{"spec": { "podTemplate": { "container": { "env": [{"name": "K_SINK", "value": "'${BROKER_URL}'"}, {"name": "MOVE2KUBE_URL", "value": "https://'${M2K_ROUTE}'"}]}}}}'
+oc -n ${M2K_INSTANCE_NS} scale deploy move2kube --replicas=0 && oc -n ${M2K_INSTANCE_NS} scale deploy move2kube --replicas=1
+```
+
+### Set `M2K_ROUTE` and `BROKER_URL` for the Knative service
+As the Knative service cannot be updated, we need to delete if first and then re-create it with the helm command.
+
+Run the following command or follow the steps prompted at the end of the workflow installation to apply it to the `move2kubeURL` parameter:
+```console
+M2K_ROUTE=$(oc -n ${M2K_INSTANCE_NS} get routes move2kube-route -o yaml | yq -r .spec.host)
+oc -n ${TARGET_NS} delete ksvc m2k-save-transformation-func &&
+  helm upgrade move2kube orchestrator-workflows/move2kube -n ${TARGET_NS} --set workflow.move2kubeURL=https://${M2K_ROUTE}
 ```
 
 ### Edit the `${WORKFLOW_NAME}-creds` Secret
@@ -74,3 +87,16 @@ oc -n ${TARGET_NS} patch secret "${WORKFLOW_NAME}-creds" --type merge -p '{"data
 ```
 
 This secret is used in the `sonataflow` CR to inject the token as an environment variable that will be used by the workflow.
+
+Once the secret is updated, to have it applied, the pod shall be restarted. 
+Note that the modification of the secret does not currently restart the pod, the action shall be performed manually or, if you are following the next section, any change to the sonataflow CR will restart the pod.
+
+Note that when you run the `helm upgrade` command, the values of the secret are reseted.
+
+### Set `M2K_ROUTE` and `K_SINK` for the Sonataflow CR
+
+Run the following to set `K_SINK` and `MOVE2KUBE_URL` environment variable in the workflow:
+```console
+BROKER_URL=$(oc -n ${TARGET_NS} get broker -o yaml | yq -r .items[0].status.address.url)
+oc -n ${TARGET_NS} patch sonataflow m2k --type merge -p '{"spec": { "podTemplate": { "container": { "env": [{"name": "K_SINK", "value": "'${BROKER_URL}'"}, {"name": "MOVE2KUBE_URL", "value": "https://'${M2K_ROUTE}'"}]}}}}'
+```
