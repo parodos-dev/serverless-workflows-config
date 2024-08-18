@@ -1,8 +1,16 @@
 ---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: {{ .Values.instance.namespace }}
+spec:
+  {}
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: {{ .Values.instance.name }}
+  namespace: {{ .Values.instance.namespace }}
 spec:
   selector:
     matchLabels:
@@ -49,6 +57,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: {{ .Values.instance.name }}-svc
+  namespace: {{ .Values.instance.namespace }}
 spec:
   ports:
     - port: 8080
@@ -60,6 +69,7 @@ apiVersion: route.openshift.io/v1
 kind: Route
 metadata:
   name: {{ .Values.instance.name }}-route
+  namespace: {{ .Values.instance.namespace }}
 spec:
   tls:
     termination: edge

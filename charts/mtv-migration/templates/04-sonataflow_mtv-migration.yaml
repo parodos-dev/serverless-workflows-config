@@ -144,7 +144,7 @@ spec:
   podTemplate:
     container:
       resources: {}
-      image: quay.io/orchestrator/serverless-workflow-mtv-migration:c246103ffc0a92bd754b4777b6fce7616f5da46a
+      image: quay.io/orchestrator/serverless-workflow-mtv-migration:63d67980dcb0349d846a90401619a94e6d90ec67
       envFrom:
         - secretRef:
             name: mtv-migration-creds
