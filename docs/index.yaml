@@ -3,6 +3,17 @@ entries:
   create-ocp-project:
   - apiVersion: v2
     appVersion: 1.16.0
+    created: "2024-08-18T05:30:48.20634414Z"
+    description: A Helm chart for the create OCP project serverless workflow
+    digest: abda430ce7036e68a3c306395683cd4224f0fa63d0a97ab21a69f82fe82444f5
+    icon: https://raw.githubusercontent.com/parodos-dev/parodos-dev.github.io/main/assets/images/WO_black.svg
+    name: create-ocp-project
+    type: application
+    urls:
+    - https://github.com/parodos-dev/serverless-workflows-config/releases/download/create-ocp-project-0.1.5/create-ocp-project-0.1.5.tgz
+    version: 0.1.5
+  - apiVersion: v2
+    appVersion: 1.16.0
     created: "2024-08-01T12:26:33.199151315Z"
     description: A Helm chart for the create OCP project serverless workflow
     digest: f75c608d9c694af2ce9393e3988d8a8b3068a9ee34ff216a68a558e0f9349343
@@ -79,6 +90,17 @@ entries:
     - https://github.com/parodos-dev/serverless-workflows-config/releases/download/create-ocp-project-0.0.1/create-ocp-project-0.0.1.tgz
     version: 0.0.1
   greeting:
+  - apiVersion: v2
+    appVersion: 1.16.0
+    created: "2024-08-18T05:30:37.966666595Z"
+    description: A Helm chart for the greeting serverless workflow
+    digest: b323af80abbc99fe286741e83677c9bfaaa6779c82690753714e52a08f3c61ef
+    icon: https://raw.githubusercontent.com/parodos-dev/parodos-dev.github.io/main/assets/images/WO_black.svg
+    name: greeting
+    type: application
+    urls:
+    - https://github.com/parodos-dev/serverless-workflows-config/releases/download/greeting-0.4.14/greeting-0.4.14.tgz
+    version: 0.4.14
   - apiVersion: v2
     appVersion: 1.16.0
     created: "2024-08-01T12:28:12.080165408Z"
@@ -236,6 +258,17 @@ entries:
   modify-vm-resources:
   - apiVersion: v2
     appVersion: 1.16.0
+    created: "2024-08-18T05:33:04.098352564Z"
+    description: A Helm chart for the modify VM resources serverless workflow
+    digest: bc4ccab48362321d627aa45186eb37f4bf1e2813b123ce213ba9bc9745cafb6a
+    icon: https://raw.githubusercontent.com/parodos-dev/parodos-dev.github.io/main/assets/images/WO_black.svg
+    name: modify-vm-resources
+    type: application
+    urls:
+    - https://github.com/parodos-dev/serverless-workflows-config/releases/download/modify-vm-resources-0.1.5/modify-vm-resources-0.1.5.tgz
+    version: 0.1.5
+  - apiVersion: v2
+    appVersion: 1.16.0
     created: "2024-08-01T12:24:24.294899962Z"
     description: A Helm chart for the modify VM resources serverless workflow
     digest: 48f79c10252569015de79826d814922d5e776c1cd4f95dc726f5ffe6284a8ecb
@@ -312,6 +345,17 @@ entries:
     - https://github.com/parodos-dev/serverless-workflows-config/releases/download/modify-vm-resources-0.0.1/modify-vm-resources-0.0.1.tgz
     version: 0.0.1
   move2kube:
+  - apiVersion: v2
+    appVersion: 1.16.0
+    created: "2024-08-18T05:32:01.875113038Z"
+    description: 'A Helm chart to deploy the move2kube workflow. '
+    digest: 547b704ddf5edaa2c68b9528c7c4e55dbbc155943969ba3c67567ee2b5d3069f
+    icon: https://raw.githubusercontent.com/parodos-dev/parodos-dev.github.io/main/assets/images/WO_black.svg
+    name: move2kube
+    type: application
+    urls:
+    - https://github.com/parodos-dev/serverless-workflows-config/releases/download/move2kube-0.3.13/move2kube-0.3.13.tgz
+    version: 0.3.13
   - apiVersion: v2
     appVersion: 1.16.0
     created: "2024-08-08T08:39:33.501649975Z"
@@ -612,6 +656,17 @@ entries:
   mta:
   - apiVersion: v2
     appVersion: 1.16.0
+    created: "2024-08-18T05:32:40.916178655Z"
+    description: A Helm chart for MTA serverless workflow
+    digest: 7b6f446cbf426e544a822f550ce4ca7b9fb7f8af8d2c0e19904ab360baa799aa
+    icon: https://raw.githubusercontent.com/parodos-dev/parodos-dev.github.io/main/assets/images/WO_black.svg
+    name: mta
+    type: application
+    urls:
+    - https://github.com/parodos-dev/serverless-workflows-config/releases/download/mta-0.3.5/mta-0.3.5.tgz
+    version: 0.3.5
+  - apiVersion: v2
+    appVersion: 1.16.0
     created: "2024-07-31T06:19:52.723284182Z"
     description: A Helm chart for MTA serverless workflow
     digest: b751d1a3afd2d52bb867ef4453165b563942b63a26d114fa415945d4898d9798
@@ -800,6 +855,17 @@ entries:
   mta-v6:
   - apiVersion: v2
     appVersion: 1.16.0
+    created: "2024-08-18T05:32:51.00679191Z"
+    description: A Helm chart for MTA serverless workflow
+    digest: 761664cb6d8d58d483afd47587420477f9fcde67969e03ea4c1ba2e073890f4a
+    icon: https://raw.githubusercontent.com/parodos-dev/parodos-dev.github.io/main/assets/images/WO_black.svg
+    name: mta-v6
+    type: application
+    urls:
+    - https://github.com/parodos-dev/serverless-workflows-config/releases/download/mta-v6-0.2.28/mta-v6-0.2.28.tgz
+    version: 0.2.28
+  - apiVersion: v2
+    appVersion: 1.16.0
     created: "2024-07-31T07:10:23.448616126Z"
     description: A Helm chart for MTA serverless workflow
     digest: f7538eba9b955375b35f18fc97f7e82256b55965881950eddb300a88e751af60
@@ -843,6 +909,17 @@ entries:
     - https://github.com/parodos-dev/serverless-workflows-config/releases/download/mta-v6-0.2.24/mta-v6-0.2.24.tgz
     version: 0.2.24
   mta-v7:
+  - apiVersion: v2
+    appVersion: 1.16.0
+    created: "2024-08-18T05:33:36.167695636Z"
+    description: A Helm chart for MTA serverless workflow
+    digest: 87eb7ed7dd64aa2d67c93f452016a545740d05b7f5296fe56d0572c2e0fab5e7
+    icon: https://raw.githubusercontent.com/parodos-dev/parodos-dev.github.io/main/assets/images/WO_black.svg
+    name: mta-v7
+    type: application
+    urls:
+    - https://github.com/parodos-dev/serverless-workflows-config/releases/download/mta-v7-0.2.31/mta-v7-0.2.31.tgz
+    version: 0.2.31
   - apiVersion: v2
     appVersion: 1.16.0
     created: "2024-08-05T14:05:12.298110296Z"
@@ -923,6 +1000,28 @@ entries:
   mtv-migration:
   - apiVersion: v2
     appVersion: 1.16.0
+    created: "2024-08-18T05:32:28.172842855Z"
+    description: A Helm chart for the MTV Migration serverless workflow
+    digest: 6b0c39945dcc61cef4e2edd482d95d7085f569e3afda27ab6b3dab4abcda5e24
+    icon: https://raw.githubusercontent.com/parodos-dev/parodos-dev.github.io/main/assets/images/WO_black.svg
+    name: mtv-migration
+    type: application
+    urls:
+    - https://github.com/parodos-dev/serverless-workflows-config/releases/download/mtv-migration-0.0.8/mtv-migration-0.0.8.tgz
+    version: 0.0.8
+  - apiVersion: v2
+    appVersion: 1.16.0
+    created: "2024-08-15T06:14:48.497652995Z"
+    description: A Helm chart for the MTV Migration serverless workflow
+    digest: 95cf92966b63592e65c30f9f2be26d9fe744b06aaa26f9b4e5808b9676504620
+    icon: https://raw.githubusercontent.com/parodos-dev/parodos-dev.github.io/main/assets/images/WO_black.svg
+    name: mtv-migration
+    type: application
+    urls:
+    - https://github.com/parodos-dev/serverless-workflows-config/releases/download/mtv-migration-0.0.7/mtv-migration-0.0.7.tgz
+    version: 0.0.7
+  - apiVersion: v2
+    appVersion: 1.16.0
     created: "2024-08-01T12:23:54.669226795Z"
     description: A Helm chart for the MTV Migration serverless workflow
     digest: 25f036ccad1ac8c82f481730d2f1910b21a2f3fc40815126f256f3686d84b0a8
@@ -979,6 +1078,28 @@ entries:
   mtv-plan:
   - apiVersion: v2
     appVersion: 1.16.0
+    created: "2024-08-18T05:32:16.10745197Z"
+    description: A Helm chart for the MTV Plan serverless assessment workflow
+    digest: baf497e3ae6de67bfe10de3b8742bcb0242fe33238e932d0a97a5a2ce67a7554
+    icon: https://raw.githubusercontent.com/parodos-dev/parodos-dev.github.io/main/assets/images/WO_black.svg
+    name: mtv-plan
+    type: application
+    urls:
+    - https://github.com/parodos-dev/serverless-workflows-config/releases/download/mtv-plan-0.0.8/mtv-plan-0.0.8.tgz
+    version: 0.0.8
+  - apiVersion: v2
+    appVersion: 1.16.0
+    created: "2024-08-15T06:14:43.196363376Z"
+    description: A Helm chart for the MTV Plan serverless assessment workflow
+    digest: 4d09f32949cc066631e14b0b3ef17c3a5ef1d6484e5fbced40335f91f8543a9e
+    icon: https://raw.githubusercontent.com/parodos-dev/parodos-dev.github.io/main/assets/images/WO_black.svg
+    name: mtv-plan
+    type: application
+    urls:
+    - https://github.com/parodos-dev/serverless-workflows-config/releases/download/mtv-plan-0.0.7/mtv-plan-0.0.7.tgz
+    version: 0.0.7
+  - apiVersion: v2
+    appVersion: 1.16.0
     created: "2024-08-01T12:26:59.564861004Z"
     description: A Helm chart for the MTV Plan serverless assessment workflow
     digest: 1c5bb18a984c082c4beab3eb594a7105e2317190a8e697455839d68d9d99b8da
@@ -1033,6 +1154,17 @@ entries:
     - https://github.com/parodos-dev/serverless-workflows-config/releases/download/mtv-plan-0.0.2/mtv-plan-0.0.2.tgz
     version: 0.0.2
   request-vm-cnv:
+  - apiVersion: v2
+    appVersion: 1.16.0
+    created: "2024-08-18T05:33:21.469411342Z"
+    description: A Helm chart for the request VM using CNV serverless workflow
+    digest: 8d96e4600bb666c26609620a222145464663b87ed989526f51423c0e2d67f3d4
+    icon: https://raw.githubusercontent.com/parodos-dev/parodos-dev.github.io/main/assets/images/WO_black.svg
+    name: request-vm-cnv
+    type: application
+    urls:
+    - https://github.com/parodos-dev/serverless-workflows-config/releases/download/request-vm-cnv-0.1.5/request-vm-cnv-0.1.5.tgz
+    version: 0.1.5
   - apiVersion: v2
     appVersion: 1.16.0
     created: "2024-08-01T12:24:56.704410857Z"
@@ -1568,4 +1700,4 @@ entries:
     urls:
     - https://github.com/rgolangh/serverless-workflows-config/releases/download/workflows-0.1.0/workflows-0.1.0.tgz
     version: 0.1.0
-generated: "2024-08-08T08:39:33.501981756Z"
+generated: "2024-08-18T05:33:36.1680028Z"
