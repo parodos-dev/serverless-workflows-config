@@ -479,7 +479,7 @@ spec:
             functionRef:
               arguments:
                 payload:
-                  description: '"MTA analysis is completed and the report for " + .application.repository.url + " is ready." + (if .migrationWaveJiraTicket != null then "Application was exported to issue manager" else "" end)'
+                  description: '"MTA analysis is completed and the report for " + .application.repository.url + " is ready." + (if .migrationWaveJiraTicket != null then " Application was exported to issue manager" else "" end)'
                   link: $SECRET.mta.url + "/hub/applications/" + (.application.id|tostring) + "/analysis/report"
                   severity: normal
                   title: MTA analysis completed
@@ -508,7 +508,7 @@ spec:
             functionRef:
               arguments:
                 payload:
-                  description: '"MTA analysis for " + .application.repository.url + " completed with " + (.application.mandatoriesIncidents|tostring) +" incidents in mandatories issues. Check the analysis report." + (if .migrationWaveJiraTicket != null then "Application was exported to issue manager." else "" end)'
+                  description: '"MTA analysis for " + .application.repository.url + " completed with " + (.application.mandatoriesIncidents|tostring) +" incidents in mandatory issues. Check the analysis report." + (if .migrationWaveJiraTicket != null then " Application was exported to issue manager." else "" end)'
                   link: $SECRET.mta.url + "/hub/applications/" + (.application.id|tostring) + "/analysis/report"
                   severity: high
                   title: MTA analysis completed with incidents in mandatory issues.
@@ -548,7 +548,7 @@ spec:
   podTemplate:
     container:
       resources: {}
-      image: quay.io/orchestrator/serverless-workflow-mta-v7.x:7a96f585800832583f0c04df19dee2c6c3faa0d8
+      image: quay.io/orchestrator/serverless-workflow-mta-v7.x:027450f7b31ec0a0d7ecafbd0285b6ec05ab87e0
       envFrom:
         - secretRef:
             name: mta-analysis-v7-creds
