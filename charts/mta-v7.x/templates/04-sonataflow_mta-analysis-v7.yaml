@@ -396,7 +396,7 @@ spec:
       - dataConditions:
           - condition: (.trackerProjectIssueTypes != null)
             transition:
-              nextState: GetMigrationWaves
+              nextState: CreateMigrationWave
         defaultCondition:
           transition:
             nextState: NotifyFailureBackstage
@@ -405,34 +405,8 @@ spec:
       - actionMode: sequential
         actions:
           - actionDataFilter:
-              toStateData: .migrationWaves
-              useResults: true
-            condition: .trackerProjectIssueTypes != null
-            functionRef:
-              invoke: sync
-              refName: getMigrationwaves
-        name: GetMigrationWaves
-        transition:
-          nextState: MigrationWavesExist
-        type: operation
-      - dataConditions:
-          - condition: (.migrationWaves != null)
-            transition:
-              nextState: GetJiraTickets
-          - condition: (.migrationWaves == null)
-            transition:
-              nextState: CreateMigrationWave
-        defaultCondition:
-          transition:
-            nextState: NotifyFailureBackstage
-        name: MigrationWavesExist
-        type: switch
-      - actionMode: sequential
-        actions:
-          - actionDataFilter:
               toStateData: .createdMigrationWave
               useResults: true
-            condition: .migrationWaves == null
             functionRef:
               arguments:
                 applications:
@@ -445,35 +419,8 @@ spec:
               refName: createMigrationwave
         name: CreateMigrationWave
         transition:
-          nextState: GetJiraTickets
+          nextState: CreateJira
         type: operation
-      - actionMode: sequential
-        actions:
-          - actionDataFilter:
-              toStateData: .jiraTickets
-              useResults: true
-            functionRef:
-              invoke: sync
-              refName: getTickets
-            name: getTickets
-        name: GetJiraTickets
-        stateDataFilter:
-          output: '{recipients: .recipients, repositoryURL: .repositoryURL, tracker: .tracker, trackerProject: .trackerProject, trackerProjectIssueTypes: .trackerProjectIssueTypes, application: .application, migrationWaveJiraTicket: .repositoryURL as $r| if .jiraTickets == null then null else .jiraTickets|map(select(.application.name == $r))[0] end}'
-        transition:
-          nextState: MigrationWaveJiraTicketExists
-        type: operation
-      - dataConditions:
-          - condition: (.migrationWaveJiraTicket != null)
-            transition:
-              nextState: NotifyCompletion
-          - condition: (.migrationWaveJiraTicket == null)
-            transition:
-              nextState: CreateJira
-        defaultCondition:
-          transition:
-            nextState: NotifyFailureBackstage
-        name: MigrationWaveJiraTicketExists
-        type: switch
       - actionMode: sequential
         actions:
           - actionDataFilter:
@@ -601,7 +548,7 @@ spec:
   podTemplate:
     container:
       resources: {}
-      image: quay.io/orchestrator/serverless-workflow-mta-v7.x:63d67980dcb0349d846a90401619a94e6d90ec67
+      image: quay.io/orchestrator/serverless-workflow-mta-v7.x:7a96f585800832583f0c04df19dee2c6c3faa0d8
       envFrom:
         - secretRef:
             name: mta-analysis-v7-creds
