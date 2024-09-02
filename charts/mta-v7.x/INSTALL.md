@@ -16,6 +16,9 @@ helm install mta orchestrator-workflows/mta-v7 -n sonataflow-infra
 ```
 
 ## Post-installation
+### Set up the MTA instance with a Jira Connection
+Define a Jira instance in MTA and establish a connection to it, by following the [Creating and configuring a Jira connection](https://access.redhat.com/documentation/en-us/migration_toolkit_for_applications/7.0/html/user_interface_guide/creating-configuring-jira-connection#doc-wrapper) guide.
+
 ### Edit the `${WORKFLOW_NAME}-creds` Secret
 The token for sending notifications from the MTA-v7.x workflow to RHDH notifications service needs to be provided to the workflow.
 
