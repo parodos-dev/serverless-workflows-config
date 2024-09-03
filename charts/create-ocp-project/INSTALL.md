@@ -19,7 +19,7 @@ See https://www.parodos.dev/orchestrator-helm-chart/postgresql on how to install
 ## Installing helm chart 
 From `charts` folder run 
 ```console
-helm install create-ocp-project create-ocp-project --namespace=${TARGET_NS}
+helm install workflows/create-ocp-project create-ocp-project --namespace=${TARGET_NS}
 ```
 
 ### Post-installation
