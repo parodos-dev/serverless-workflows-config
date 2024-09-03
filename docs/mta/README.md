@@ -23,6 +23,7 @@ There is one variable required to be set in the `mtaanalysis-props` ConfigMap:
 
 To set the `mta.url` with the value of the following command:
 - **Please note** that it may take several minutes for the MTA Operator to become available and for the route to be reachable.
+- You can install your platform specific `yq` program  from this [url](https://github.com/mikefarah/yq?tab=readme-ov-file#install).
 ```console
 while [[ $retry_count -lt 5 ]]; do
     oc -n openshift-mta get route mta && break || sleep 60

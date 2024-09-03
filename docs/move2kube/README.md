@@ -70,6 +70,8 @@ oc -n ${M2K_INSTANCE_NS} scale deploy move2kube --replicas=0 && oc -n ${M2K_INST
 ### Set `M2K_ROUTE` and `BROKER_URL` for the Knative service
 As the Knative service cannot be updated, we need to delete if first and then re-create it with the helm command.
 
+Please note: you can install your platform specific `yq` program from this [url](https://github.com/mikefarah/yq?tab=readme-ov-file#install).
+
 Run the following command or follow the steps prompted at the end of the workflow installation to apply it to the `move2kubeURL` parameter:
 ```console
 M2K_ROUTE=$(oc -n ${M2K_INSTANCE_NS} get routes move2kube-route -o yaml | yq -r .spec.host)
