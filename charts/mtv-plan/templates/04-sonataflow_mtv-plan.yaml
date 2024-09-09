@@ -157,7 +157,7 @@ spec:
   podTemplate:
     container:
       resources: {}
-      image: quay.io/orchestrator/serverless-workflow-mtv-plan:5b244138a2e145dcf4f1c06ad2d57022d26290b2
+      image: quay.io/orchestrator/serverless-workflow-mtv-plan:318b3f26d4ef94af3f87e355b0879dbd8223f2ff
       envFrom:
         - secretRef:
             name: mtv-plan-creds
