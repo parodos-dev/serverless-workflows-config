@@ -788,6 +788,17 @@ entries:
   mta:
   - apiVersion: v2
     appVersion: 1.16.0
+    created: "2024-09-13T15:26:37.386284198Z"
+    description: A Helm chart for MTA serverless workflow
+    digest: f59432a30ead602051db763e946b11030b8a23fcc586898c678b316d75409bbd
+    icon: https://raw.githubusercontent.com/parodos-dev/parodos-dev.github.io/main/assets/images/WO_black.svg
+    name: mta
+    type: application
+    urls:
+    - https://github.com/parodos-dev/serverless-workflows-config/releases/download/mta-0.3.6/mta-0.3.6.tgz
+    version: 0.3.6
+  - apiVersion: v2
+    appVersion: 1.16.0
     created: "2024-08-18T05:32:40.916178655Z"
     description: A Helm chart for MTA serverless workflow
     digest: 7b6f446cbf426e544a822f550ce4ca7b9fb7f8af8d2c0e19904ab360baa799aa
@@ -1898,4 +1909,4 @@ entries:
     urls:
     - https://github.com/rgolangh/serverless-workflows-config/releases/download/workflows-0.1.0/workflows-0.1.0.tgz
     version: 0.1.0
-generated: "2024-09-13T15:26:18.694488372Z"
+generated: "2024-09-13T15:26:37.386693173Z"
