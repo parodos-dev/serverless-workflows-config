@@ -205,12 +205,18 @@ spec:
           - condition: (.taskgroup.state == "Ready" and .taskgroup.tasks[0].state == "Failed")
             name: taskFailed
             transition:
-              nextState: NotifyFailureBackstage
+              nextState: TaskFailedError
         defaultCondition:
           transition:
             nextState: GetApplicationAnalysis
         name: checkReportDone
         type: switch
+      - data:
+          exitMessage: '"The 1st task of the taskGroup " + .taskgroup.id + " is in failed state"'
+        name: TaskFailedError
+        transition:
+          nextState: NotifyFailureBackstage
+        type: inject
       - actionMode: sequential
         actions:
           - actionDataFilter:
@@ -301,9 +307,15 @@ spec:
               nextState: GetTracker
         defaultCondition:
           transition:
-            nextState: NotifyFailureBackstage
+            nextState: TrackersDoesNotExistError
         name: TrackersExist
         type: switch
+      - data:
+          exitMessage: '"There are no trackers configured in MTA, cannot export to the issue manager"'
+        name: TrackersDoesNotExistError
+        transition:
+          nextState: NotifyFailureBackstage
+        type: inject
       - actionMode: sequential
         actions:
           - actionDataFilter:
@@ -325,9 +337,15 @@ spec:
               nextState: GetTrackerProjects
         defaultCondition:
           transition:
-            nextState: NotifyFailureBackstage
+            nextState: TrackerDoesNotExistError
         name: TrackerExists
         type: switch
+      - data:
+          exitMessage: '"The tracker with the id " + .trackers[0].id + " does not exist, cannot export to the issue manager"'
+        name: TrackerDoesNotExistError
+        transition:
+          nextState: NotifyFailureBackstage
+        type: inject
       - actionMode: sequential
         actions:
           - actionDataFilter:
@@ -349,9 +367,15 @@ spec:
               nextState: GetTrackerProject
         defaultCondition:
           transition:
-            nextState: NotifyFailureBackstage
+            nextState: TrackerProjectsDoesNotExistError
         name: TrackerProjectsExist
         type: switch
+      - data:
+          exitMessage: '"There are no trackerProjects associated with the tracker with the id " + .tracker.id + ", cannot export to the issue manager"'
+        name: TrackerProjectsDoesNotExistError
+        transition:
+          nextState: NotifyFailureBackstage
+        type: inject
       - actionMode: sequential
         actions:
           - actionDataFilter:
@@ -374,9 +398,15 @@ spec:
               nextState: GetTrackerProjectIssueTypes
         defaultCondition:
           transition:
-            nextState: NotifyFailureBackstage
+            nextState: TrackerProjectDoesNotExistError
         name: TrackerProjectExist
         type: switch
+      - data:
+          exitMessage: '"The trackerProject with the id " + .trackerProjects[0].id + " of the tracker with the id " + .tracker.id + " does not exist, cannot export to the issue manager"'
+        name: TrackerProjectDoesNotExistError
+        transition:
+          nextState: NotifyFailureBackstage
+        type: inject
       - actionMode: sequential
         actions:
           - actionDataFilter:
@@ -386,7 +416,7 @@ spec:
             functionRef:
               arguments:
                 id: .tracker.id
-                id2: .trackerProjects[0].id
+                id2: .trackerProject.id
               invoke: sync
               refName: getTrackerProjectIssueTypes
         name: GetTrackerProjectIssueTypes
@@ -399,9 +429,15 @@ spec:
               nextState: CreateMigrationWave
         defaultCondition:
           transition:
-            nextState: NotifyFailureBackstage
+            nextState: TrackerProjectIssueTypesDoesNotExistError
         name: TrackerProjectIssueTypesExist
         type: switch
+      - data:
+          exitMessage: '"There are no trackerProjectIssueTypes in the trackerProject with the id " + .trackerProject.id + " of the tracker with the id "+ .tracker.id +" does not exist, cannot export to the issue manager"'
+        name: TrackerProjectIssueTypesDoesNotExistError
+        transition:
+          nextState: NotifyFailureBackstage
+        type: inject
       - actionMode: sequential
         actions:
           - actionDataFilter:
@@ -529,7 +565,7 @@ spec:
             functionRef:
               arguments:
                 payload:
-                  description: '"MTA analysis for " + .application.repository.url + " failed. Check logs of task pod: " + .taskgroup.tasks[0].pod'
+                  description: '"MTA analysis for " + .application.repository.url + " failed: " + .exitMessage + ". Check logs of task pod: " + .taskgroup.tasks[0].pod'
                   severity: critical
                   title: MTA analysis failed
                   topic: MTA Analysis Workflow
@@ -548,7 +584,7 @@ spec:
   podTemplate:
     container:
       resources: {}
-      image: quay.io/orchestrator/serverless-workflow-mta-v7.x:754f5474331e629908ba1c87c2d6bedaf179bfcb
+      image: quay.io/orchestrator/serverless-workflow-mta-v7.x:1355025e2d45aa081e39c0665d29dd074ac320e9
       envFrom:
         - secretRef:
             name: mta-analysis-v7-creds
