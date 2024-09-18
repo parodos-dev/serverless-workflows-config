@@ -298,7 +298,7 @@ spec:
   podTemplate:
     container:
       resources: {}
-      image: quay.io/orchestrator/serverless-workflow-create-ocp-project:eb6306231590d0c96c9ef81767335a0b3f11b16f
+      image: quay.io/orchestrator/serverless-workflow-create-ocp-project:8e077164fba2cd03e104d86742c5422fd8edce26
       envFrom:
         - secretRef:
             name: create-ocp-project-creds
