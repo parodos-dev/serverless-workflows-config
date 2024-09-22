@@ -99,6 +99,8 @@ Note that the modification of the secret does not currently restart the pod, the
 Note that if you run the `helm upgrade` command, the values of the secret are reseted.
 
 ##### Sontaflow CR
+To ensure the workflow runs successfully, specific environment variables must be configured. If you want to run the workflow against a Backstage instance other than the default one, you need to set the `BACKSTAGE_NOTIFICATIONS_URL` environment variable to the appropriate URL of the Backstage service (using its Kubernetes service URL). Add an entry for `BACKSTAGE_NOTIFICATIONS_URL` in the command below:
+
 Run the following to set the following environment variables values in the workflow:
 ```console
 oc -n sonataflow-infra patch sonataflow create-ocp-project --type merge -p '{
