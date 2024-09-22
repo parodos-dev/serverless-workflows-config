@@ -535,7 +535,7 @@ spec:
           terminate: true
         name: report
         stateDataFilter:
-          output: '{recipients: .recipients, mtaAnalysisResultURL: ($SECRET.mta.url + "/hub/applications/" + (.application.id|tostring) + "/bucket/windup/report/"), migrationWaveJiraTicketURL: .migrationWaveJiraTicket.link, repositoryURL: .repositoryURL, workflowOptions: {migrationOptions: [{id: "m2k", name: "Move2Kube workflow"}]}}'
+          output: '{recipients: .recipients, mtaAnalysisResultURL: ($SECRET.mta.url + "/hub/applications/" + (.application.id|tostring) + "/analysis/report"), migrationWaveJiraTicketURL: .migrationWaveJiraTicket.link, repositoryURL: .repositoryURL, workflowOptions: {migrationOptions: [{id: "m2k", name: "Move2Kube workflow"}]}}'
         type: operation
       - actionMode: sequential
         actions:
@@ -584,7 +584,7 @@ spec:
   podTemplate:
     container:
       resources: {}
-      image: quay.io/orchestrator/serverless-workflow-mta-v7.x:1355025e2d45aa081e39c0665d29dd074ac320e9
+      image: quay.io/orchestrator/serverless-workflow-mta-v7.x:b0868ab59cc1565f0a87d8674a8938e6498074e2
       envFrom:
         - secretRef:
             name: mta-analysis-v7-creds
