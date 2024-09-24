@@ -1375,6 +1375,17 @@ entries:
   mtv-plan:
   - apiVersion: v2
     appVersion: 1.16.0
+    created: "2024-09-24T06:25:48.250588395Z"
+    description: A Helm chart for the MTV Plan serverless assessment workflow
+    digest: a2c428d38d52ba6361196f580082b1c0df647357c02bf90543c2aee16ba9f3c1
+    icon: https://raw.githubusercontent.com/parodos-dev/parodos-dev.github.io/main/assets/images/WO_black.svg
+    name: mtv-plan
+    type: application
+    urls:
+    - https://github.com/parodos-dev/serverless-workflows-config/releases/download/mtv-plan-0.0.11/mtv-plan-0.0.11.tgz
+    version: 0.0.11
+  - apiVersion: v2
+    appVersion: 1.16.0
     created: "2024-09-13T15:21:26.78664253Z"
     description: A Helm chart for the MTV Plan serverless assessment workflow
     digest: 78bbbc7acb68bf1be547399f0196731597f03c6331d2570c99aad03194cc323e
@@ -2041,4 +2052,4 @@ entries:
     urls:
     - https://github.com/rgolangh/serverless-workflows-config/releases/download/workflows-0.1.0/workflows-0.1.0.tgz
     version: 0.1.0
-generated: "2024-09-24T06:25:30.503192265Z"
+generated: "2024-09-24T06:25:48.250925124Z"
