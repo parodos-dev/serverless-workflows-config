@@ -5,7 +5,19 @@ The list of the overridable values can be found in our [git repository](https://
 
 You can also view the [Move2Kube README on GitHub](https://github.com/parodos-dev/serverless-workflows-config/blob/main/charts/move2kube/README.md)
 
-## Prerequisites 
+## Automated installation
+Run the [installation script](install_m2k.sh):
+```console
+PRIV_ID_RSA_PATH=${HOME}/.ssh/id_rsa PUB_ID_RSA_PATH=${HOME}/.ssh/id_rsa.pub ./install_m2k.sh
+```
+You can override the helm repo to use by setting `M2K_HELM_REPO`. By default `orchestrator-workflows/move2kube` is used and the helm repository `orchestrator-workflows` is installed from `https://parodos.dev/serverless-workflows-config`
+
+To use the local file, set `M2K_HELM_REPO` to `.`:
+```console
+M2K_HELM_REPO=. PRIV_ID_RSA_PATH=${HOME}/.ssh/id_rsa PUB_ID_RSA_PATH=${HOME}/.ssh/id_rsa.pub ./install_m2k.sh
+```
+## Manual installation
+### Prerequisites 
 Set `TARGET_NS` to the target namespace:
 ```console
 TARGET_NS=sonataflow-infra
@@ -16,7 +28,7 @@ Set `M2K_INSTANCE_NS` to the namespace hosting the move2kube instance:
 M2K_INSTANCE_NS=move2kube
 ```
 
-### For Knative
+#### For Knative
 We need to use `initContainers` and `securityContext` in our Knative services to allow SSH key exchange in move2kube workflow, we have to tell Knative to enable that feature:
 ```bash
   oc patch configmap/config-features \
@@ -25,7 +37,7 @@ We need to use `initContainers` and `securityContext` in our Knative services to
     -p '{"data":{"kubernetes.podspec-init-containers": "enabled", "kubernetes.podspec-securitycontext": "enabled"}}'
 
 ```
-### For move2kube instance
+#### For move2kube instance
 Also, `move2kube` instance runs as root so we need to allow the `default` service account to use `runAsUser`:
 ```console
 oc -n ${TARGET_NS} adm policy add-scc-to-user anyuid -z default
@@ -45,7 +57,7 @@ Note that those ssh keys need to be added to your git repository as well. For bi
 
 View the [Move2Kube README](https://github.com/parodos-dev/serverless-workflows-config/blob/main/charts/move2kube/README.md) on GitHub.
 
-## Installation
+### Installation
 
 Run 
 ```console
@@ -53,9 +65,9 @@ helm repo add orchestrator-workflows https://parodos.dev/serverless-workflows-co
 helm install move2kube orchestrator-workflows/move2kube -n ${TARGET_NS} --set instance.namespace=${M2K_INSTANCE_NS}
 ```
 
-## Post-installation
+### Post-installation
 
-### Configure move2kube instance
+#### Configure move2kube instance
 To create SSH Keys secret for move2kube instance and connfigure SCC, run:
 ```console
 oc -n ${M2K_INSTANCE_NS} adm policy add-scc-to-user anyuid -z default
@@ -67,7 +79,7 @@ Then force the pod to be recreated:
 oc -n ${M2K_INSTANCE_NS} scale deploy move2kube --replicas=0 && oc -n ${M2K_INSTANCE_NS} scale deploy move2kube --replicas=1
 ```
 
-### Set `M2K_ROUTE` and `BROKER_URL` for the Knative service
+#### Set `M2K_ROUTE` and `BROKER_URL` for the Knative service
 As the Knative service cannot be updated, we need to delete if first and then re-create it with the helm command.
 
 Run the following command or follow the steps prompted at the end of the workflow installation to apply it to the `move2kubeURL` parameter:
@@ -77,7 +89,7 @@ oc -n ${TARGET_NS} delete ksvc m2k-save-transformation-func &&
   helm upgrade move2kube orchestrator-workflows/move2kube -n ${TARGET_NS} --set workflow.move2kubeURL=https://${M2K_ROUTE}
 ```
 
-### Edit the `${WORKFLOW_NAME}-creds` Secret
+#### Edit the `${WORKFLOW_NAME}-creds` Secret
 The token for sending notifications from the m2k workflow to RHDH notifications service needs to be provided to the workflow.
 
 Edit the secret `${WORKFLOW_NAME}-creds` and set the value of `NOTIFICATIONS_BEARER_TOKEN`:
@@ -93,7 +105,7 @@ Note that the modification of the secret does not currently restart the pod, the
 
 Note that when you run the `helm upgrade` command, the values of the secret are reseted.
 
-### Set `M2K_ROUTE` and `K_SINK` for the Sonataflow CR
+#### Set `M2K_ROUTE` and `K_SINK` for the Sonataflow CR
 
 Run the following to set `K_SINK` and `MOVE2KUBE_URL` environment variable in the workflow:
 ```console
