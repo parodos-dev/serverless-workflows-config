@@ -13,8 +13,6 @@ The repository includes a variety of serverless workflows, such as:
 ### Prerequisites
 To utilize the workflows contained in this repository, the Orchestrator Deployment must be installed on your OpenShift Container Platform (OCP) cluster. For detailed instructions on installing the Orchestrator, please visit the [Orchestrator Helm Based Operator Repository](https://www.parodos.dev/orchestrator-helm-operator/)
 
-**Note** With the existing version of the Orchestrator helm chart, all workflows should be created under the `sonataflow-infra` namespace.
-
 ## Installation
 ```bash
 helm repo add orchestrator-workflows https://parodos.dev/serverless-workflows-config
@@ -40,7 +38,7 @@ You can install each workflow separately. For detailed information, please visit
 * [Move2Kube](https://github.com/parodos-dev/serverless-workflows-config/blob/gh-pages/docs/move2kube/README.md)
 
 ## Installing workflows in additional namespaces
-When deploying a workflow in a namespace different from where Sonataflow services are running (e.g. sonataflow-infra), there are essential steps to follow. For detailed instructions, see the [Additional Workflow Namespaces section](https://github.com/parodos-dev/orchestrator-helm-chart/tree/gh-pages?tab=readme-ov-file#additional-workflow-namespaces).
+When deploying a workflow in a namespace different from where Sonataflow services are running (e.g. sonataflow-infra), there are essential steps to follow. For detailed instructions, see the [Additional Workflow Namespaces section](https://github.com/parodos-dev/orchestrator-helm-operator/tree/gh-pages?tab=readme-ov-file#additional-workflow-namespaces).
 
 ## Version Compatability
 The workflows rely on components included in the [Orchestrator Operator](https://www.parodos.dev/orchestrator-helm-operator/). Therefore, it is crucial to match the workflow version with the corresponding Orchestrator version that supports it. The list below outlines the compatibility between the workflows and Orchestrator versions:
