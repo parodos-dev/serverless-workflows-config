@@ -280,6 +280,17 @@ entries:
   modify-vm-resources:
   - apiVersion: v2
     appVersion: 1.16.0
+    created: "2024-09-24T06:24:12.039256411Z"
+    description: A Helm chart for the modify VM resources serverless workflow
+    digest: 458382c06ac349b9665312e306a442e6ac3468e003c17f999f619d193d442171
+    icon: https://raw.githubusercontent.com/parodos-dev/parodos-dev.github.io/main/assets/images/WO_black.svg
+    name: modify-vm-resources
+    type: application
+    urls:
+    - https://github.com/parodos-dev/serverless-workflows-config/releases/download/modify-vm-resources-0.1.7/modify-vm-resources-0.1.7.tgz
+    version: 0.1.7
+  - apiVersion: v2
+    appVersion: 1.16.0
     created: "2024-09-13T15:22:58.772386145Z"
     description: A Helm chart for the modify VM resources serverless workflow
     digest: c8d24fa911c8889fa8a20e5184b6abdfdda976396466c276212e4875a7d113e0
@@ -1975,4 +1986,4 @@ entries:
     urls:
     - https://github.com/rgolangh/serverless-workflows-config/releases/download/workflows-0.1.0/workflows-0.1.0.tgz
     version: 0.1.0
-generated: "2024-09-24T06:24:01.316915999Z"
+generated: "2024-09-24T06:24:12.039624241Z"
