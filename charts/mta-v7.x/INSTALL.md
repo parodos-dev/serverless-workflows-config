@@ -8,24 +8,44 @@ At the end of a successful assessment workflow, a link to the report will be ava
 ## Configuration
 View the [MTA v7.X README on GitHub](https://github.com/parodos-dev/serverless-workflows-config/blob/main/charts/mta-v7.x/README.md)
 
-## Installation
+## Automated installation
+Run the [installation script](install-mta-v7.sh):
+```console
+./install-mta-v7.sh
+```
+You can override the helm repo to use by setting `MTA_HELM_REPO`. By default `orchestrator-workflows/mta-v7` is used and the helm repository `orchestrator-workflows` is installed from `https://parodos.dev/serverless-workflows-config`
+
+To use the local file, set `MTA_HELM_REPO` to `.`:
+```console
+MTA_HELM_REPO=. ./install-mta-v7.sh
+```
+## Manual installation
+
+### Prerequisites 
+Set `TARGET_NS` to the target namespace:
+```console
+TARGET_NS=sonataflow-infra
+```
+
+
+### Installation
 - Run 
 ```console
 helm repo add orchestrator-workflows https://parodos.dev/serverless-workflows-config
-helm install mta orchestrator-workflows/mta-v7 -n sonataflow-infra
+helm install mta orchestrator-workflows/mta-v7 -n ${TARGET_NS}
 ```
 
-## Post-installation
-### Set up the MTA instance with a Jira Connection
+### Post-installation
+#### Set up the MTA instance with a Jira Connection
 Define a Jira instance in MTA and establish a connection to it, by following the [Creating and configuring a Jira connection](https://access.redhat.com/documentation/en-us/migration_toolkit_for_applications/7.0/html/user_interface_guide/creating-configuring-jira-connection#doc-wrapper) guide.
 
-### Edit the `${WORKFLOW_NAME}-creds` Secret
+#### Edit the `${WORKFLOW_NAME}-creds` Secret
 The token for sending notifications from the MTA-v7.x workflow to RHDH notifications service needs to be provided to the workflow.
 
 Edit the secret `${WORKFLOW_NAME}-creds` and set the value of `NOTIFICATIONS_BEARER_TOKEN`:
 ```
 WORKFLOW_NAME=mta-analysis-v7
-oc -n sonataflow-infra patch secret "${WORKFLOW_NAME}-creds" --type merge -p '{"data": { "NOTIFICATIONS_BEARER_TOKEN": "'$(oc get secrets -n rhdh-operator backstage-backend-auth-secret -o go-template='{{ .data.BACKEND_SECRET  }}')'"}}'
+oc -n ${TARGET_NS} patch secret "${WORKFLOW_NAME}-creds" --type merge -p '{"data": { "NOTIFICATIONS_BEARER_TOKEN": "'$(oc get secrets -n rhdh-operator backstage-backend-auth-secret -o go-template='{{ .data.BACKEND_SECRET  }}')'"}}'
 ```
 
 This secret is used in the `sonataflow` CR to inject the token as an environment variable that will be used by the workflow.
@@ -35,7 +55,7 @@ Note that the modification of the secret does not currently restart the pod, the
 
 Note that if you run the `helm upgrade` command, the values of the secret are reseted.
 
-### Edit the `mta-analysis-v7` Sontaflow CR:
+#### Edit the `mta-analysis-v7` Sontaflow CR:
 
 There is one variable required to be set in the `mta-analysis-v7-props` ConfigMap:
 * **mta.url** - The URL to the MTA application
@@ -51,12 +71,12 @@ MTA_ROUTE=$(oc -n openshift-mta get route mta -o yaml | yq -r .spec.host)
 oc -n ${TARGET_NS} patch sonataflow mta-analysis-v7 --type merge -p '{"spec": { "podTemplate": { "container": { "env": [{"name": "MTA_URL", "value": "https://'${MTA_ROUTE}'"}]}}}}'
 ```
 
-### Validate instalation
+## Validate instalation
 
 - Verify MTA resources and workflow are ready:
 ```console
 sleep 120s # to wait until the MTA operator has created all requested resources
 oc wait --for=jsonpath='{.status.phase}=Succeeded' -n openshift-mta csv/mta-operator.v7.0.3 --timeout=2m
 oc wait --for=condition=Ready=true pods -l "app.kubernetes.io/name=mta-ui" -n openshift-mta --timeout=2m
-oc wait -n sonataflow-infra sonataflow/mta-analysis-v7 --for=condition=Running --timeout=2m
+oc wait -n ${TARGET_NS} sonataflow/mta-analysis-v7 --for=condition=Running --timeout=2m
 ```
