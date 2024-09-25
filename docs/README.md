@@ -38,7 +38,7 @@ You can install each workflow separately. For detailed information, please visit
 * [Move2Kube](https://github.com/parodos-dev/serverless-workflows-config/blob/gh-pages/docs/move2kube/README.md)
 
 ## Installing workflows in additional namespaces
-When deploying a workflow in a namespace different from where Sonataflow services are running (e.g. sonataflow-infra), there are essential steps to follow. For detailed instructions, see the [Additional Workflow Namespaces section](https://github.com/parodos-dev/orchestrator-helm-operator/tree/gh-pages?tab=readme-ov-file#additional-workflow-namespaces).
+When deploying a workflow in a namespace different from where Sonataflow services are running (e.g. sonataflow-infra), there are essential steps to follow. For detailed instructions, see the [Additional Workflow Namespaces section](https://github.com/parodos-dev/orchestrator-helm-operator/tree/main/docs/release-1.2?tab=readme-ov-file#additional-workflow-namespaces).
 
 ## Version Compatability
 The workflows rely on components included in the [Orchestrator Operator](https://www.parodos.dev/orchestrator-helm-operator/). Therefore, it is crucial to match the workflow version with the corresponding Orchestrator version that supports it. The list below outlines the compatibility between the workflows and Orchestrator versions:
