@@ -1,6 +1,6 @@
 # serverless-workflows-config
 
-This repository includes two methods of installing workflows: Helm or Kustomize.
+This repository includes the methods of installing workflows: Helm.
 
 ## Helm charts
 This is a chart repo for deploying serverless workflows using Sonataflow Operator.
@@ -37,9 +37,6 @@ helm install move2kube charts/move2kube
 ```
 
 For installing the workflows from the Helm repository, see further installation steps and detailed explanation for each workflow [here](https://github.com/parodos-dev/serverless-workflows-config/tree/gh-pages?tab=readme-ov-file#installation) or [here](https://www.parodos.dev/serverless-workflows-config/).
-
-## Kustomize
-See details [here](https://github.com/parodos-dev/serverless-workflows-config/tree/main/kustomize#readme)
 
 # Development
 To generate `values.schema.json`, next to your `values.yaml` file, run: 
