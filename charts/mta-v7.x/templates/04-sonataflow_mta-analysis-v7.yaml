@@ -88,6 +88,33 @@ spec:
       - name: countNonMandatoriesIncidents
         operation: .applicationAnalysis | [select (.issues[].category!="mandatory")][0] | [.issues[]?.incidents //[]] | .[-1][-1].id
         type: expression
+      - name: TaskFailedErrorExitMessage
+        operation: '{ exitMessage: "The 1st task of the taskGroup " + .taskgroup.id + " is in failed state" }'
+        type: expression
+      - name: TrackersDoesNotExistErrorExitMessage
+        operation: '{ exitMessage: "There are no trackers configured in MTA, cannot export to the issue manager" }'
+        type: expression
+      - name: TrackerDoesNotExistErrorExitMessage
+        operation: '{ exitMessage: "The tracker with the id " + .trackers[0].id + " does not exist, cannot export to the issue manager" }'
+        type: expression
+      - name: TrackerProjectsDoesNotExistErrorExitMessage
+        operation: '{ exitMessage: "There are no trackerProjects associated with the tracker with the id " + .tracker.id + ", cannot export to the issue manager" }'
+        type: expression
+      - name: TrackerProjectDoesNotExistErrorExitMessage
+        operation: '{ exitMessage: "The trackerProject with the id " + .trackerProjects[0].id + " of the tracker with the id " + .tracker.id + " does not exist, cannot export to the issue manager" }'
+        type: expression
+      - name: TrackerProjectIssueTypesDoesNotExistErrorExitMessage
+        operation: '{ exitMessage: "There are no trackerProjectIssueTypes in the trackerProject with the id " + .trackerProject.id + " of the tracker with the id "+ .tracker.id +" does not exist, cannot export to the issue manager" }'
+        type: expression
+      - name: successResult
+        operation: '{ "completedWith":"success", "message": "MTA v7.x analysis completed for " + .repositoryURL, "outputs":[ { "key":"mtaAnalysisResultURL", "value": $SECRET.mta.url + "/hub/applications/" + (.application.id|tostring) + "/analysis/report", "format":"link" }, { "key":"migrationWaveJiraTicketURL", "value": (if .migrationWaveJiraTicket != null then .migrationWaveJiraTicket.link else "" end), "format":"link" } ], "nextWorkflows":[ { "id":"m2k", "name":"Move2Kube workflow" } ] }'
+        type: expression
+      - name: mandatoriesIncidentsResult
+        operation: '{ "completedWith": "error", "message": "MTA analysis for " + .application.repository.url + " completed with " + (.application.mandatoriesIncidents|tostring) + " incidents in mandatory issues. Check the analysis report." + (if .migrationWaveJiraTicket != null then " Application was exported to issue manager." else "" end), "outputs": [ { "key": "mtaAnalysisResultURL", "value": ($SECRET.mta.url + "/hub/applications/" + (.application.id|tostring) + "/analysis/report"), "format": "link" }, { "key": "migrationWaveJiraTicketURL", "value": (if .migrationWaveJiraTicket != null then .migrationWaveJiraTicket.link else "" end), "format": "link" } ] }'
+        type: expression
+      - name: errorResult
+        operation: '{ "completedWith":"error", "message": "MTA analysis for " + .application.repository.url + " failed: " + .exitMessage + ". Check logs of task pod: " + .taskgroup.tasks[0].pod }'
+        type: expression
     start:
       stateName: CreateApplication
     states:
@@ -211,12 +238,18 @@ spec:
             nextState: GetApplicationAnalysis
         name: checkReportDone
         type: switch
-      - data:
-          exitMessage: '"The 1st task of the taskGroup " + .taskgroup.id + " is in failed state"'
+      - actionMode: sequential
+        actions:
+          - actionDataFilter:
+              useResults: true
+            functionRef:
+              invoke: sync
+              refName: TaskFailedErrorExitMessage
+            name: Fill exitMessage
         name: TaskFailedError
         transition:
           nextState: NotifyFailureBackstage
-        type: inject
+        type: operation
       - actionMode: sequential
         actions:
           - actionDataFilter:
@@ -310,12 +343,18 @@ spec:
             nextState: TrackersDoesNotExistError
         name: TrackersExist
         type: switch
-      - data:
-          exitMessage: '"There are no trackers configured in MTA, cannot export to the issue manager"'
+      - actionMode: sequential
+        actions:
+          - actionDataFilter:
+              useResults: true
+            functionRef:
+              invoke: sync
+              refName: TrackersDoesNotExistErrorExitMessage
+            name: Fill exitMessage
         name: TrackersDoesNotExistError
         transition:
           nextState: NotifyFailureBackstage
-        type: inject
+        type: operation
       - actionMode: sequential
         actions:
           - actionDataFilter:
@@ -340,12 +379,18 @@ spec:
             nextState: TrackerDoesNotExistError
         name: TrackerExists
         type: switch
-      - data:
-          exitMessage: '"The tracker with the id " + .trackers[0].id + " does not exist, cannot export to the issue manager"'
+      - actionMode: sequential
+        actions:
+          - actionDataFilter:
+              useResults: true
+            functionRef:
+              invoke: sync
+              refName: TrackerDoesNotExistErrorExitMessage
+            name: Fill exitMessage
         name: TrackerDoesNotExistError
         transition:
           nextState: NotifyFailureBackstage
-        type: inject
+        type: operation
       - actionMode: sequential
         actions:
           - actionDataFilter:
@@ -370,12 +415,18 @@ spec:
             nextState: TrackerProjectsDoesNotExistError
         name: TrackerProjectsExist
         type: switch
-      - data:
-          exitMessage: '"There are no trackerProjects associated with the tracker with the id " + .tracker.id + ", cannot export to the issue manager"'
+      - actionMode: sequential
+        actions:
+          - actionDataFilter:
+              useResults: true
+            functionRef:
+              invoke: sync
+              refName: TrackerProjectsDoesNotExistErrorExitMessage
+            name: Fill exitMessage
         name: TrackerProjectsDoesNotExistError
         transition:
           nextState: NotifyFailureBackstage
-        type: inject
+        type: operation
       - actionMode: sequential
         actions:
           - actionDataFilter:
@@ -401,12 +452,18 @@ spec:
             nextState: TrackerProjectDoesNotExistError
         name: TrackerProjectExist
         type: switch
-      - data:
-          exitMessage: '"The trackerProject with the id " + .trackerProjects[0].id + " of the tracker with the id " + .tracker.id + " does not exist, cannot export to the issue manager"'
+      - actionMode: sequential
+        actions:
+          - actionDataFilter:
+              useResults: true
+            functionRef:
+              invoke: sync
+              refName: TrackerProjectDoesNotExistErrorExitMessage
+            name: Fill exitMessage
         name: TrackerProjectDoesNotExistError
         transition:
           nextState: NotifyFailureBackstage
-        type: inject
+        type: operation
       - actionMode: sequential
         actions:
           - actionDataFilter:
@@ -432,12 +489,18 @@ spec:
             nextState: TrackerProjectIssueTypesDoesNotExistError
         name: TrackerProjectIssueTypesExist
         type: switch
-      - data:
-          exitMessage: '"There are no trackerProjectIssueTypes in the trackerProject with the id " + .trackerProject.id + " of the tracker with the id "+ .tracker.id +" does not exist, cannot export to the issue manager"'
+      - actionMode: sequential
+        actions:
+          - actionDataFilter:
+              useResults: true
+            functionRef:
+              invoke: sync
+              refName: TrackerProjectIssueTypesDoesNotExistErrorExitMessage
+            name: Fill exitMessage
         name: TrackerProjectIssueTypesDoesNotExistError
         transition:
           nextState: NotifyFailureBackstage
-        type: inject
+        type: operation
       - actionMode: sequential
         actions:
           - actionDataFilter:
@@ -527,15 +590,22 @@ spec:
               refName: createNotification
         name: NotifyCompletion
         transition:
-          nextState: report
+          nextState: reportCompletion
         type: operation
       - actionMode: sequential
-        actions: null
+        actions:
+          - actionDataFilter:
+              toStateData: .result
+              useResults: true
+            functionRef:
+              invoke: sync
+              refName: successResult
+            name: reportCompletion
         end:
           terminate: true
-        name: report
+        name: reportCompletion
         stateDataFilter:
-          output: '{recipients: .recipients, mtaAnalysisResultURL: ($SECRET.mta.url + "/hub/applications/" + (.application.id|tostring) + "/analysis/report"), migrationWaveJiraTicketURL: .migrationWaveJiraTicket.link, repositoryURL: .repositoryURL, workflowOptions: {migrationOptions: [{id: "m2k", name: "Move2Kube workflow"}]}}'
+          output: . += .result
         type: operation
       - actionMode: sequential
         actions:
@@ -554,9 +624,24 @@ spec:
                   type: entity
               invoke: sync
               refName: createNotification
+        name: NotifyMandatoriesIncidentsInApplication
+        transition:
+          nextState: reportCompletionWithMandatoriesIncidentsInApplication
+        type: operation
+      - actionMode: sequential
+        actions:
+          - actionDataFilter:
+              toStateData: .result
+              useResults: true
+            functionRef:
+              invoke: sync
+              refName: mandatoriesIncidentsResult
+            name: reportCompletionWithMandatoriesIncidentsInApplication
         end:
           terminate: true
-        name: NotifyMandatoriesIncidentsInApplication
+        name: reportCompletionWithMandatoriesIncidentsInApplication
+        stateDataFilter:
+          output: . += .result
         type: operation
       - actionMode: sequential
         actions:
@@ -574,9 +659,24 @@ spec:
                   type: entity
               invoke: sync
               refName: createNotification
+        name: NotifyFailureBackstage
+        transition:
+          nextState: reportFailure
+        type: operation
+      - actionMode: sequential
+        actions:
+          - actionDataFilter:
+              toStateData: .result
+              useResults: true
+            functionRef:
+              invoke: sync
+              refName: errorResult
+            name: reportFailure
         end:
           terminate: true
-        name: NotifyFailureBackstage
+        name: reportFailure
+        stateDataFilter:
+          output: . += .result
         type: operation
     timeouts:
       workflowExecTimeout:
@@ -584,7 +684,7 @@ spec:
   podTemplate:
     container:
       resources: {}
-      image: quay.io/orchestrator/serverless-workflow-mta-v7.x:1b229014c6a773cf075c1ef0fd346cfb1fd2d86b
+      image: quay.io/orchestrator/serverless-workflow-mta-v7.x:a322fb12640749c1579f3fa797fd0c3ed312d746
       envFrom:
         - secretRef:
             name: mta-analysis-v7-creds

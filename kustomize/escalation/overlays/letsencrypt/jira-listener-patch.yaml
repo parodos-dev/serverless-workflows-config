@@ -1,6 +1,0 @@
-apiVersion: serving.knative.dev/v1
-kind: Service
-metadata:
-  name: jira-listener
-  annotations:
-    serving.knative.openshift.io/disableRoute: "true"
