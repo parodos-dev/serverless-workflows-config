@@ -1,6 +1,6 @@
 # serverless-workflows-config
 
-This repository includes the methods of installing workflows: Helm.
+This repository is designed to offer a method for installing workflows through Helm charts.
 
 ## Helm charts
 This is a chart repo for deploying serverless workflows using Sonataflow Operator.
