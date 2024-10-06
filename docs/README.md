@@ -33,9 +33,9 @@ orchestrator-workflows/workflows	0.2.24       	1.16.0     	A Helm chart for serv
 ```
 
 You can install each workflow separately. For detailed information, please visit the page of each workflow:
-* [Greeting](https://github.com/parodos-dev/serverless-workflows-config/blob/gh-pages/docs/greeting/README.md)
-* [MTA](https://github.com/parodos-dev/serverless-workflows-config/blob/gh-pages/docs/mta/README.md)
-* [Move2Kube](https://github.com/parodos-dev/serverless-workflows-config/blob/gh-pages/docs/move2kube/README.md)
+* [Greeting](https://github.com/parodos-dev/serverless-workflows-config/blob/gh-pages-1.2/docs/greeting/README.md)
+* [MTA](https://github.com/parodos-dev/serverless-workflows-config/blob/gh-pages-1.2/docs/mta/README.md)
+* [Move2Kube](https://github.com/parodos-dev/serverless-workflows-config/blob/gh-pages-1.2/docs/move2kube/README.md)
 
 ## Installing workflows in additional namespaces
 When deploying a workflow in a namespace different from where Sonataflow services are running (e.g. sonataflow-infra), there are essential steps to follow. For detailed instructions, see the [Additional Workflow Namespaces section](https://github.com/parodos-dev/orchestrator-helm-operator/tree/main/docs/release-1.2?tab=readme-ov-file#additional-workflow-namespaces).
