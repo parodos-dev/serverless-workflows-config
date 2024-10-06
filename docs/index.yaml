@@ -1585,6 +1585,17 @@ entries:
   request-vm-cnv:
   - apiVersion: v2
     appVersion: 1.16.0
+    created: "2024-10-06T13:02:41.836070657Z"
+    description: A Helm chart for the request VM using CNV serverless workflow
+    digest: 9f6874dcb9ecaf3bfc32bd3c00ce6e861c9d4ae4c103c906ddb9be0880c4fb4b
+    icon: https://raw.githubusercontent.com/parodos-dev/parodos-dev.github.io/main/assets/images/WO_black.svg
+    name: request-vm-cnv
+    type: application
+    urls:
+    - https://github.com/parodos-dev/serverless-workflows-config/releases/download/request-vm-cnv-0.1.8/request-vm-cnv-0.1.8.tgz
+    version: 0.1.8
+  - apiVersion: v2
+    appVersion: 1.16.0
     created: "2024-09-24T06:24:43.227008706Z"
     description: A Helm chart for the request VM using CNV serverless workflow
     digest: 77c185ec5d7a30959361736c9d2e2ee9ec4cdf3f6d6b1835ecc8f4ad053a4be5
@@ -2151,4 +2162,4 @@ entries:
     urls:
     - https://github.com/rgolangh/serverless-workflows-config/releases/download/workflows-0.1.0/workflows-0.1.0.tgz
     version: 0.1.0
-generated: "2024-10-06T13:02:21.243254485Z"
+generated: "2024-10-06T13:02:41.836332929Z"
