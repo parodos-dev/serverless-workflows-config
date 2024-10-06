@@ -384,7 +384,7 @@ spec:
   podTemplate:
     container:
       resources: {}
-      image: quay.io/orchestrator/serverless-workflow-request-vm-cnv:1b229014c6a773cf075c1ef0fd346cfb1fd2d86b
+      image: quay.io/orchestrator/serverless-workflow-request-vm-cnv:3591ea73e03abe68f65f3c4ceda107196e2c8fd9
       envFrom:
         - secretRef:
             name: request-vm-cnv-creds
