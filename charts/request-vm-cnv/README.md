@@ -24,6 +24,9 @@ TARGET_NS=sonataflow-infra
 ```
 
 # Installation
+## Pre-requisites
+* Access to an OCP cluster with OpenShift Virtualization operator installed. 
+
 ## Persistence pre-requisites
 If persistence is enbaled, you must have a PostgreSQL instance running in the cluster, in the same `namespace` as the workflows.
 
