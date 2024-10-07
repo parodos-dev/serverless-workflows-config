@@ -392,7 +392,7 @@ spec:
   podTemplate:
     container:
       resources: {}
-      image: quay.io/orchestrator/serverless-workflow-modify-vm-resources:3591ea73e03abe68f65f3c4ceda107196e2c8fd9
+      image: quay.io/orchestrator/serverless-workflow-modify-vm-resources:f17740898cfb4255b88f76a8a3cd321cd157cb06
       envFrom:
         - secretRef:
             name: modify-vm-resources-creds
