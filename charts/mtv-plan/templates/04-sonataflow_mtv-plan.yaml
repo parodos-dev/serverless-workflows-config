@@ -129,7 +129,7 @@ spec:
           terminate: true
         name: PlanFailure
         stateDataFilter:
-          output: '{assessmentResult: {passed: false, message: .planErrorMessage}}'
+          output: '{result: {completedWith: "error", message: .planErrorMessage}}'
         type: operation
       - actionMode: sequential
         actions:
@@ -152,12 +152,12 @@ spec:
           terminate: true
         name: PlanReady
         stateDataFilter:
-          output: '{workflowOptions: {migrationOptions: [{id: "mtv-migration", name: "MTV migration workflow"}]}, assessmentResult: {passed: true, message: "plan is ready for migration"}}'
+          output: '{result: {completedWith: "success", message: "MTV plan successful", "nextWorkflows": [{id: "mtv-migration", name: "MTV migration workflow"}], "outputs": [] }}'
         type: operation
   podTemplate:
     container:
       resources: {}
-      image: quay.io/orchestrator/serverless-workflow-mtv-plan:f17740898cfb4255b88f76a8a3cd321cd157cb06
+      image: quay.io/orchestrator/serverless-workflow-mtv-plan:f1cf821a416863ed1b3c6645f476400402665a96
       envFrom:
         - secretRef:
             name: mtv-plan-creds
