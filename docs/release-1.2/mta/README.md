@@ -65,7 +65,7 @@ while [[ $retry_count -lt 5 ]]; do
 done
 BACKSTAGE_NOTIFICATIONS_URL=http://backstage-backstage.rhdh-operator
 MTA_ROUTE=$(oc -n openshift-mta get route mta -o yaml | yq -r .spec.host)
-oc -n ${TARGET_NS} patch sonataflow mta-analysis --type merge -p '{"spec": { "podTemplate": { "container": { "env": [{"name": "BACKSTAGE_NOTIFICATIONS_URL": "'${BACKSTAGE_NOTIFICATIONS_URL}'"}, {"name": "MTA_URL", "value": "https://'${MTA_ROUTE}'"}]}}}}'
+oc -n ${TARGET_NS} patch sonataflow mta-analysis --type merge -p '{"spec": { "podTemplate": { "container": { "env": [{"name": "BACKSTAGE_NOTIFICATIONS_URL",  "value": "'${BACKSTAGE_NOTIFICATIONS_URL}'"}, {"name": "MTA_URL", "value": "https://'${MTA_ROUTE}'"}]}}}}'
 ```
 
 ### Edit the `${WORKFLOW_NAME}-creds` Secret
