@@ -28,6 +28,14 @@ The following table lists the configurable parameters of the Move2kube chart and
 ## Workflow application configuration
 Please refer to [the workflow README](https://github.com/parodos-dev/serverless-workflows/blob/main/move2kube/README.md#workflow-application-configuration)
 
+## Persistence pre-requisites
+If persistence is enabled, you must have a PostgreSQL instance running in the cluster, in the same `namespace` as the workflows.
+
+A `secret` containing the instance credentials must exists as well. 
+
+See https://www.parodos.dev/orchestrator-helm-chart/postgresql on how to install a PostgreSQL instance. Please follow the section detailing how to install using helm. In this document, a `secret` holding the credentials is created.
+
+
 ## Automated installation
 Run the [installation script](install_m2k.sh):
 ```console

@@ -17,13 +17,13 @@ The following table lists the configurable parameters of the Mta chart and their
 ## Workflow application configuration
 Please refer to [the workflow README](https://github.com/parodos-dev/serverless-workflows/blob/v1.2.x/mta-v6.x/README.md#workflow-application-configuration)
 
+# Installation
 # Pre-installation Configuration
 Set `TARGET_NS` to the target namespace:
 ```console
 TARGET_NS=sonataflow-infra
 ```
 
-# Installation
 ## Persistence pre-requisites
 The MTA workflow has persistence enabled, you must have a PostgreSQL instance running in the cluster, in the same `namespace` as the workflows.
 A `secret` containing the instance credentials must exist as well. 
