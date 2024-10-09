@@ -7,7 +7,7 @@ The repository includes a variety of serverless workflows, such as:
 * Greeting: A basic example workflow to demonstrate functionality.
 * Migration Toolkit for Application Analysis (MTA): This workflow evaluates applications to determine potential risks and the associated costs of containerizing the applications.
 * Move2Kube: Designed to facilitate the transition of an application to Kubernetes (K8s) environments.
-
+* ...
 ## Usage
 
 ### Prerequisites
@@ -30,12 +30,10 @@ orchestrator-workflows/greeting 	0.4.2        	1.16.0     	A Helm chart for the 
 orchestrator-workflows/move2kube	0.2.16       	1.16.0     	A Helm chart to deploy the move2kube workflow.   
 orchestrator-workflows/mta      	0.2.16       	1.16.0     	A Helm chart for MTA serverless workflow         
 orchestrator-workflows/workflows	0.2.24       	1.16.0     	A Helm chart for serverless workflows
+...
 ```
 
-You can install each workflow separately. For detailed information, please visit the page of each workflow:
-* [Greeting](https://github.com/parodos-dev/serverless-workflows-config/blob/gh-pages-1.2/docs/greeting/README.md)
-* [MTA](https://github.com/parodos-dev/serverless-workflows-config/blob/gh-pages-1.2/docs/mta/README.md)
-* [Move2Kube](https://github.com/parodos-dev/serverless-workflows-config/blob/gh-pages-1.2/docs/move2kube/README.md)
+You can [install the workflows following their respective README](https://github.com/parodos-dev/serverless-workflows-config/blob/main/docs/release-1.2/)
 
 ## Installing workflows in additional namespaces
 When deploying a workflow in a namespace different from where Sonataflow services are running (e.g. sonataflow-infra), there are essential steps to follow. For detailed instructions, see the [Additional Workflow Namespaces section](https://github.com/parodos-dev/orchestrator-helm-operator/tree/main/docs/release-1.2?tab=readme-ov-file#additional-workflow-namespaces).
