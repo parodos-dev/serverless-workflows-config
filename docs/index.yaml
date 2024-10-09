@@ -3,6 +3,17 @@ entries:
   create-ocp-project:
   - apiVersion: v2
     appVersion: 1.16.0
+    created: "2024-10-09T12:41:33.226656761Z"
+    description: A Helm chart for the create OCP project serverless workflow
+    digest: c203554245c93f933bf3b9f3cbeb2b20255ae8eec76942d2b762bc0a479b1d2a
+    icon: https://raw.githubusercontent.com/parodos-dev/parodos-dev.github.io/main/assets/images/WO_black.svg
+    name: create-ocp-project
+    type: application
+    urls:
+    - https://github.com/parodos-dev/serverless-workflows-config/releases/download/create-ocp-project-0.1.11/create-ocp-project-0.1.11.tgz
+    version: 0.1.11
+  - apiVersion: v2
+    appVersion: 1.16.0
     created: "2024-10-07T12:18:17.712049467Z"
     description: A Helm chart for the create OCP project serverless workflow
     digest: 3444bac9834b521bf037f250fe3e4b2111fe5d2442a4a67e3873ecb3fdfb4005
@@ -2360,4 +2371,4 @@ entries:
     urls:
     - https://github.com/rgolangh/serverless-workflows-config/releases/download/workflows-0.1.0/workflows-0.1.0.tgz
     version: 0.1.0
-generated: "2024-10-09T12:41:16.568202386Z"
+generated: "2024-10-09T12:41:33.227068368Z"
