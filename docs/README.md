@@ -48,9 +48,9 @@ The workflows rely on components included in the [Orchestrator Operator](https:/
 | request-vm-cnv     | 0.1.x         | 1.2.x                |
 | modify-vm-resources| 0.1.x         | 1.2.x                |
 | mta-v6             | 0.2.x         | 1.2.x                |
-| mta-v7             | 0.2.x         | 1.2.x                |
+| mta-v7             | 0.2.37         | 1.2.x                |
 | mtv-migration      | 0.0.x         | 1.2.x                |
-| mtv-plan           | 0.0.x         | 1.2.x                |
+| mtv-plan           | 0.0.13         | 1.2.x                |
 
 
 ## Helm index
