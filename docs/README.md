@@ -39,8 +39,17 @@ You can [install the workflows following their respective README](https://github
 When deploying a workflow in a namespace different from where Sonataflow services are running (e.g. sonataflow-infra), there are essential steps to follow. For detailed instructions, see the [Additional Workflow Namespaces section](https://github.com/parodos-dev/orchestrator-helm-operator/tree/main/docs/release-1.2?tab=readme-ov-file#additional-workflow-namespaces).
 
 ## Version Compatability
-The workflows rely on components included in the [Orchestrator Operator](https://www.parodos.dev/orchestrator-helm-operator/). Therefore, it is crucial to match the workflow version with the corresponding Orchestrator version that supports it. The list below outlines the compatibility between the workflows and Orchestrator versions:
+The workflows rely on components included in the [Orchestrator Operator](https://www.parodos.dev/orchestrator-helm-operator/). Therefore, it is crucial to match the workflow version with the corresponding Orchestrator version that supports it. 
+The list below outlines the compatibility between the workflows and Orchestrator versions:
 | Workflows          | Chart Version | Orchestrator Operator Version |
+|--------------------|---------------|----------------------|
+| move2kube          | 1.3.x         | 1.3.x                |
+| create-ocp-project | 1.3.x         | 1.3.x                |
+| request-vm-cnv     | 1.3.x         | 1.3.x                |
+| modify-vm-resources| 1.3.x         | 1.3.x                |
+| mta-v7             | 1.3.x         | 1.3.x                |
+| mtv-migration      | 1.3.x         | 1.3.x                |
+| mtv-plan           | 1.3.x         | 1.3.x                |
 |--------------------|---------------|----------------------|
 | mta-analysis       | 0.3.x         | 1.2.x                |
 | move2kube          | 0.3.x         | 1.2.x                |
@@ -48,9 +57,9 @@ The workflows rely on components included in the [Orchestrator Operator](https:/
 | request-vm-cnv     | 0.1.x         | 1.2.x                |
 | modify-vm-resources| 0.1.x         | 1.2.x                |
 | mta-v6             | 0.2.x         | 1.2.x                |
-| mta-v7             | 0.2.x         | 1.2.x                |
+| mta-v7             | 0.2.37         | 1.2.x                |
 | mtv-migration      | 0.0.x         | 1.2.x                |
-| mtv-plan           | 0.0.x         | 1.2.x                |
+| mtv-plan           | 0.0.13         | 1.2.x                |
 
 
 ## Helm index
