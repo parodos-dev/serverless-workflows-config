@@ -281,7 +281,7 @@ spec:
   podTemplate:
     container:
       resources: {}
-      image: quay.io/orchestrator/serverless-workflow-move2kube:15e68aebc0b92fc7204b47e9f0a8c3af989d0a92
+      image: quay.io/orchestrator/serverless-workflow-move2kube:f6fd521c459233ef644ffa62f1d213a18734ea72
       envFrom:
         - secretRef:
             name: m2k-creds
