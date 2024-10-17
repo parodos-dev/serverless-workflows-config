@@ -3,7 +3,7 @@ kind: SonataFlow
 metadata:
   annotations:
     sonataflow.org/description: YAML based greeting workflow
-    sonataflow.org/expressionLang: jsonpath
+    sonataflow.org/expressionLang: jq
     sonataflow.org/profile: prod
     sonataflow.org/version: "1.0"
   creationTimestamp: null
@@ -66,7 +66,7 @@ spec:
   podTemplate:
     container:
       resources: {}
-      image: quay.io/orchestrator/serverless-workflow-greeting:579ccba10961697faa471493e9038d7e6682fc0d
+      image: quay.io/orchestrator/serverless-workflow-greeting:6765367bcc62b9f71c7bc8ea34ca073669edc229
   resources:
     configMaps:
       - configMap:
