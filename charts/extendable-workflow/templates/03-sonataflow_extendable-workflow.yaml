@@ -1,0 +1,120 @@
+apiVersion: sonataflow.org/v1alpha08
+kind: SonataFlow
+metadata:
+  annotations:
+    sonataflow.org/description: YAML based extendable-workflow workflow
+    sonataflow.org/expressionLang: jq
+    sonataflow.org/profile: prod
+    sonataflow.org/version: "1.0"
+  creationTimestamp: null
+  labels:
+    app: extendable-workflow
+    sonataflow.org/workflow-app: extendable-workflow
+  name: extendable-workflow
+spec:
+  flow:
+    annotations:
+      - workflow-type/infrastructure
+    dataInputSchema:
+      failOnValidationErrors: true
+      schema: schemas/extendable-workflow.sw.input-schema.json
+    functions:
+      - name: greetFunction
+        operation: sysout
+        type: custom
+      - name: GreetInEnglish
+        operation: '{ greeting: "Welcome " + .personalInfo.firstName + " " + .personalInfo.lastName + " from the beautiful country of " + .personalInfo.country + "! I got your paswwords loud and clear: " + .personalInfo.password + " and they match: " + .personalInfo.confirmPassword + "... You may want ot change them now." }'
+        type: expression
+      - name: GreetInSpanish
+        operation: '{ greeting: "¡Bienvenido " + .personalInfo.firstName + " " + .personalInfo.lastName + " desde el hermoso país de " + .personalInfo.country + "! Recibí tus contraseñas alto y claro: " + .personalInfo.password + " y coinciden: " + .personalInfo.confirmPassword + "... Quizás quieras cambiarlas ahora." }'
+        type: expression
+      - name: GreetInFrench
+        operation: '{ greeting: "Bienvenue " + .personalInfo.firstName + " " + .personalInfo.lastName + " du merveilleux pays de " + .personalInfo.country + " ! Vos mots de passes sont bien reçus: " + .personalInfo.password + " et ils correspondent: " + .personalInfo.confirmPassword + "... Il serait bon de les changer maintenant." }'
+        type: expression
+    start:
+      stateName: ChooseOnLanguage
+    states:
+      - dataConditions:
+          - condition: .languageInfo.language == 'French'
+            name: Greet in french
+            transition:
+              nextState: GreetInFrench
+          - condition: .languageInfo.language  == 'Spanish'
+            name: Greet in spanish
+            transition:
+              nextState: GreetInSpanish
+        defaultCondition:
+          transition:
+            nextState: GreetInEnglish
+        name: ChooseOnLanguage
+        type: switch
+      - actionMode: sequential
+        actions:
+          - actionDataFilter:
+              useResults: true
+            functionRef:
+              invoke: sync
+              refName: GreetInEnglish
+        name: GreetInEnglish
+        transition:
+          nextState: GreetPerson
+        type: operation
+      - actionMode: sequential
+        actions:
+          - actionDataFilter:
+              useResults: true
+            functionRef:
+              invoke: sync
+              refName: GreetInSpanish
+        name: GreetInSpanish
+        transition:
+          nextState: GreetPerson
+        type: operation
+      - actionMode: sequential
+        actions:
+          - actionDataFilter:
+              useResults: true
+            functionRef:
+              invoke: sync
+              refName: GreetInFrench
+        name: GreetInFrench
+        transition:
+          nextState: GreetPerson
+        type: operation
+      - actionMode: sequential
+        actions:
+          - actionDataFilter:
+              useResults: true
+            functionRef:
+              arguments:
+                message: .greeting
+              invoke: sync
+              refName: greetFunction
+            name: greetAction
+        end:
+          terminate: true
+        name: GreetPerson
+        type: operation
+  podTemplate:
+    container:
+      resources: {}
+      image: quay.io/orchestrator/serverless-workflow-extendable-workflow:6765367bcc62b9f71c7bc8ea34ca073669edc229
+  resources:
+    configMaps:
+      - configMap:
+          name: 01-extendable-workflow-resources-schemas
+        workflowPath: schemas
+  persistence:
+    postgresql:
+      secretRef:
+        name: sonataflow-psql-postgresql
+        userKey: postgres-username
+        passwordKey: postgres-password
+      serviceRef:
+        name: sonataflow-psql-postgresql
+        port: 5432
+        databaseName: sonataflow
+        databaseSchema: extendable-workflow
+status:
+  address: {}
+  lastTimeRecoverAttempt: null
