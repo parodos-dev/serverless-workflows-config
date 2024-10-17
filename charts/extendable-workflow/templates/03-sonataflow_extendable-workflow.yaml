@@ -35,11 +35,11 @@ spec:
       stateName: ChooseOnLanguage
     states:
       - dataConditions:
-          - condition: .languageInfo.language == 'French'
+          - condition: .languageInfo.language == "French"
             name: Greet in french
             transition:
               nextState: GreetInFrench
-          - condition: .languageInfo.language  == 'Spanish'
+          - condition: .languageInfo.language  == "Spanish"
             name: Greet in spanish
             transition:
               nextState: GreetInSpanish
@@ -98,7 +98,7 @@ spec:
   podTemplate:
     container:
       resources: {}
-      image: quay.io/orchestrator/serverless-workflow-extendable-workflow:6765367bcc62b9f71c7bc8ea34ca073669edc229
+      image: quay.io/orchestrator/serverless-workflow-extendable-workflow:7c4866215908760015ded6d848d32cf937a2ca98
   resources:
     configMaps:
       - configMap:
