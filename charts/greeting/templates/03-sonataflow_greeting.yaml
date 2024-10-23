@@ -26,10 +26,10 @@ spec:
       stateName: ChooseOnLanguage
     states:
       - dataConditions:
-          - condition: ${$.[?(@.language  == 'English')]}
+          - condition: .language  == "English"
             transition:
               nextState: GreetInEnglish
-          - condition: ${$.[?(@.language  == 'Spanish')]}
+          - condition: .language  == "Spanish"
             transition:
               nextState: GreetInSpanish
         defaultCondition:
@@ -38,13 +38,13 @@ spec:
         name: ChooseOnLanguage
         type: switch
       - data:
-          greeting: 'Hello from YAML Workflow, '
+          greeting: Hello from YAML Workflow
         name: GreetInEnglish
         transition:
           nextState: GreetPerson
         type: inject
       - data:
-          greeting: 'Saludos desde YAML Workflow, '
+          greeting: Saludos desde YAML Workflow
         name: GreetInSpanish
         transition:
           nextState: GreetPerson
@@ -55,7 +55,7 @@ spec:
               useResults: true
             functionRef:
               arguments:
-                message: $.greeting $.name
+                message: .greeting
               invoke: sync
               refName: greetFunction
             name: greetAction
@@ -66,7 +66,7 @@ spec:
   podTemplate:
     container:
       resources: {}
-      image: quay.io/orchestrator/serverless-workflow-greeting:6765367bcc62b9f71c7bc8ea34ca073669edc229
+      image: quay.io/orchestrator/serverless-workflow-greeting:c3b7031d91ae42fa423d1d25060e50dc6267031c
   resources:
     configMaps:
       - configMap:
