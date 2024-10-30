@@ -4,7 +4,7 @@ metadata:
   annotations:
     sonataflow.org/description: Creating an OpenShift Project
     sonataflow.org/expressionLang: jq
-    sonataflow.org/profile: prod
+    sonataflow.org/profile: gitops
     sonataflow.org/version: "1.0"
   creationTimestamp: null
   labels:
@@ -41,6 +41,15 @@ spec:
       - name: print
         operation: sysout
         type: custom
+      - name: successResult
+        operation: '{ "completedWith":"success", "message": "Project " + .projectName + " active", "outputs":[] }'
+        type: expression
+      - name: errorProjectNotActiveResult
+        operation: '{ "completedWith":"error", "message": "Project " + .projectName + " not active" }'
+        type: expression
+      - name: errorAuthorizationDeniedResult
+        operation: '{ "completedWith":"error", "message": "Creation of project " + .projectName + " denied", "outputs":[ { "key":"Jira issue", "value": $SECRET.jira_url + "/jira/servicedesk/projects/" + .operationsProjectKey + "/issues/" + .operationsJiraCreateIssueResult.key, "format":"link" }] }'
+        type: expression
     start:
       stateName: '[Audit]: workflow started'
     states:
@@ -210,6 +219,12 @@ spec:
               invoke: sync
               refName: createNotification
             name: 'Create notification: project active'
+          - actionDataFilter:
+              useResults: true
+            functionRef:
+              invoke: sync
+              refName: successResult
+            name: setOutput
         name: Notify project active
         transition:
           nextState: '[Audit]: Close issue on Jira'
@@ -231,6 +246,12 @@ spec:
               invoke: sync
               refName: createNotification
             name: 'Create notification: project not active'
+          - actionDataFilter:
+              useResults: true
+            functionRef:
+              invoke: sync
+              refName: errorProjectNotActiveResult
+            name: setOutput
         name: Notify project not active
         transition:
           nextState: '[Audit]: Close issue on Jira'
@@ -268,6 +289,12 @@ spec:
       - actionMode: sequential
         actions:
           - actionDataFilter:
+              useResults: true
+            functionRef:
+              invoke: sync
+              refName: errorAuthorizationDeniedResult
+            name: setOutput
+          - actionDataFilter:
               toStateData: .jiraGetTransitionResult
               useResults: true
             functionRef:
@@ -298,7 +325,7 @@ spec:
   podTemplate:
     container:
       resources: {}
-      image: quay.io/orchestrator/serverless-workflow-create-ocp-project:579ccba10961697faa471493e9038d7e6682fc0d
+      image: quay.io/orchestrator/serverless-workflow-create-ocp-project:be3e8e3c8099f475b29a7c67b61c6cb604f8b66c
       envFrom:
         - secretRef:
             name: create-ocp-project-creds
