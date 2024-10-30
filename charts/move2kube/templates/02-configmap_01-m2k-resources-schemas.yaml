@@ -52,6 +52,19 @@ data:
           "recipients"
       ]
     }
+  workflow-output-schema.json: |-
+    {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "title": "WorkflowResult",
+        "description": "Schema of workflow output",
+        "type": "object",
+        "properties": {
+            "result": {
+                "$ref": "../shared/schemas/workflow-result-schema.json",
+                "type": "object"
+            }
+        }
+    }
 kind: ConfigMap
 metadata:
   creationTimestamp: null

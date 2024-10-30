@@ -4,7 +4,7 @@ metadata:
   annotations:
     sonataflow.org/description: Workflow to execute Move2Kube
     sonataflow.org/expressionLang: jq
-    sonataflow.org/profile: prod
+    sonataflow.org/profile: gitops
     sonataflow.org/version: "1.0"
   creationTimestamp: null
   labels:
@@ -52,6 +52,12 @@ spec:
         type: expression
       - name: formatTransformationErrorExitMessage
         operation: '{ exitMessage: "Error while saving transformation output: " + (if .error == null then "timeout exception was thrown." else .error end) }'
+        type: expression
+      - name: successResult
+        operation: '{ "completedWith":"success", "message": "Move2Kube workflow  " + $WORKFLOW.instanceId + " on workspace " + .workspaceId + " and project " + .projectId + " was successful; the output is available in the branch " + .targetBranch + " of your git repository "+ .repositoryURL, "outputs": [ { "key":"Git repository", "value": .repositoryURL, "format":"link" }, { "key":"Git branch", "value": .targetBranch } ] }'
+        type: expression
+      - name: errorResult
+        operation: '{ "completedWith":"error", "message": "Move2Kube workflow  " + $WORKFLOW.instanceId + " on workspace " + .workspaceId + " and project " + .projectId + " failed ", "outputs":[ { "key":"Exit message", "value": .exitMessage }, { "key":"Plan retries", "value": (.planRetries|tostring), "format":"number" } ] }'
         type: expression
     start:
       stateName: StartPlanning
@@ -238,6 +244,14 @@ spec:
                   refName: createNotification
                 name: createNotification
             name: createNotification
+          - actions:
+              - actionDataFilter:
+                  useResults: true
+                functionRef:
+                  invoke: sync
+                  refName: errorResult
+                name: setOutput
+            name: setOutput
         completionType: allOf
         end:
           terminate: true
@@ -272,6 +286,14 @@ spec:
                   refName: createNotification
                 name: createNotification
             name: createNotification
+          - actions:
+              - actionDataFilter:
+                  useResults: true
+                functionRef:
+                  invoke: sync
+                  refName: successResult
+                name: setOutput
+            name: setOutput
         completionType: allOf
         end:
           terminate: true
@@ -281,7 +303,7 @@ spec:
   podTemplate:
     container:
       resources: {}
-      image: quay.io/orchestrator/serverless-workflow-move2kube:ebd909018d91e17bc482b98feedc475044070701
+      image: quay.io/orchestrator/serverless-workflow-move2kube:be3e8e3c8099f475b29a7c67b61c6cb604f8b66c
       envFrom:
         - secretRef:
             name: m2k-creds
