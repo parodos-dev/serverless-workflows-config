@@ -31,6 +31,12 @@ spec:
       - name: getMigrationError
         operation: .getStatusResult.status.conditions | map(select(.category == "Error" or .category == "Critical" or .type == "Failed"))[0].message
         type: expression
+      - name: successResult
+        operation: '{ "completedWith":"success", "message": "MTV migration " + .migrationName + " succeeded", "outputs":[] }'
+        type: expression
+      - name: errorResult
+        operation: '{ "completedWith":"error", "message": "MTV migration " + .migrationName + " failed.", "outputs":[ { "key":"Error", "value": .migrationErrorMessage } ] }'
+        type: expression
     start:
       stateName: CreateMigration
     states:
@@ -112,11 +118,15 @@ spec:
               invoke: sync
               refName: createNotification
             name: createNotification
+          - actionDataFilter:
+              useResults: true
+            functionRef:
+              invoke: sync
+              refName: errorResult
+            name: setOutput
         end:
           terminate: true
         name: MigrationFailure
-        stateDataFilter:
-          output: '{migrationError: .migrationErrorMessage}'
         type: operation
       - actionMode: sequential
         actions:
@@ -135,16 +145,20 @@ spec:
               invoke: sync
               refName: createNotification
             name: createNotification
+          - actionDataFilter:
+              useResults: true
+            functionRef:
+              invoke: sync
+              refName: successResult
+            name: setOutput
         end:
           terminate: true
         name: MigrationSuccessful
-        stateDataFilter:
-          output: '{migrationSuccessful: "migration successful"}'
         type: operation
   podTemplate:
     container:
       resources: {}
-      image: quay.io/orchestrator/serverless-workflow-mtv-migration:579ccba10961697faa471493e9038d7e6682fc0d
+      image: quay.io/orchestrator/serverless-workflow-mtv-migration:be3e8e3c8099f475b29a7c67b61c6cb604f8b66c
       envFrom:
         - secretRef:
             name: mtv-migration-creds
