@@ -4,7 +4,7 @@ metadata:
   annotations:
     sonataflow.org/description: YAML based extendable-workflow workflow
     sonataflow.org/expressionLang: jq
-    sonataflow.org/profile: prod
+    sonataflow.org/profile: gitops
     sonataflow.org/version: "1.0"
   creationTimestamp: null
   labels:
@@ -30,6 +30,9 @@ spec:
         type: expression
       - name: GreetInFrench
         operation: '{ greeting: "Bienvenue " + .personalInfo.firstName + " " + .personalInfo.lastName + " du merveilleux pays de " + .personalInfo.country + " ! Vos mots de passes sont bien reçus: " + .personalInfo.password + " et ils correspondent: " + .personalInfo.confirmPassword + "... Il serait bon de les changer maintenant." }'
+        type: expression
+      - name: successResult
+        operation: '{ "completedWith":"success", "message": "Extendable workflow completed successfully", "outputs":[ { "key":"Selected language", "value": .languageInfo.language }, { "key":"Greeting message", "value": .greeting } ] }'
         type: expression
     start:
       stateName: ChooseOnLanguage
@@ -91,6 +94,12 @@ spec:
               invoke: sync
               refName: greetFunction
             name: greetAction
+          - actionDataFilter:
+              useResults: true
+            functionRef:
+              invoke: sync
+              refName: successResult
+            name: setOutput
         end:
           terminate: true
         name: GreetPerson
@@ -98,7 +107,7 @@ spec:
   podTemplate:
     container:
       resources: {}
-      image: quay.io/orchestrator/serverless-workflow-extendable-workflow:7c4866215908760015ded6d848d32cf937a2ca98
+      image: quay.io/orchestrator/serverless-workflow-extendable-workflow:be3e8e3c8099f475b29a7c67b61c6cb604f8b66c
   resources:
     configMaps:
       - configMap:
