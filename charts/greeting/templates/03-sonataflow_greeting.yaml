@@ -22,6 +22,9 @@ spec:
       - name: greetFunction
         operation: sysout
         type: custom
+      - name: successResult
+        operation: '{ "completedWith":"success", "message": "Greeting workflow completed successfully", "outputs":[ { "key":"Selected language", "value": .language }, { "key":"Greeting message", "value": .greeting } ] }'
+        type: expression
     start:
       stateName: ChooseOnLanguage
     states:
@@ -59,6 +62,12 @@ spec:
               invoke: sync
               refName: greetFunction
             name: greetAction
+          - actionDataFilter:
+              useResults: true
+            functionRef:
+              invoke: sync
+              refName: successResult
+            name: setOutput
         end:
           terminate: true
         name: GreetPerson
@@ -66,7 +75,7 @@ spec:
   podTemplate:
     container:
       resources: {}
-      image: quay.io/orchestrator/serverless-workflow-greeting:c3b7031d91ae42fa423d1d25060e50dc6267031c
+      image: quay.io/orchestrator/serverless-workflow-greeting:be3e8e3c8099f475b29a7c67b61c6cb604f8b66c
   resources:
     configMaps:
       - configMap:
