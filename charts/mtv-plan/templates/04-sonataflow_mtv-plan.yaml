@@ -4,7 +4,7 @@ metadata:
   annotations:
     sonataflow.org/description: assessment creates a plan and waits for it to be ready or failed
     sonataflow.org/expressionLang: jq
-    sonataflow.org/profile: prod
+    sonataflow.org/profile: gitops
     sonataflow.org/version: "1.0"
   creationTimestamp: null
   labels:
