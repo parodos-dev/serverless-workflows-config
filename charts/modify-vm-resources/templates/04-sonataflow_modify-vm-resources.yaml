@@ -4,7 +4,7 @@ metadata:
   annotations:
     sonataflow.org/description: Modify VM Resources (Memory/CPU)
     sonataflow.org/expressionLang: jq
-    sonataflow.org/profile: prod
+    sonataflow.org/profile: gitops
     sonataflow.org/version: "1.0"
   creationTimestamp: null
   labels:
@@ -40,6 +40,15 @@ spec:
         type: expression
       - name: fillEmptyValues
         operation: '{ vm_new_memory:(if (.vm_new_memory == null or .vm_new_memory =="") then .vm.spec.template.spec.domain.memory.guest else .vm_new_memory end), vm_new_cpu_cores:(if .vm_new_cpu_cores == null then .vm.spec.template.spec.domain.cpu.cores else .vm_new_cpu_cores end), vm_new_cpu_sockets:(if .vm_new_cpu_sockets == null then .vm.spec.template.spec.domain.cpu.sockets else .vm_new_cpu_sockets end), vm_new_cpu_threads:if .vm_new_cpu_threads == null then .vm.spec.template.spec.domain.cpu.threads else .vm_new_cpu_threads end }'
+        type: expression
+      - name: successResult
+        operation: '{ "completedWith":"success", "message": "VM" + .vm_name + " in namespace " + .vm_namespace + " updated.", "outputs":[ { "key":"Console URL", "value": $SECRET.cluster_console_url + "/k8s/ns/" + .vm_namespace + "/kubevirt.io~v1~VirtualMachine/" + .vm_name + "/console/standalone", "format":"link" } ] }'
+        type: expression
+      - name: errorVMNotRunningResult
+        operation: '{ "completedWith":"error", "message": "VM" + .vm_name + " in namespace " + .vm_namespace + " not ready after the update after checking" + .vmStatusRunningRetries + " times: " + .vm.status }'
+        type: expression
+      - name: errorAuthorizationDeniedResult
+        operation: '{ "completedWith":"error", "message": "Authorization denied to update VM " + .vm_name + " in namespace " + .vm_namespace + ". Memory: " + .vm_new_memory + ". CPU cores: " + (.vm_new_cpu_cores|tostring) + ". CPU threads: " + (.vm_new_cpu_threads|tostring) + ". CPU sockets: " + (.vm_new_cpu_sockets|tostring), "outputs":[ { "key":"Jira issue", "value": $SECRET.jira_url + "/jira/servicedesk/projects/" + .projectKey + "/issues/" + .jiraCreateIssueResult.key, "format":"link" }] }'
         type: expression
     start:
       stateName: Get VM
@@ -314,6 +323,14 @@ spec:
                   refName: createNotification
                 name: 'Create notification: VM update running'
             name: 'Create notification: VM running'
+          - actions:
+              - actionDataFilter:
+                  useResults: true
+                functionRef:
+                  invoke: sync
+                  refName: successResult
+                name: setOutput
+            name: setOutput
         completionType: allOf
         end:
           terminate: true
@@ -337,7 +354,7 @@ spec:
                 functionRef:
                   arguments:
                     payload:
-                      description: '"VM" + .vm_name + " in namespace " + .vm_namespace + " not ready after the update after checking" +.vmStatusRunningRetries+" times: " + .vm.status'
+                      description: '"VM" + .vm_name + " in namespace " + .vm_namespace + " not ready after the update after checking" + .vmStatusRunningRetries + " times: " + .vm.status'
                       severity: high
                       title: '"VM" + .vm_name + " in namespace " + .vm_namespace + " not ready"'
                       topic: Modify VM Resources workflow
@@ -348,6 +365,14 @@ spec:
                   refName: createNotification
                 name: 'Create notification: VM update not running'
             name: 'Create notification: VM not running'
+          - actions:
+              - actionDataFilter:
+                  useResults: true
+                functionRef:
+                  invoke: sync
+                  refName: errorVMNotRunningResult
+                name: setOutput
+            name: setOutput
         completionType: allOf
         end:
           terminate: true
@@ -383,6 +408,14 @@ spec:
                   refName: createNotification
                 name: 'Create notification: VM update denied'
             name: 'Create notification: VM update denied'
+          - actions:
+              - actionDataFilter:
+                  useResults: true
+                functionRef:
+                  invoke: sync
+                  refName: errorAuthorizationDeniedResult
+                name: setOutput
+            name: setOutput
         completionType: allOf
         end:
           terminate: true
@@ -392,7 +425,7 @@ spec:
   podTemplate:
     container:
       resources: {}
-      image: quay.io/orchestrator/serverless-workflow-modify-vm-resources:579ccba10961697faa471493e9038d7e6682fc0d
+      image: quay.io/orchestrator/serverless-workflow-modify-vm-resources:be3e8e3c8099f475b29a7c67b61c6cb604f8b66c
       envFrom:
         - secretRef:
             name: modify-vm-resources-creds
