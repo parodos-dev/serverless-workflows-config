@@ -4,7 +4,7 @@ metadata:
   annotations:
     sonataflow.org/description: Workflow to execute Move2Kube
     sonataflow.org/expressionLang: jq
-    sonataflow.org/profile: prod
+    sonataflow.org/profile: gitops
     sonataflow.org/version: "1.0"
   creationTimestamp: null
   labels:
