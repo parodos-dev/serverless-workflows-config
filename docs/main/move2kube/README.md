@@ -39,13 +39,13 @@ See https://www.parodos.dev/orchestrator-helm-chart/postgresql on how to install
 ## Automated installation
 Run the [installation script](install_m2k.sh):
 ```console
-PRIV_ID_RSA_PATH=${HOME}/.ssh/id_rsa PUB_ID_RSA_PATH=${HOME}/.ssh/id_rsa.pub ./install_m2k.sh
+PRIV_ID_RSA_PATH=${HOME}/.ssh/id_rsa PUB_ID_RSA_PATH=${HOME}/.ssh/id_rsa.pub TARGET_NS=sonataflow-infra ./install_m2k.sh
 ```
 You can override the helm repo to use by setting `M2K_HELM_REPO`. By default `orchestrator-workflows/move2kube` is used and the helm repository `orchestrator-workflows` is installed from `https://parodos.dev/serverless-workflows-config`
 
 To use the local file, set `M2K_HELM_REPO` to `.`:
 ```console
-M2K_HELM_REPO=. PRIV_ID_RSA_PATH=${HOME}/.ssh/id_rsa PUB_ID_RSA_PATH=${HOME}/.ssh/id_rsa.pub ./install_m2k.sh
+M2K_HELM_REPO=. PRIV_ID_RSA_PATH=${HOME}/.ssh/id_rsa PUB_ID_RSA_PATH=${HOME}/.ssh/id_rsa.pub TARGET_NS=sonataflow-infra ./install_m2k.sh
 ```
 ## Manual installation
 ### Prerequisites 

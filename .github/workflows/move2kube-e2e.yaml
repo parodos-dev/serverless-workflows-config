@@ -1,0 +1,90 @@
+name: Move2kube Workflow end to end tests 
+
+on:
+  workflow_dispatch:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'charts/move2kube/**'
+      - .github/workflows/move2kube-e2e.yaml
+      - e2e/move2kube.sh
+
+jobs:
+  run-m2k-e2e:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Create k8s Kind Cluster
+        uses: helm/kind-action@v1.10.0
+        with:
+          cluster_name: kind
+      - name: Create sonataflow-infra namespace
+        run: |
+          # Needs to knative events resources in this namespace as the broker url is hard coded at the moment
+          kubectl create ns sonataflow-infra
+
+      - name: Deploy sonataflow-operator
+        run: |
+          helm repo add orchestrator https://parodos-dev.github.io/orchestrator-helm-chart
+          helm install orchestrator orchestrator/orchestrator-k8s
+
+          kubectl get sfp -A
+          kubectl wait --for=condition=Ready=true pods -l "app.kubernetes.io/name=backstage" --timeout=10m
+          kubectl get pods -o wide
+          kubectl wait --for=condition=Ready=true pods -l "app=sonataflow-platform" --timeout=180s
+
+      - name: Deploy Move2kube serverless workflow and its components
+        env:
+          SSH_PUB_KEY: ${{secrets.SSH_PUB_KEY}}
+          SSH_PRIV_KEY: ${{secrets.SSH_PRIV_KEY}}
+        run: |
+          echo "${SSH_PUB_KEY}" >> id_rsa.pub
+          echo "${SSH_PRIV_KEY}" >> id_rsa
+          # we are not on OCP but on k8s, route does not exists
+          rm -rf charts/move2kube/templates/00-move2kube-instance-route.yaml
+          
+          kubectl patch secret orchestrator-postgresql  --patch='{"stringData": { "postgres-username": "postgres" }}'
+          yq --inplace ".spec.persistence = (
+            {
+                \"postgresql\": {
+                  \"secretRef\": {
+                    \"name\": \"orchestrator-postgresql\",
+                    \"userKey\": \"postgres-username\",
+                    \"passwordKey\": \"postgres-password\"
+                  },
+                  \"serviceRef\": {
+                    \"name\": \"orchestrator-postgresql\",
+                    \"port\": 5432,
+                    \"databaseName\": \"postgres\",
+                    \"databaseSchema\": \"m2k\"
+                  }
+                }
+            }
+          )" charts/move2kube/templates/0?-sonataflow_m2k.yaml
+
+          K8S_INSTALL=1 PRIV_ID_RSA_PATH=id_rsa PUB_ID_RSA_PATH=id_rsa.pub M2K_HELM_REPO=charts/move2kube/ TARGET_NS=default ./docs/main/move2kube/install_m2k.sh
+
+      - name: Run e2e script
+        run: |
+          export BACKEND_SECRET=$(kubectl get secret orchestrator-auth -o jsonpath={.data.backend-secret} | base64 -d)
+          e2e/move2kube.sh
+
+      - name: Export kind Logs
+        if: always()
+        run: |
+          kubectl get pods
+          kubectl get pods -n sonataflow-infra
+          kubectl get broker
+          kubectl get triggers
+          kind export logs ./kind_logs
+
+      - name: Upload Kind Logs
+        uses: actions/upload-artifact@v4
+        # Always run this, even if one of th previous steps failed.
+        if: always()
+        with:
+          name: kind-logs
+          path: ./kind_logs/
+
