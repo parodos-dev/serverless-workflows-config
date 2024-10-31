@@ -1,4 +1,6 @@
 #!/bin/bash
+CLUSTER_CLIENT=$(which "${CLUSTER_CLIENT}" >/dev/null 2>&1 && echo oc || echo kubectl)
+
 TARGET_NS=sonataflow-infra
 
 if [[ -z "${MTA_HELM_REPO}" ]]; then
@@ -9,11 +11,12 @@ fi
 
 helm install mta ${MTA_HELM_REPO} -n ${TARGET_NS}
 WORKFLOW_NAME=mta-analysis-v7
-oc -n ${TARGET_NS} patch secret "${WORKFLOW_NAME}-creds" --type merge -p '{"data": { "NOTIFICATIONS_BEARER_TOKEN": "'$(oc get secrets -n rhdh-operator backstage-backend-auth-secret -o go-template='{{ .data.BACKEND_SECRET  }}')'"}}'
+"${CLUSTER_CLIENT}" -n ${TARGET_NS} patch secret "${WORKFLOW_NAME}-creds" --type merge -p '{"data": { "NOTIFICATIONS_BEARER_TOKEN": "'$("${CLUSTER_CLIENT}" get secrets -n rhdh-operator backstage-backend-auth-secret -o go-template='{{ .data.BACKEND_SECRET  }}')'"}}'
 while [[ $retry_count -lt 5 ]]; do
-    oc -n openshift-mta get route mta && break || sleep 60
+    "${CLUSTER_CLIENT}" -n openshift-mta get route mta && break || sleep 60
     retry_count=$((retry_count + 1))
 done
-MTA_ROUTE=$(oc -n openshift-mta get route mta -o yaml | yq -r .spec.host)
+MTA_ROUTE=$("${CLUSTER_CLIENT}" -n openshift-mta get route mta -o yaml | yq -r .spec.host)
 BACKSTAGE_NOTIFICATIONS_URL=http://backstage-backstage.rhdh-operator
-oc -n ${TARGET_NS} patch sonataflow mta-analysis-v7 --type merge -p '{"spec": { "podTemplate": { "container": { "env": [{"name": "BACKSTAGE_NOTIFICATIONS_URL",  "value": "'${BACKSTAGE_NOTIFICATIONS_URL}'"}, {"name": "MTA_URL", "value": "https://'${MTA_ROUTE}'"}]}}}}'
+"${CLUSTER_CLIENT}" -n "${TARGET_NS}" patch sonataflow mta-analysis-v7 --type merge -p '{"spec": { "podTemplate": { "container": { "env": [{"name": "BACKSTAGE_NOTIFICATIONS_URL",  "value": "'${BACKSTAGE_NOTIFICATIONS_URL}'"}, {"name": "MTA_URL", "value": "https://'${MTA_ROUTE}'"}]}}}}'
+"${CLUSTER_CLIENT}" -n "${TARGET_NS}" wait --for=condition=Ready=true pods -l app="${WORKFLOW_NAME}" --timeout=1m
