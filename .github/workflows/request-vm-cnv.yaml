@@ -1,0 +1,132 @@
+name: Request VM CNV CI
+
+on:
+  workflow_dispatch:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'charts/request-vm-cnv/**'
+      - .github/workflows/request-vm-cnv.yaml
+
+jobs:
+  run-e2e:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Create k8s Kind Cluster
+        uses: helm/kind-action@v1.10.0
+        with:
+          cluster_name: kind
+
+      - name: Install Operators Support
+        run: |
+          kubectl apply -f https://raw.githubusercontent.com/operator-framework/operator-lifecycle-manager/master/deploy/upstream/quickstart/crds.yaml
+          # give the apiserver time
+          sleep 5s 
+          kubectl apply -f https://raw.githubusercontent.com/operator-framework/operator-lifecycle-manager/master/deploy/upstream/quickstart/olm.yaml
+
+      - name: Deploy sonataflow-operator
+        run: |
+          helm repo add orchestrator https://parodos-dev.github.io/orchestrator-helm-chart
+          helm install orchestrator orchestrator/orchestrator-k8s
+
+          kubectl get sfp -A
+          kubectl wait --for=condition=Ready=true pods -l "app.kubernetes.io/name=backstage" --timeout=10m
+          kubectl get pods -o wide
+          kubectl wait --for=condition=Ready=true pods -l "app=sonataflow-platform" --timeout=180s
+
+      - name: Deploy Request VM CNV serverless workflow
+        run: |
+          kubectl patch secret orchestrator-postgresql  --patch='{"stringData": { "postgres-username": "postgres" }}'
+          yq --inplace ".spec.persistence = (
+            {
+                \"postgresql\": {
+                  \"secretRef\": {
+                    \"name\": \"orchestrator-postgresql\",
+                    \"userKey\": \"postgres-username\",
+                    \"passwordKey\": \"postgres-password\"
+                  },
+                  \"serviceRef\": {
+                    \"name\": \"orchestrator-postgresql\",
+                    \"port\": 5432,
+                    \"databaseName\": \"postgres\",
+                    \"databaseSchema\": \"request-vm-cnv\"
+                  }
+                }
+            }
+          )" charts/request-vm-cnv/templates/0?-sonataflow_request-vm-cnv.yaml
+          cd charts
+          helm install request-vm-cnv request-vm-cnv 
+          WORKFLOW_NAME=request-vm-cnv
+          kubectl  patch secret "${WORKFLOW_NAME}-creds" --type merge -p '{
+            "data":{
+                "NOTIFICATIONS_BEARER_TOKEN":"'$(kubectl get secret orchestrator-auth -o jsonpath={.data.backend-secret})'"
+            },
+            "stringData":{
+                "JIRA_API_TOKEN":"DUMB_TOKEN",
+                "OCP_API_SERVER_TOKEN":"DUMB_TOKEN"
+            }
+          }'
+          kubectl  patch sonataflow request-vm-cnv --type merge -p '{
+              "spec": {
+                "podTemplate": {
+                  "container": {
+                    "env": [
+                      {
+                        "name": "BACKSTAGE_NOTIFICATIONS_URL",
+                        "value": "http://backstage-backstage.rhdh-operator"
+                      },
+                      {
+                        "name": "JIRA_URL",
+                        "value": "DUMB_VALUE"
+                      },
+                      {
+                        "name": "JIRA_USERNAME",
+                        "value": "DUMB_VALUE"
+                      },
+                      {
+                        "name": "OCP_API_SERVER_URL",
+                        "value": "DUMB_VALUE"
+                      },
+                      {
+                        "name": "OCP_CONSOLE_URL",
+                        "value": "DUMB_VALUE"
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+            '
+          kubectl scale deploy "${WORKFLOW_NAME}" --replicas=0
+          sleep 3
+          kubectl get pod -A
+          kubectl  wait --for=condition=Ready=true pods -l app="${WORKFLOW_NAME}" --timeout=1m || kubectl describe pod -l app="${WORKFLOW_NAME}"
+
+      - name: Test workflow is responsive
+        run: |
+          kubectl expose deploy request-vm-cnv --type="NodePort" --port=8080 --name=request-vm-cnv-svc
+          kubectl port-forward svc/request-vm-cnv-svc 8080:8080 &
+          sleep 3
+          status_code=$(curl s -o /dev/null -w '%{http_code}' -XGET --location 'http://localhost:8080/request-vm-cnv' --header 'Accept: application/json, text/plain, */*' --header 'Content-Type: application/json')
+          if [ "$status_code" -ne 200 ]; then
+            echo "$status_code"
+            exit 1
+          fi
+
+      - name: Export kind Logs
+        if: always()
+        run: |
+          kubectl get pod -A
+          kind export logs ./kind_logs
+
+      - name: Upload Kind Logs
+        uses: actions/upload-artifact@v4
+        # Always run this, even if one of the previous steps failed.
+        if: always()
+        with:
+          name: kind-logs
+          path: ./kind_logs/
+

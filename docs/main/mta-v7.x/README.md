@@ -33,13 +33,13 @@ See https://www.parodos.dev/orchestrator-helm-chart/postgresql on how to install
 ## Automated installation
 Run the [installation script](install-mta-v7.sh):
 ```console
-./install-mta-v7.sh
+TARGET_NS=sonataflow-infra ./install-mta-v7.sh
 ```
 You can override the helm repo to use by setting `MTA_HELM_REPO`. By default `orchestrator-workflows/mta-v7` is used and the helm repository `orchestrator-workflows` is installed from `https://parodos.dev/serverless-workflows-config`
 
 To use the local file, set `MTA_HELM_REPO` to `.`:
 ```console
-MTA_HELM_REPO=. ./install-mta-v7.sh
+TARGET_NS=sonataflow-infra MTA_HELM_REPO=. ./install-mta-v7.sh
 ```
 ## Manual installation
 
