@@ -23,27 +23,24 @@ Set `TARGET_NS` to the target namespace:
 TARGET_NS=sonataflow-infra
 ```
 
-## Installation
-
-### Persistence Pre-requisites
+## Pre-requisites
 
 If persistence is enabled, you must have a PostgreSQL instance running in the same `namespace` as the workflows. Typically this is the `sonataflow-infra` namespace.
 
 A Secret containing the PostgreSQL credentials must exist as well. See https://www.parodos.dev/orchestrator-helm-chart/postgresql on how to install a PostgreSQL instance. Please follow the section detailing how to install it using Helm - this will create the necessary secret and credentials.
 
-## Installing the Helm Chart 
+## Installation Steps
+
+### Install the Helm Chart 
 
 From the `charts` folder in this repository run:
 
 ```bash
 helm install create-ocp-project ./create-ocp-project/ --namespace=$TARGET_NS 
 ```
-
-### Post-Installation
-
 After the workflow is installed, you must configure environment variables for it to function.
 
-### Environment Variables
+### Prepare Environment Variables
 
 Gather the following values for environment variables before moving on to the next section.
 
@@ -65,11 +62,17 @@ oc adm policy add-cluster-role-to-user cluster-admin -z orchestrator-ocp-api
 oc create token orchestrator-ocp-api
 ```
 
-### Set the Environment Variables
+### Add the Environment Variables to a Secret
 
 The Helm Chart installation creates a `create-ocp-project-creds` Secret in the
 namespace where it's installed. You'll update this Secret with your environment
 variable values.
+
+> [!NOTE]
+> Updating the Secret does not automatically restart the workflow Pod, nor update the associated Sonataflow CR. If you update the keys in the secret you must update the Sonataflow CR - as shown below - to reference them. If you update the values in the Secret you must delete the existing `create-ocp-project` workflow Pod to create a new Pod that uses the new values.
+
+> [!WARNING]
+> If you run the `helm upgrade` command, the values of the Secret are reset.
 
 Run the following command to do so. Replace the example values with the
 correct values for your environment:
@@ -104,12 +107,7 @@ oc -n $TARGET_NS patch secret "$WORKFLOW_NAME-creds" \
   }"
 ```
 
-> [!NOTE]
-> Updating the Secret does not automatically restart the workflow Pod, nor update the associated Sonataflow CR. If you update the keys in the secret you must update the Sonataflow CR - as shown below - to reference them. If you update the values in the Secret you must delete the existing `create-ocp-project` workflow Pod to create a new Pod that uses the new values.
-
-> [!WARNING]
-> If you run the `helm upgrade` command, the values of the Secret are reset.
-
+### Update the Sonataflow CR to use Environment Variables
 
 Once the Secret is updated, the Sonataflow CR for the workflow must be updated
 to use the values. Use the following patch command to update the CR. This will
