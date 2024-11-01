@@ -5,7 +5,7 @@ Create OCP project
 A Helm chart for the create OCP project serverless workflow
 
 
-# Helm Chart Configuration
+## Helm Chart Configuration
 
 The following table lists the configurable parameters of the Create OCP project chart and their default values.
 
@@ -17,15 +17,15 @@ The following table lists the configurable parameters of the Create OCP project 
 
 Please refer to [the workflow README](https://github.com/parodos-dev/serverless-workflows/blob/main/create-ocp-project/README.md#workflow-application-configuration)
 
-# Pre-installation configuration
+## Pre-installation configuration
 Set `TARGET_NS` to the target namespace:
 ```console
 TARGET_NS=sonataflow-infra
 ```
 
-# Installation
+## Installation
 
-## Persistence Pre-requisites
+### Persistence Pre-requisites
 
 If persistence is enabled, you must have a PostgreSQL instance running in the same `namespace` as the workflows. Typically this is the `sonataflow-infra` namespace.
 
@@ -39,7 +39,7 @@ From the `charts` folder in this repository run:
 helm install create-ocp-project ./create-ocp-project/ --namespace=$TARGET_NS 
 ```
 
-## Post-Installation
+### Post-Installation
 
 After the workflow is installed, you must configure environment variables for it to function.
 
