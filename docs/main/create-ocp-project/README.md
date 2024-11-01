@@ -57,12 +57,12 @@ Gather the following values for environment variables before moving on to the ne
 | `OCP_API_SERVER_URL`      | The OpenShift API server url, e.g `https://api.cluster.hostname.com:6443` | ✅ | |
 | `OCP_API_SERVER_TOKEN`      | The authorization bearer token to use when sending request to OpenShift | ✅ | |
 
-To obtain an OpenShift token, create a Service Account, assign permissions to it, and request a token:
+To obtain an OpenShift API token, create a Service Account, assign permissions to it, and request a token:
 
 ```bash
-oc create sa orchestrator-ocp-api -n sonataflow-infra    
-oc adm policy add-cluster-role-to-user self-provisioner -z orchestrator-ocp-api -n sonataflow-infraoc create token orchestrator-ocp-api --namespace sonataflow-infra 
-oc create token orchestrator-ocp-api --namespace sonataflow-infra
+oc create sa orchestrator-ocp-api
+oc adm policy add-cluster-role-to-user cluster-admin -z orchestrator-ocp-api
+oc create token orchestrator-ocp-api
 ```
 
 ### Set the Environment Variables
