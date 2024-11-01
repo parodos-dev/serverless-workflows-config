@@ -17,12 +17,6 @@ The following table lists the configurable parameters of the Create OCP project 
 
 Please refer to [the workflow README](https://github.com/parodos-dev/serverless-workflows/blob/main/create-ocp-project/README.md#workflow-application-configuration)
 
-## Pre-installation configuration
-Set `TARGET_NS` to the target namespace:
-```console
-TARGET_NS=sonataflow-infra
-```
-
 ## Pre-requisites
 
 If persistence is enabled, you must have a PostgreSQL instance running in the same `namespace` as the workflows. Typically this is the `sonataflow-infra` namespace.
@@ -36,6 +30,7 @@ A Secret containing the PostgreSQL credentials must exist as well. See https://w
 From the `charts` folder in this repository run:
 
 ```bash
+export TARGET_NS=sonataflow-infra
 helm install create-ocp-project ./create-ocp-project/ --namespace=$TARGET_NS 
 ```
 After the workflow is installed, you must configure environment variables for it to function.
@@ -115,6 +110,9 @@ restart the Pod:
 
 
 ```bash
+export TARGET_NS='sonataflow-infra'
+export WORKFLOW_NAME='create-ocp-project'
+
 oc -n $TARGET_NS patch sonataflow $WORKFLOW_NAME --type merge -p '{
   "spec": {
     "podTemplate": {
