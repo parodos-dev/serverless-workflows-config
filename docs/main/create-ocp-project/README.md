@@ -85,7 +85,7 @@ export JIRA_API_TOKEN='token_for_jira_api'
 export JIRA_URL='https://foo-bar.atlassian.net/'
 export JIRA_USERNAME='foo@bar.com'
 
-export OCP_API_SERVER_URL='https://api.cluster.hostname.com:6443'
+export OCP_API_SERVER_URL='https://api.cluster.replaceme.com:6443'
 export OCP_API_SERVER_TOKEN='replaceme'
 export OCP_CONSOLE_URL='replaceme'
 
