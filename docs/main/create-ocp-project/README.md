@@ -29,7 +29,7 @@ TARGET_NS=sonataflow-infra
 
 If persistence is enabled, you must have a PostgreSQL instance running in the same `namespace` as the workflows. Typically this is the `sonataflow-infra` namespace.
 
-A Secret containing the PostgreSQL credentials must exists as well. See https://www.parodos.dev/orchestrator-helm-chart/postgresql on how to install a PostgreSQL instance. Please follow the section detailing how to install it using Helm - this will create the necessary secret and credentials.
+A Secret containing the PostgreSQL credentials must exist as well. See https://www.parodos.dev/orchestrator-helm-chart/postgresql on how to install a PostgreSQL instance. Please follow the section detailing how to install it using Helm - this will create the necessary secret and credentials.
 
 ## Installing the Helm Chart 
 
@@ -71,7 +71,8 @@ The Helm Chart installation creates a `create-ocp-project-creds` Secret in the
 namespace where it's installed. You'll update this Secret with your environment
 variable values.
 
-Run the following command to do so. Replace values as necessary:
+Run the following command to do so. Replace the example values with the
+correct values for your environment:
 
 ```bash
 export TARGET_NS='sonataflow-infra'
@@ -90,10 +91,8 @@ export OCP_CONSOLE_URL='replaceme'
 
 oc -n $TARGET_NS patch secret "$WORKFLOW_NAME-creds" \
   --type merge -p "{ \
-    \"data\": { \
-      \"NOTIFICATIONS_BEARER_TOKEN\": \"$NOTIFICATIONS_BEARER_TOKEN\" \
-    }, \
     \"stringData\": { \
+      \"NOTIFICATIONS_BEARER_TOKEN\": \"$NOTIFICATIONS_BEARER_TOKEN\" \
       \"JIRA_API_TOKEN\": \"$JIRA_API_TOKEN\", \
       \"OCP_API_SERVER_TOKEN\": \"$OCP_API_SERVER_TOKEN\", \
       \"BACKSTAGE_NOTIFICATIONS_URL\": \"$BACKSTAGE_NOTIFICATIONS_URL\", \
