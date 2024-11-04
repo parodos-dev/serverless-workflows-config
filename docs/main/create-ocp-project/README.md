@@ -53,8 +53,10 @@ To obtain an OpenShift API token, create a Service Account, assign permissions t
 
 ```bash
 oc create sa orchestrator-ocp-api
-oc adm policy add-cluster-role-to-user cluster-admin -z orchestrator-ocp-api
-oc create token orchestrator-ocp-api
+oc adm policy add-cluster-role-to-user admin -z orchestrator-ocp-api
+
+# Get the token for use in the next section
+export OCP_API_SERVER_TOKEN=$(oc create token orchestrator-ocp-api)
 ```
 
 ### Add the Environment Variables to a Secret
@@ -84,7 +86,7 @@ export JIRA_URL='https://foo-bar.atlassian.net/'
 export JIRA_USERNAME='foo@bar.com'
 
 export OCP_API_SERVER_URL='https://api.cluster.replaceme.com:6443'
-export OCP_API_SERVER_TOKEN='replaceme'
+export OCP_API_SERVER_TOKEN=$(oc create token orchestrator-ocp-api)
 export OCP_CONSOLE_URL='replaceme'
 
 oc -n $TARGET_NS patch secret "$WORKFLOW_NAME-creds" \
