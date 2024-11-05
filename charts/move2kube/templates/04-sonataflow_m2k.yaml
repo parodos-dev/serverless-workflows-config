@@ -54,10 +54,10 @@ spec:
         operation: '{ exitMessage: "Error while saving transformation output: " + (if .error == null then "timeout exception was thrown." else .error end) }'
         type: expression
       - name: successResult
-        operation: '{ "completedWith":"success", "message": "Move2Kube workflow  " + $WORKFLOW.instanceId + " on workspace " + .workspaceId + " and project " + .projectId + " was successful; the output is available in the branch " + .targetBranch + " of your git repository "+ .repositoryURL, "outputs": [ { "key":"Git repository", "value": .repositoryURL, "format":"link" }, { "key":"Git branch", "value": .targetBranch } ] }'
+        operation: '{ "result": { "completedWith":"success", "message": "Move2Kube workflow  " + $WORKFLOW.instanceId + " on workspace " + .workspaceId + " and project " + .projectId + " was successful; the output is available in the branch " + .targetBranch + " of your git repository "+ .repositoryURL, "outputs": [ { "key":"Git repository", "value": .repositoryURL, "format":"link" }, { "key":"Git branch", "value": .targetBranch } ] } }'
         type: expression
       - name: errorResult
-        operation: '{ "completedWith":"error", "message": "Move2Kube workflow  " + $WORKFLOW.instanceId + " on workspace " + .workspaceId + " and project " + .projectId + " failed ", "outputs":[ { "key":"Exit message", "value": .exitMessage }, { "key":"Plan retries", "value": (.planRetries|tostring), "format":"number" } ] }'
+        operation: '{ "result": { "completedWith":"error", "message": "Move2Kube workflow  " + $WORKFLOW.instanceId + " on workspace " + .workspaceId + " and project " + .projectId + " failed ", "outputs":[ { "key":"Exit message", "value": .exitMessage }, { "key":"Plan retries", "value": (.planRetries|tostring), "format":"number" } ] } }'
         type: expression
     start:
       stateName: StartPlanning
@@ -303,7 +303,7 @@ spec:
   podTemplate:
     container:
       resources: {}
-      image: quay.io/orchestrator/serverless-workflow-move2kube:4a906234f450df6b03cda2de665cfafac9414170
+      image: quay.io/orchestrator/serverless-workflow-move2kube:1e86b456df773f2daad9f18e3f83dfa6726a2a48
       envFrom:
         - secretRef:
             name: m2k-creds
