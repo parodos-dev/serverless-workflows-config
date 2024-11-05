@@ -39,13 +39,13 @@ spec:
         operation: .vmStatusRunningRetries=.vmStatusRunningRetries + 1
         type: expression
       - name: successResult
-        operation: '{ "completedWith":"success", "message": "VM" + .vm_name + " in namespace "+.vm_namespace + " using image "+ .vm_image +" ready and running.", "outputs":[ { "key":"Console URL", "value": $SECRET.cluster_console_url + "/k8s/ns/" + .vm_namespace + "/kubevirt.io~v1~VirtualMachine/" + .vm_name + "/console/standalone", "format":"link" } ] }'
+        operation: '{ "result": { "completedWith":"success", "message": "VM" + .vm_name + " in namespace "+.vm_namespace + " using image "+ .vm_image +" ready and running.", "outputs":[ { "key":"Console URL", "value": $SECRET.cluster_console_url + "/k8s/ns/" + .vm_namespace + "/kubevirt.io~v1~VirtualMachine/" + .vm_name + "/console/standalone", "format":"link" } ] } }'
         type: expression
       - name: errorVMNotRunningResult
-        operation: '{ "completedWith":"error", "message": "VM" + .vm_name + " in namespace "+.vm_namespace + " using image "+ .vm_image +" not ready after "+ .vmStatusRunningRetries + " retries: " + .vm.status }'
+        operation: '{ "result": { "completedWith":"error", "message": "VM" + .vm_name + " in namespace "+.vm_namespace + " using image "+ .vm_image +" not ready after "+ .vmStatusRunningRetries + " retries: " + .vm.status } }'
         type: expression
       - name: errorAuthorizationDeniedResult
-        operation: '{ "completedWith":"error", "message": "Authorization denied to create VM" + .vm_name + " in namespace "+.vm_namespace + " using image "+ .vm_image, "outputs":[ { "key":"Jira issue", "value": $SECRET.jira_url + "/jira/servicedesk/projects/" + .projectKey + "/issues/" + .jiraCreateIssueResult.key, "format":"link" }] }'
+        operation: '{ "result": { "completedWith":"error", "message": "Authorization denied to create VM" + .vm_name + " in namespace "+.vm_namespace + " using image "+ .vm_image, "outputs":[ { "key":"Jira issue", "value": $SECRET.jira_url + "/jira/servicedesk/projects/" + .projectKey + "/issues/" + .jiraCreateIssueResult.key, "format":"link" }] } }'
         type: expression
     start:
       stateName: Open issue on JIRA
@@ -417,7 +417,7 @@ spec:
   podTemplate:
     container:
       resources: {}
-      image: quay.io/orchestrator/serverless-workflow-request-vm-cnv:be3e8e3c8099f475b29a7c67b61c6cb604f8b66c
+      image: quay.io/orchestrator/serverless-workflow-request-vm-cnv:1e86b456df773f2daad9f18e3f83dfa6726a2a48
       envFrom:
         - secretRef:
             name: request-vm-cnv-creds
