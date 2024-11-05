@@ -32,7 +32,7 @@ spec:
         operation: '{ greeting: "Bienvenue " + .personalInfo.firstName + " " + .personalInfo.lastName + " du merveilleux pays de " + .personalInfo.country + " ! Vos mots de passes sont bien reçus: " + .personalInfo.password + " et ils correspondent: " + .personalInfo.confirmPassword + "... Il serait bon de les changer maintenant." }'
         type: expression
       - name: successResult
-        operation: '{ "completedWith":"success", "message": "Extendable workflow completed successfully", "outputs":[ { "key":"Selected language", "value": .languageInfo.language }, { "key":"Greeting message", "value": .greeting } ] }'
+        operation: '{ "result": { "completedWith":"success", "message": "Extendable workflow completed successfully", "outputs":[ { "key":"Selected language", "value": .languageInfo.language }, { "key":"Greeting message", "value": .greeting } ] } }'
         type: expression
     start:
       stateName: ChooseOnLanguage
@@ -107,7 +107,7 @@ spec:
   podTemplate:
     container:
       resources: {}
-      image: quay.io/orchestrator/serverless-workflow-extendable-workflow:be3e8e3c8099f475b29a7c67b61c6cb604f8b66c
+      image: quay.io/orchestrator/serverless-workflow-extendable-workflow:1e86b456df773f2daad9f18e3f83dfa6726a2a48
   resources:
     configMaps:
       - configMap:
