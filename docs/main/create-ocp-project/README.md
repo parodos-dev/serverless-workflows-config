@@ -71,24 +71,35 @@ variable values.
 > [!WARNING]
 > If you run the `helm upgrade` command, the values of the Secret are reset.
 
-Run the following command to do so. Replace the example values with the
-correct values for your environment:
+Run the following command to update the Secret. Replace the example values with
+the correct values for your environment:
 
 ```bash
 export TARGET_NS='sonataflow-infra'
 export WORKFLOW_NAME='create-ocp-project'
 
 export NOTIFICATIONS_BEARER_TOKEN='token_from_backstage_appconfig'
-export BACKSTAGE_NOTIFICATIONS_URL='https://backstage.cluster.com'
+export BACKSTAGE_NOTIFICATIONS_URL='https://backstage.replace-me.com'
 
 export JIRA_API_TOKEN='token_for_jira_api'
-export JIRA_URL='https://foo-bar.atlassian.net/'
+export JIRA_URL='https://replace-me.atlassian.net/'
 export JIRA_USERNAME='foo@bar.com'
 
-export OCP_API_SERVER_URL='https://api.cluster.replaceme.com:6443'
+export OCP_API_SERVER_URL='https://api.cluster.replace-me.com:6443'
 export OCP_API_SERVER_TOKEN=$(oc create token orchestrator-ocp-api)
 export OCP_CONSOLE_URL='replaceme'
+```
 
+If you've installed RHDH using the Orchestrator Operator you can obtain the
+`NOTIFICATIONS_BEARER_TOKEN` using the following command:
+
+```bash
+export NOTIFICATIONS_BEARER_TOKEN=$(oc get secrets -n rhdh-operator backstage-backend-auth-secret -o go-template='{{ .data.BACKEND_SECRET  }}' | base64 -d)
+```
+
+Now, patch the Secret with these values:
+
+```bash
 oc -n $TARGET_NS patch secret "$WORKFLOW_NAME-creds" \
   --type merge -p "{ \
     \"stringData\": { \
