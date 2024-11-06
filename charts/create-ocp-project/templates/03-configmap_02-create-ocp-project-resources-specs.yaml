@@ -1056,12 +1056,12 @@ data:
     security:
     - BearerToken: []
     paths:
-      /apis/project.openshift.io/v1/projects:
+      /apis/project.openshift.io/v1/projectrequests:
         post:
           tags:
           - projectOpenshiftIo_v1
           description: create a Project
-          operationId: createProjectOpenshiftIoV1Project
+          operationId: createProjectRequestOpenshiftIoV1Project
           parameters:
           - name: pretty
             in: query
@@ -1104,7 +1104,7 @@ data:
             content:
               '*/*':
                 schema:
-                  $ref: '#/components/schemas/com.github.openshift.api.project.v1.Project'
+                  $ref: '#/components/schemas/com.github.openshift.api.project.v1.ProjectRequest'
             required: true
           responses:
             "200":
@@ -1112,37 +1112,37 @@ data:
               content:
                 application/json:
                   schema:
-                    $ref: '#/components/schemas/com.github.openshift.api.project.v1.Project'
+                    $ref: '#/components/schemas/com.github.openshift.api.project.v1.ProjectRequest'
                 application/yaml:
                   schema:
-                    $ref: '#/components/schemas/com.github.openshift.api.project.v1.Project'
+                    $ref: '#/components/schemas/com.github.openshift.api.project.v1.ProjectRequest'
                 application/vnd.kubernetes.protobuf:
                   schema:
-                    $ref: '#/components/schemas/com.github.openshift.api.project.v1.Project'
+                    $ref: '#/components/schemas/com.github.openshift.api.project.v1.ProjectRequest'
             "201":
               description: Created
               content:
                 application/json:
                   schema:
-                    $ref: '#/components/schemas/com.github.openshift.api.project.v1.Project'
+                    $ref: '#/components/schemas/com.github.openshift.api.project.v1.ProjectRequest'
                 application/yaml:
                   schema:
-                    $ref: '#/components/schemas/com.github.openshift.api.project.v1.Project'
+                    $ref: '#/components/schemas/com.github.openshift.api.project.v1.ProjectRequest'
                 application/vnd.kubernetes.protobuf:
                   schema:
-                    $ref: '#/components/schemas/com.github.openshift.api.project.v1.Project'
+                    $ref: '#/components/schemas/com.github.openshift.api.project.v1.ProjectRequest'
             "202":
               description: Accepted
               content:
                 application/json:
                   schema:
-                    $ref: '#/components/schemas/com.github.openshift.api.project.v1.Project'
+                    $ref: '#/components/schemas/com.github.openshift.api.project.v1.ProjectRequest'
                 application/yaml:
                   schema:
-                    $ref: '#/components/schemas/com.github.openshift.api.project.v1.Project'
+                    $ref: '#/components/schemas/com.github.openshift.api.project.v1.ProjectRequest'
                 application/vnd.kubernetes.protobuf:
                   schema:
-                    $ref: '#/components/schemas/com.github.openshift.api.project.v1.Project'
+                    $ref: '#/components/schemas/com.github.openshift.api.project.v1.ProjectRequest'
             "401":
               description: Unauthorized
               content: {}
