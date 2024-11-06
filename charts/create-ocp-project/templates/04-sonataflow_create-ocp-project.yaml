@@ -32,8 +32,8 @@ spec:
       - name: createNotification
         operation: notifications#createNotification
         type: rest
-      - name: createProjectOpenshiftIoV1Project
-        operation: specs/ocp-project-openapi.yaml#createProjectOpenshiftIoV1Project
+      - name: createProjectRequestOpenshiftIoV1Project
+        operation: specs/ocp-project-openapi.yaml#createProjectRequestOpenshiftIoV1Project
         type: rest
       - name: readProjectOpenshiftIoV1Project
         operation: specs/ocp-project-openapi.yaml#readProjectOpenshiftIoV1Project
@@ -160,7 +160,7 @@ spec:
               useResults: true
             functionRef:
               arguments:
-                kind: Project
+                kind: ProjectRequest
                 metadata:
                   labels:
                     kubernetes.io/metadata.name: .projectName
@@ -169,7 +169,7 @@ spec:
                   finalizers:
                     - kubernetes
               invoke: sync
-              refName: createProjectOpenshiftIoV1Project
+              refName: createProjectRequestOpenshiftIoV1Project
             name: Create OCP Project
         name: Create Project
         transition:
@@ -325,7 +325,7 @@ spec:
   podTemplate:
     container:
       resources: {}
-      image: quay.io/orchestrator/serverless-workflow-create-ocp-project:1e86b456df773f2daad9f18e3f83dfa6726a2a48
+      image: quay.io/orchestrator/serverless-workflow-create-ocp-project:73b41829627209eb6a724eef0d7720ef1f3cc26e
       envFrom:
         - secretRef:
             name: create-ocp-project-creds
