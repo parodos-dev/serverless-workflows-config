@@ -103,15 +103,15 @@ Now, patch the Secret with these values:
 oc -n $TARGET_NS patch secret "$WORKFLOW_NAME-creds" \
   --type merge -p "{ \
     \"stringData\": { \
-      \"NOTIFICATIONS_BEARER_TOKEN\": \"$NOTIFICATIONS_BEARER_TOKEN\" \
-      \"JIRA_API_TOKEN\": \"$JIRA_API_TOKEN\", \
-      \"OCP_API_SERVER_TOKEN\": \"$OCP_API_SERVER_TOKEN\", \
-      \"BACKSTAGE_NOTIFICATIONS_URL\": \"$BACKSTAGE_NOTIFICATIONS_URL\", \
-      \"JIRA_URL\": \"$JIRA_URL\", \
-      \"JIRA_USERNAME\": \"$JIRA_USERNAME\", \
-      \"OCP_API_SERVER_URL\": \"$OCP_API_SERVER_URL\", \
-      \"OCP_CONSOLE_URL\": \"$OCP_CONSOLE_URL\" \
-    } \
+      \"NOTIFICATIONS_BEARER_TOKEN\": \"$NOTIFICATIONS_BEARER_TOKEN\",
+      \"JIRA_API_TOKEN\": \"$JIRA_API_TOKEN\",
+      \"OCP_API_SERVER_TOKEN\": \"$OCP_API_SERVER_TOKEN\",
+      \"BACKSTAGE_NOTIFICATIONS_URL\": \"$BACKSTAGE_NOTIFICATIONS_URL\",
+      \"JIRA_URL\": \"$JIRA_URL\",
+      \"JIRA_USERNAME\": \"$JIRA_USERNAME\",
+      \"OCP_API_SERVER_URL\": \"$OCP_API_SERVER_URL\",
+      \"OCP_CONSOLE_URL\": \"$OCP_CONSOLE_URL\"
+    }
   }"
 ```
 
@@ -120,7 +120,6 @@ oc -n $TARGET_NS patch secret "$WORKFLOW_NAME-creds" \
 Once the Secret is updated, the Sonataflow CR for the workflow must be updated
 to use the values. Use the following patch command to update the CR. This will
 restart the Pod:
-
 
 ```bash
 export TARGET_NS='sonataflow-infra'
