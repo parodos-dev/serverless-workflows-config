@@ -110,7 +110,7 @@ spec:
         operation: '{ "completedWith":"success", "message": "MTA v7.x analysis completed for " + .repositoryURL, "outputs":[ { "key":"MTA Analysis Result URL", "value": $SECRET.mta.url + "/hub/applications/" + (.application.id|tostring) + "/analysis/report", "format":"link" }, { "key":"Migration Wave Ticket URL", "value": (if .migrationWaveJiraTicket != null then .migrationWaveJiraTicket.link else "" end), "format":"link" } ], "nextWorkflows":[ { "id":"m2k", "name":"Move2Kube workflow" } ] }'
         type: expression
       - name: mandatoriesIncidentsResult
-        operation: '{ "completedWith": "error", "message": "MTA analysis for " + .application.repository.url + " completed with " + (.application.mandatoriesIncidents|tostring) + " incidents in mandatory issues. Check the analysis report." + (if .migrationWaveJiraTicket != null then " Application was exported to issue manager." else "" end), "outputs": [ { "key":"MTA Analysis Result URL", "value": ($SECRET.mta.url + "/hub/applications/" + (.application.id|tostring) + "/analysis/report"), "format": "link" }, { "key":"Migration Wave Ticket URL", "value": (if .migrationWaveJiraTicket != null then .migrationWaveJiraTicket.link else "" end), "format": "link" } ] }'
+        operation: '{ "completedWith": "warning", "message": "MTA analysis for " + .application.repository.url + " completed with " + (.application.mandatoriesIncidents|tostring) + " incidents in mandatory issues that need to be fixed before being able to provide any next possible workflow. Check the analysis report." + (if .migrationWaveJiraTicket != null then " Application was exported to issue manager." else "" end), "outputs": [ { "key":"MTA Analysis Result URL", "value": ($SECRET.mta.url + "/hub/applications/" + (.application.id|tostring) + "/analysis/report"), "format": "link" }, { "key":"Migration Wave Ticket URL", "value": (if .migrationWaveJiraTicket != null then .migrationWaveJiraTicket.link else "" end), "format": "link" } ] }'
         type: expression
       - name: errorResult
         operation: '{ "completedWith":"error", "message": "MTA analysis for " + .application.repository.url + " failed: " + .exitMessage + ". Check logs of task pod: " + .taskgroup.tasks[0].pod }'
@@ -684,7 +684,7 @@ spec:
   podTemplate:
     container:
       resources: {}
-      image: quay.io/orchestrator/serverless-workflow-mta-v7.x:d9592d502eb3e0b9858ed9f43fd0fbca8f1cf4a8
+      image: quay.io/orchestrator/serverless-workflow-mta-v7.x:d397bb500bba6d0a7503f90d55db285d89eaf898
       envFrom:
         - secretRef:
             name: mta-analysis-v7-creds
