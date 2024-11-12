@@ -32,8 +32,8 @@ spec:
       - name: createNotification
         operation: notifications#createNotification
         type: rest
-      - name: createProjectOpenshiftIoV1Project
-        operation: specs/ocp-project-openapi.yaml#createProjectOpenshiftIoV1Project
+      - name: createProjectRequestOpenshiftIoV1Project
+        operation: specs/ocp-project-openapi.yaml#createProjectRequestOpenshiftIoV1Project
         type: rest
       - name: readProjectOpenshiftIoV1Project
         operation: specs/ocp-project-openapi.yaml#readProjectOpenshiftIoV1Project
@@ -42,13 +42,13 @@ spec:
         operation: sysout
         type: custom
       - name: successResult
-        operation: '{ "completedWith":"success", "message": "Project " + .projectName + " active", "outputs":[] }'
+        operation: '{ "result": { "completedWith":"success", "message": "Project " + .projectName + " active", "outputs":[] } }'
         type: expression
       - name: errorProjectNotActiveResult
-        operation: '{ "completedWith":"error", "message": "Project " + .projectName + " not active" }'
+        operation: '{ "result": { "completedWith":"error", "message": "Project " + .projectName + " not active" } }'
         type: expression
       - name: errorAuthorizationDeniedResult
-        operation: '{ "completedWith":"error", "message": "Creation of project " + .projectName + " denied", "outputs":[ { "key":"Jira issue", "value": $SECRET.jira_url + "/jira/servicedesk/projects/" + .operationsProjectKey + "/issues/" + .operationsJiraCreateIssueResult.key, "format":"link" }] }'
+        operation: '{ "result": { "completedWith":"error", "message": "Creation of project " + .projectName + " denied", "outputs":[ { "key":"Jira issue", "value": $SECRET.jira_url + "/jira/servicedesk/projects/" + .operationsProjectKey + "/issues/" + .operationsJiraCreateIssueResult.key, "format":"link" }] } }'
         type: expression
     start:
       stateName: '[Audit]: workflow started'
@@ -160,7 +160,7 @@ spec:
               useResults: true
             functionRef:
               arguments:
-                kind: Project
+                kind: ProjectRequest
                 metadata:
                   labels:
                     kubernetes.io/metadata.name: .projectName
@@ -169,7 +169,7 @@ spec:
                   finalizers:
                     - kubernetes
               invoke: sync
-              refName: createProjectOpenshiftIoV1Project
+              refName: createProjectRequestOpenshiftIoV1Project
             name: Create OCP Project
         name: Create Project
         transition:
@@ -325,7 +325,7 @@ spec:
   podTemplate:
     container:
       resources: {}
-      image: quay.io/orchestrator/serverless-workflow-create-ocp-project:be3e8e3c8099f475b29a7c67b61c6cb604f8b66c
+      image: quay.io/orchestrator/serverless-workflow-create-ocp-project:73b41829627209eb6a724eef0d7720ef1f3cc26e
       envFrom:
         - secretRef:
             name: create-ocp-project-creds
