@@ -20,7 +20,7 @@ spec:
     spec:
       containers:
       - name: rpj-proxy
-        image: quay.io/orchestrator/rpj-proxy:latest
+        image: quay.io/orchestrator/rpj-proxy:9dfe4aca
         ports:
         - containerPort: 8080
         envFrom:
