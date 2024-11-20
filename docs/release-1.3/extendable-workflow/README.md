@@ -25,10 +25,14 @@ A `secret` containing the instance credentials must exists as well.
 See https://www.parodos.dev/orchestrator-helm-chart/postgresql on how to install a PostgreSQL instance. Please follow the section detailing how to install using helm. In this document, a `secret` holding the credentials is created.
 
 ## Prerequisites 
-Set `TARGET_NS` to the target namespace:
+* Set `TARGET_NS` to the target namespace:
 ```console
 TARGET_NS=sonataflow-infra
 ```
+
+* The custom UI widget must be installed:
+  * [Custom form plugin](https://github.com/parodos-dev/custom-form-example-plugin/tree/1.3)
+For more informatiion about how to install the plugin, please [check the documentation](https://github.com/parodos-dev/custom-form-example-plugin/tree/1.3?tab=readme-ov-file#1-install-the-example-workflow)
 ## Installing helm chart 
 
 ```console
