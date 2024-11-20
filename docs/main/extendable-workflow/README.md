@@ -4,8 +4,9 @@ extendable-workflow
 
 A Helm chart for the extendable-workflow serverless workflow
 
-The extendable-workflow workflow is a basic workflow without any external dependencies.
-Its purpose is to demonstrate functionality of the workflows system.
+The **Extendable Workflow** is a simple, dependency-free workflow designed to showcase the customization capabilities of the orchestrator's workflow execution form. Its input schema includes two custom properties: `CountryWidget` and `LanguageWidget`, which require custom plugins to load.
+
+This workflow is intended to be used alongside the [Custom Form Example Plugin](https://github.com/parodos-dev/custom-form-example-plugin/tree/main), which contains these custom widgets and additional validation features.
 
 # Helm Configuration
 
@@ -30,9 +31,6 @@ See https://www.parodos.dev/orchestrator-helm-chart/postgresql on how to install
 TARGET_NS=sonataflow-infra
 ```
 
-* The custom UI widget must be installed:
-  * [Custom form plugin](https://github.com/parodos-dev/custom-form-example-plugin)
-For more informatiion about how to install the plugin, please [check the documentation](https://github.com/parodos-dev/custom-form-example-plugin/tree/main?tab=readme-ov-file#1-install-the-example-workflow)
 ## Installing helm chart 
 
 ```console
