@@ -25,68 +25,23 @@ jobs:
           # Needs to knative events resources in this namespace as the broker url is hard coded at the moment
           kubectl create ns sonataflow-infra
 
-      - name: Deploy kafka cluster
+      - name: Create in-memory broker
         run: |
-          kubectl create namespace kafka
-          kubectl create -f 'https://strimzi.io/install/latest?namespace=kafka' -n kafka
-          kubectl apply -f https://strimzi.io/examples/latest/kafka/kraft/kafka-single-node.yaml -n kafka 
-          kubectl wait kafka/my-cluster --for=condition=Ready --timeout=300s -n kafka 
+          echo "apiVersion: eventing.knative.dev/v1
+          kind: Broker
+          metadata:
+            name: broker" > kubectl apply -f -
 
       - name: Deploy sonataflow-operator
         run: |
           helm repo add orchestrator https://parodos-dev.github.io/orchestrator-helm-chart
-          helm install orchestrator orchestrator/orchestrator-k8s --set platform.eventing.broker.name=""
+          helm install orchestrator orchestrator/orchestrator-k8s --set platform.eventing.broker.name="broker"
 
 
           kubectl get sfp -A
           kubectl wait --for=condition=Ready=true pods -l "app.kubernetes.io/name=backstage" --timeout=10m
           kubectl get pods -o wide
           kubectl wait --for=condition=Ready=true pods -l "app=sonataflow-platform" --timeout=180s
-
-      - name: Install knative components for kafka
-        run: |
-          kubectl apply --filename https://github.com/knative-extensions/eventing-kafka-broker/releases/download/knative-v1.14.5/eventing-kafka-controller.yaml
-          kubectl apply --filename https://github.com/knative-extensions/eventing-kafka-broker/releases/download/knative-v1.14.5/eventing-kafka-broker.yaml
-          kubectl patch cm kafka-broker-config -n knative-eventing \
-          --type merge \
-          -p '
-          {
-            "data": {
-              "default.topic.replication.factor": "1"
-            }
-          }'
-          kubectl wait --for condition=ready=true pod -l app=kafka-broker-receiver -n knative-eventing --timeout=60s
-          
-          echo "apiVersion: eventing.knative.dev/v1
-          kind: Broker
-          metadata:
-            annotations:
-              # case-sensitive
-              eventing.knative.dev/broker.class: Kafka
-            name: kafka-broker
-          spec:
-            config:
-              apiVersion: v1
-              kind: ConfigMap
-              name: kafka-broker-config
-              namespace: knative-eventing" | kubectl apply -f -
-          
-          kubectl -n orchestrator patch orchestrators.rhdh.redhat.com orchestrator-sample --type merge \
-            -p '
-          {
-            "spec": {
-              "orchestrator": {
-                "sonataflowPlatform": {
-                  "eventing": {
-                    "broker": {
-                      "name": "kafka-broker",
-                      "namespace": "default"
-                    }
-                  }
-                }
-              }
-            }
-          }'
 
       - name: Deploy Move2kube serverless workflow and its components
         env:
@@ -117,7 +72,7 @@ jobs:
             }
           )" charts/move2kube/templates/0?-sonataflow_m2k.yaml
 
-          K8S_INSTALL=1 M2K_HELM_REPO=charts/move2kube/. PRIV_ID_RSA_PATH=id_rsa PUB_ID_RSA_PATH=id_rsa.pub M2K_HELM_REPO=charts/move2kube/ TARGET_NS=default ./docs/main/move2kube/install_m2k.sh
+          K8S_INSTALL=1 BROKER_NAME=broker M2K_HELM_REPO=charts/move2kube/. PRIV_ID_RSA_PATH=id_rsa PUB_ID_RSA_PATH=id_rsa.pub M2K_HELM_REPO=charts/move2kube/ TARGET_NS=default ./docs/main/move2kube/install_m2k.sh
 
       - name: Run e2e script
         run: |
