@@ -25,6 +25,13 @@ jobs:
           # Needs to knative events resources in this namespace as the broker url is hard coded at the moment
           kubectl create ns sonataflow-infra
 
+      - name: Create in-memory broker
+        run: |
+          echo "apiVersion: eventing.knative.dev/v1
+          kind: Broker
+          metadata:
+            name: broker" > kubectl apply -f -
+
       - name: Deploy sonataflow-operator
         run: |
           helm repo add orchestrator https://parodos-dev.github.io/orchestrator-helm-chart
