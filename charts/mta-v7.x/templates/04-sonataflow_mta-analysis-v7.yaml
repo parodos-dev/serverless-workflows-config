@@ -89,22 +89,22 @@ spec:
         operation: .applicationAnalysis | [select (.issues[].category!="mandatory")][0] | [.issues[]?.incidents //[]] | .[-1][-1].id
         type: expression
       - name: TaskFailedErrorExitMessage
-        operation: '{ exitMessage: "The 1st task of the taskGroup " + .taskgroup.id + " is in failed state" }'
+        operation: '{ exitMessage: "The 1st task of the taskGroup " + (.taskgroup.id|tostring) + " is in failed state" }'
         type: expression
       - name: TrackersDoesNotExistErrorExitMessage
         operation: '{ exitMessage: "There are no trackers configured in MTA, cannot export to the issue manager" }'
         type: expression
       - name: TrackerDoesNotExistErrorExitMessage
-        operation: '{ exitMessage: "The tracker with the id " + .trackers[0].id + " does not exist, cannot export to the issue manager" }'
+        operation: '{ exitMessage: "The tracker with the id " + (.trackers[0].id|tostring) + " does not exist, cannot export to the issue manager" }'
         type: expression
       - name: TrackerProjectsDoesNotExistErrorExitMessage
-        operation: '{ exitMessage: "There are no trackerProjects associated with the tracker with the id " + .tracker.id + ", cannot export to the issue manager" }'
+        operation: '{ exitMessage: "There are no trackerProjects associated with the tracker with the id " + (.tracker.id|tostring) + ", cannot export to the issue manager" }'
         type: expression
       - name: TrackerProjectDoesNotExistErrorExitMessage
-        operation: '{ exitMessage: "The trackerProject with the id " + .trackerProjects[0].id + " of the tracker with the id " + .tracker.id + " does not exist, cannot export to the issue manager" }'
+        operation: '{ exitMessage: "The trackerProject with the id " + (.trackerProjects[0].id|tostring) + " of the tracker with the id " + (.tracker.id|tostring) + " does not exist, cannot export to the issue manager" }'
         type: expression
       - name: TrackerProjectIssueTypesDoesNotExistErrorExitMessage
-        operation: '{ exitMessage: "There are no trackerProjectIssueTypes in the trackerProject with the id " + .trackerProject.id + " of the tracker with the id "+ .tracker.id +" does not exist, cannot export to the issue manager" }'
+        operation: '{ exitMessage: "There are no trackerProjectIssueTypes in the trackerProject with the id " + (.trackerProject.id|tostring) + " of the tracker with the id "+ (.tracker.id|tostring) +", cannot export to the issue manager" }'
         type: expression
       - name: successResult
         operation: '{ "completedWith":"success", "message": "MTA v7.x analysis completed for " + .repositoryURL, "outputs":[ { "key":"MTA Analysis Result URL", "value": $SECRET.mta.url + "/hub/applications/" + (.application.id|tostring) + "/analysis/report", "format":"link" }, { "key":"Migration Wave Ticket URL", "value": (if .migrationWaveJiraTicket != null then .migrationWaveJiraTicket.link else "" end), "format":"link" } ], "nextWorkflows":[ { "id":"m2k", "name":"Move2Kube workflow" } ] }'
@@ -684,7 +684,7 @@ spec:
   podTemplate:
     container:
       resources: {}
-      image: quay.io/orchestrator/serverless-workflow-mta-v7.x:d397bb500bba6d0a7503f90d55db285d89eaf898
+      image: quay.io/orchestrator/serverless-workflow-mta-v7.x:4a014be03d06f0c16229325596ce9e3c79f20a60
       envFrom:
         - secretRef:
             name: mta-analysis-v7-creds
