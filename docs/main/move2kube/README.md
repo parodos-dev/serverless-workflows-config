@@ -26,7 +26,7 @@ The following table lists the configurable parameters of the Move2kube chart and
 | `instance.image` | image of the move2kube instance | `"quay.io/orchestrator/move2kube-ui:latest"` |
 
 ## Workflow application configuration
-Please refer to [the workflow README](https://github.com/parodos-dev/serverless-workflows/blob/main/move2kube/README.md#workflow-application-configuration)
+Please refer to [the workflow README](https://github.com/parodos-dev/serverless-workflows/blob/main/workflows/move2kube/README.md#workflow-application-configuration)
 
 ## Persistence pre-requisites
 If persistence is enabled, you must have a PostgreSQL instance running in the cluster, in the same `namespace` as the workflows.

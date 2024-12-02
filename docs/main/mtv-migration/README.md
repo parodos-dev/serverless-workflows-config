@@ -14,7 +14,7 @@ The following table lists the configurable parameters of the MTV Migration chart
 |                          |                         |                |
 
 ## Workflow application configuration
-Please refer to [the workflow README](https://github.com/parodos-dev/serverless-workflows/blob/main/mtv-migration/README.md#workflow-application-configuration)
+Please refer to [the workflow README](https://github.com/parodos-dev/serverless-workflows/blob/main/workflows/mtv-migration/README.md#workflow-application-configuration)
 
 # Pre-installation configuration
 Set `TARGET_NS` to the target namespace:

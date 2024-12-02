@@ -14,7 +14,7 @@ The following table lists the configurable parameters of the Create OCP project 
 |                          |                         |                |
 
 ## Workflow application configuration
-Please refer to [the workflow README](https://github.com/parodos-dev/serverless-workflows/blob/main/mtv-plan/README.md#workflow-application-configuration)
+Please refer to [the workflow README](https://github.com/parodos-dev/serverless-workflows/blob/main/workflows/mtv-plan/README.md#workflow-application-configuration)
 
 # Pre-installation Configuration
 Set `TARGET_NS` to the target namespace:

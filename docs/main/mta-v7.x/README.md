@@ -20,7 +20,7 @@ The following table lists the configurable parameters of the Mta chart and their
 **Note**: The *MTA* workflow type functions as an assessment tool, evaluating the provided code repository and suggesting the next workflow to execute for that repository. Currently, there is a correlation between the *MTA* and *Move2Kube* workflow, where *Move2Kube* is recommended by the *MTA*. Consequently, it is necessary to install both to leverage their benefits fully.
 
 ## Workflow application configuration
-Please refer to [the workflow README](https://github.com/parodos-dev/serverless-workflows/blob/main/mta-v7.x/README.md#workflow-application-configuration)
+Please refer to [the workflow README](https://github.com/parodos-dev/serverless-workflows/blob/main/workflows/mta-v7.x/README.md#workflow-application-configuration)
 
 ## Persistence pre-requisites
 If persistence is enabled, you must have a PostgreSQL instance running in the cluster, in the same `namespace` as the workflows.
