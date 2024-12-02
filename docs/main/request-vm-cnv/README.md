@@ -15,7 +15,7 @@ The following table lists the configurable parameters of the Request VM using CN
 
 
 ## Workflow application configuration
-Please refer to [the workflow README](https://github.com/parodos-dev/serverless-workflows/blob/main/request-vm-cnv/README.md#workflow-application-configuration)
+Please refer to [the workflow README](https://github.com/parodos-dev/serverless-workflows/blob/main/workflows/request-vm-cnv/README.md#workflow-application-configuration)
 
 # Pre-installation Configuration
 Set `TARGET_NS` to the target namespace:
