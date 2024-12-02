@@ -303,7 +303,7 @@ spec:
   podTemplate:
     container:
       resources: {}
-      image: quay.io/orchestrator/serverless-workflow-move2kube:9f2dacdeafbce2a3087ce99505a9bba40b3d222a
+      image: quay.io/orchestrator/serverless-workflow-workflows/move2kube:04a51b7e92f839630b357319112adc23b262bcf2
       envFrom:
         - secretRef:
             name: m2k-creds
@@ -325,7 +325,7 @@ spec:
         name: sonataflow-psql-postgresql
         port: 5432
         databaseName: sonataflow
-        databaseSchema: move2kube
+        databaseSchema: workflows/move2kube
 status:
   address: {}
   lastTimeRecoverAttempt: null
