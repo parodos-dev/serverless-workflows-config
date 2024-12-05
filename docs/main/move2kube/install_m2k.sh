@@ -1,11 +1,5 @@
 #!/bin/bash
-CLUSTER_CLIENT=$(which oc >/dev/null 2>&1 && echo oc || echo kubectl)
-
-if [[ "${CLUSTER_CLIENT}" == "oc" ]]; then
-  echo "Deploying on OCP cluster"
-else
-  echo "Deploying on k8s cluster"
-fi
+CLUSTER_CLIENT=oc
 
 if [[ -z "${PRIV_ID_RSA_PATH}" ]]; then
   echo 'PRIV_ID_RSA_PATH env variable must be set to the path of the private id_rsa file to use. I.e: ${HOME}/.ssh/id_rsa'
@@ -24,6 +18,7 @@ fi
 
 if [[ ! -z "${K8S_INSTALL}" ]]; then
   echo "Running on k8s, adapting the script"
+  CLUSTER_CLIENT=kubectl
 fi
 
 if [[ -z "${M2K_HELM_REPO}" ]]; then

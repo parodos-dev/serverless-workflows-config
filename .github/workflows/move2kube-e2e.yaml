@@ -28,7 +28,8 @@ jobs:
       - name: Deploy sonataflow-operator
         run: |
           helm repo add orchestrator https://parodos-dev.github.io/orchestrator-helm-chart
-          helm install orchestrator orchestrator/orchestrator-k8s
+          helm install orchestrator orchestrator/orchestrator-k8s --set platform.eventing.broker.name=""
+
 
           kubectl get sfp -A
           kubectl wait --for=condition=Ready=true pods -l "app.kubernetes.io/name=backstage" --timeout=10m
@@ -64,7 +65,7 @@ jobs:
             }
           )" charts/move2kube/templates/0?-sonataflow_m2k.yaml
 
-          K8S_INSTALL=1 PRIV_ID_RSA_PATH=id_rsa PUB_ID_RSA_PATH=id_rsa.pub M2K_HELM_REPO=charts/move2kube/ TARGET_NS=default ./docs/main/move2kube/install_m2k.sh
+          K8S_INSTALL=1 M2K_HELM_REPO=charts/move2kube/. PRIV_ID_RSA_PATH=id_rsa PUB_ID_RSA_PATH=id_rsa.pub M2K_HELM_REPO=charts/move2kube/ TARGET_NS=default ./docs/main/move2kube/install_m2k.sh
 
       - name: Run e2e script
         run: |
