@@ -8,6 +8,8 @@ data:
     quarkus.log.category."org.apache.http".level=INFO
     quarkus.log.level=INFO
     quarkus.flyway.migrate-at-start=true
+
+    quarkus.flyway.migrate-at-start=true
 kind: ConfigMap
 metadata:
   creationTimestamp: null
