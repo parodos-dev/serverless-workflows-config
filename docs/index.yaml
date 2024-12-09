@@ -257,6 +257,17 @@ entries:
   extendable-workflow:
   - apiVersion: v2
     appVersion: 1.16.0
+    created: "2024-12-09T10:59:26.51696955Z"
+    description: A Helm chart for the extendable-workflow serverless workflow
+    digest: 7add46d303be2fa7f4122c1e5b67ccbf4d2427074dea0a296fd851a4121bbb8c
+    icon: https://raw.githubusercontent.com/parodos-dev/parodos-dev.github.io/main/assets/images/WO_black.svg
+    name: extendable-workflow
+    type: application
+    urls:
+    - https://github.com/parodos-dev/serverless-workflows-config/releases/download/extendable-workflow-1.3.0-rc8/extendable-workflow-1.3.0-rc8.tgz
+    version: 1.3.0-rc8
+  - apiVersion: v2
+    appVersion: 1.16.0
     created: "2024-12-05T15:26:25.112168604Z"
     description: A Helm chart for the extendable-workflow serverless workflow
     digest: c21528030092324120177c5f749ca0c7ca533161f5401e7812dcb1c8724909d0
@@ -3561,4 +3572,4 @@ entries:
     urls:
     - https://github.com/rgolangh/serverless-workflows-config/releases/download/workflows-0.1.0/workflows-0.1.0.tgz
     version: 0.1.0
-generated: "2024-12-09T10:59:17.698310047Z"
+generated: "2024-12-09T10:59:26.517823753Z"
