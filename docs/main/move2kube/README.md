@@ -59,6 +59,11 @@ Set `M2K_INSTANCE_NS` to the namespace hosting the move2kube instance:
 M2K_INSTANCE_NS=move2kube
 ```
 
+Set `BROKER_NAME` to the name of the broker. It shall be in the same namespace as the workflow, e.g: `TARGET_NS`:
+```console
+BROKER_NAME=kafka-broker
+```
+
 #### For Knative
 We need to use `initContainers` and `securityContext` in our Knative services to allow SSH key exchange in move2kube workflow, we have to tell Knative to enable that feature:
 ```bash
@@ -69,12 +74,13 @@ We need to use `initContainers` and `securityContext` in our Knative services to
 
 ```
 #### For move2kube instance
-Also, `move2kube` instance runs as root so we need to allow the `default` service account to use `runAsUser`:
+1. `move2kube` instance runs as root so we need to allow the `default` service account to use `runAsUser`:
+To know which scc is to be set to the default service account and apply it, run:
 ```console
-oc -n ${TARGET_NS} adm policy add-scc-to-user anyuid -z default
+oc -n ${TARGET_NS} adm policy add-scc-to-user $(oc -n ${TARGET_NS} get deployments m2k-save-transformation-func-v1-deployment -oyaml | oc adm policy scc-subject-review --no-headers  -o yaml --filename - | yq -r .status.allowedBy.name) -z default
 ```
 
-Create the secret that holds the ssh keys:
+2. Create the secret that holds the ssh keys:
 ```console
 oc -n ${TARGET_NS} create secret generic sshkeys --from-file=id_rsa=${HOME}/.ssh/id_rsa --from-file=id_rsa.pub=${HOME}/.ssh/id_rsa.pub
 ```
@@ -86,14 +92,15 @@ If you do not have ssh keys, you can generate them with `ssh-keygen` command. Yo
 
 Note that those ssh keys need to be added to your git repository as well. For bitbucket, it should be on the [account level](https://bitbucket.org/account/settings/ssh-keys/)
 
-View the [Move2Kube README](https://github.com/parodos-dev/serverless-workflows-config/blob/main/charts/move2kube/README.md) on GitHub.
+3. As the knative eventing communication is enabled by default, i.e: `eventing` spec is configured in the SonataFlowPlatform, a kafka cluster could be installed along with a broker. You could also use a in-memory broker but bear in mind they are not resilient.
+It is assumed that the broker is installed in the namespace as the workflows.
 
 ### Installation
 
 Run 
 ```console
 helm repo add orchestrator-workflows https://parodos.dev/serverless-workflows-config
-helm install move2kube orchestrator-workflows/move2kube -n ${TARGET_NS} --set instance.namespace=${M2K_INSTANCE_NS}
+helm install move2kube orchestrator-workflows/move2kube -n ${TARGET_NS} --set instance.namespace=${M2K_INSTANCE_NS} --set brokerName=${BROKER_NAME}
 ```
 
 ### Post-installation
@@ -117,7 +124,7 @@ Run the following command or follow the steps prompted at the end of the workflo
 ```console
 M2K_ROUTE=$(oc -n ${M2K_INSTANCE_NS} get routes move2kube-route -o yaml | yq -r .spec.host)
 oc -n ${TARGET_NS} delete ksvc m2k-save-transformation-func &&
-  helm upgrade move2kube orchestrator-workflows/move2kube -n ${TARGET_NS} --set workflow.move2kubeURL=https://${M2K_ROUTE}
+  helm upgrade move2kube orchestrator-workflows/move2kube -n ${TARGET_NS} --set workflow.move2kubeURL=https://${M2K_ROUTE} --set brokerName=${BROKER_NAME}
 ```
 
 #### Edit the `${WORKFLOW_NAME}-creds` Secret
@@ -136,14 +143,14 @@ Note that the modification of the secret does not currently restart the pod, the
 
 Note that when you run the `helm upgrade` command, the values of the secret are reseted.
 
-#### Set `M2K_ROUTE`, `K_SINK` and `BACKSTAGE_NOTIFICATIONS_URL` for the Sonataflow CR
+#### Set `M2K_ROUTE` and `BACKSTAGE_NOTIFICATIONS_URL` for the Sonataflow CR
 
 The value for `BACKSTAGE_NOTIFICATIONS_URL` in the command below is using the current default value, if the name of the backstage deployment or its namespace does not match, please update the value with the correct value from your cluster.
 
-Run the following to set `K_SINK`, `MOVE2KUBE_URL` and `BACKSTAGE_NOTIFICATIONS_URL`environment variable in the workflow:
+Run the following to set `MOVE2KUBE_URL` and `BACKSTAGE_NOTIFICATIONS_URL`environment variable in the workflow:
 ```console
 BACKSTAGE_NOTIFICATIONS_URL=http://backstage-backstage.rhdh-operator
 BROKER_URL=$(oc -n ${TARGET_NS} get broker -o yaml | yq -r .items[0].status.address.url)
-oc -n ${TARGET_NS} patch sonataflow m2k --type merge -p '{"spec": { "podTemplate": { "container": { "env": [{"name": "BACKSTAGE_NOTIFICATIONS_URL",  "value": "'${BACKSTAGE_NOTIFICATIONS_URL}'"},{"name": "K_SINK", "value": "'${BROKER_URL}'"}, {"name": "MOVE2KUBE_URL", "value": "https://'${M2K_ROUTE}'"}]}}}}'
+oc -n ${TARGET_NS} patch sonataflow m2k --type merge -p '{"spec": { "podTemplate": { "container": { "env": [{"name": "BACKSTAGE_NOTIFICATIONS_URL",  "value": "'${BACKSTAGE_NOTIFICATIONS_URL}'"},{"name": "MOVE2KUBE_URL", "value": "https://'${M2K_ROUTE}'"}]}}}}'
 ```
 

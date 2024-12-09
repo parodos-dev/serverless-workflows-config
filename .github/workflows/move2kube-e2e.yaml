@@ -25,10 +25,17 @@ jobs:
           # Needs to knative events resources in this namespace as the broker url is hard coded at the moment
           kubectl create ns sonataflow-infra
 
+      - name: Create in-memory broker
+        run: |
+          echo "apiVersion: eventing.knative.dev/v1
+          kind: Broker
+          metadata:
+            name: broker" > kubectl apply -f -
+
       - name: Deploy sonataflow-operator
         run: |
           helm repo add orchestrator https://parodos-dev.github.io/orchestrator-helm-chart
-          helm install orchestrator orchestrator/orchestrator-k8s --set platform.eventing.broker.name=""
+          helm install orchestrator orchestrator/orchestrator-k8s --set platform.eventing.broker.name="broker"
 
 
           kubectl get sfp -A
@@ -65,7 +72,7 @@ jobs:
             }
           )" charts/move2kube/templates/0?-sonataflow_m2k.yaml
 
-          K8S_INSTALL=1 M2K_HELM_REPO=charts/move2kube/. PRIV_ID_RSA_PATH=id_rsa PUB_ID_RSA_PATH=id_rsa.pub M2K_HELM_REPO=charts/move2kube/ TARGET_NS=default ./docs/main/move2kube/install_m2k.sh
+          K8S_INSTALL=1 BROKER_NAME=broker M2K_HELM_REPO=charts/move2kube/. PRIV_ID_RSA_PATH=id_rsa PUB_ID_RSA_PATH=id_rsa.pub M2K_HELM_REPO=charts/move2kube/ TARGET_NS=default ./docs/main/move2kube/install_m2k.sh
 
       - name: Run e2e script
         run: |
