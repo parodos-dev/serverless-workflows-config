@@ -15,7 +15,7 @@ The following table lists the configurable parameters of the Mta chart and their
 | `mta.url` |  | `"http://mta-ui.openshift-mta.svc.cluster.local:8080"` |
 
 ## Workflow application configuration
-Please refer to [the workflow README](https://github.com/parodos-dev/serverless-workflows/blob/v1.2.x/mta/README.md#workflow-application-configuration)
+Please refer to [the workflow README](https://github.com/rhdhorchestrator/serverless-workflows/blob/v1.2.x/mta/README.md#workflow-application-configuration)
 
 # Installation
 # Pre-installation Configuration
@@ -28,7 +28,7 @@ TARGET_NS=sonataflow-infra
 The MTA workflow has persistence enabled, you must have a PostgreSQL instance running in the cluster, in the same `namespace` as the workflows.
 A `secret` containing the instance credentials must exist as well. 
 
-See [this](https://www.parodos.dev/orchestrator-helm-chart/postgresql) on how to install a PostgreSQL instance. Please follow the section detailing how to install using Helm. In this document, a `secret` holding the credentials is created.
+See [this](https://www.rhdhorchestrator.io/orchestrator-helm-chart/postgresql) on how to install a PostgreSQL instance. Please follow the section detailing how to install using Helm. In this document, a `secret` holding the credentials is created.
 
 ## Installing helm chart 
 From `charts` folder run 
@@ -37,12 +37,12 @@ helm install mta workflows/mta -n sonataflow-infra
 ```
 
 ## Configuration
-View the [MTA README on GitHub](https://github.com/parodos-dev/serverless-workflows-config/blob/main/charts/mta/README.md)
+View the [MTA README on GitHub](https://github.com/rhdhorchestrator/serverless-workflows-config/blob/main/charts/mta/README.md)
 
 ## Installation
 - Run 
 ```console
-helm repo add orchestrator-workflows https://parodos.dev/serverless-workflows-config
+helm repo add orchestrator-workflows https://rhdhorchestrator.io/serverless-workflows-config
 helm install mta orchestrator-workflows/mta -n sonataflow-infra
 ```
 

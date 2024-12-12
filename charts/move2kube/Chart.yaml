@@ -23,6 +23,6 @@ version: 1.3.0-rc16
 # It is recommended to use it with quotes.
 appVersion: "1.16.0"
 
-# This is an icon to Parodos project. In the future we might design a dedicated logo for the Orchestrator.
-# However, since the entire development is done under the Parodos organization, we'll use it.
-icon: https://raw.githubusercontent.com/parodos-dev/parodos-dev.github.io/main/assets/images/WO_black.svg
+# This is an icon to RHDH Orchestrator project. In the future we might design a dedicated logo for the Orchestrator.
+# However, since the entire development is done under the RHDH Orchestrator organization, we'll use it.
+icon: https://raw.githubusercontent.com/rhdhorchestrator/rhdhorchestrator.github.io/main/assets/images/WO_black.svg

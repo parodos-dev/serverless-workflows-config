@@ -13,7 +13,7 @@ fi
 if [[ -z "${M2K_HELM_REPO}" ]]; then
   M2K_HELM_REPO=orchestrator-workflows/move2kube
   echo "M2K_HELM_REPO not set, using default helm m2k helm repository ${M2K_HELM_REPO}"
-  helm repo add orchestrator-workflows https://parodos.dev/serverless-workflows-config
+  helm repo add orchestrator-workflows https://rhdhorchestrator.io/serverless-workflows-config
 fi
 
 TARGET_NS=sonataflow-infra
