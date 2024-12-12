@@ -33,7 +33,7 @@ If persistence is enabled, you must have a PostgreSQL instance running in the cl
 
 A `secret` containing the instance credentials must exists as well. 
 
-See https://www.rhdhorchestrator.io/orchestrator-helm-chart/postgresql on how to install a PostgreSQL instance. Please follow the section detailing how to install using helm. In this document, a `secret` holding the credentials is created.
+See https://www.rhdhorchestrator.io/orchestrator-helm-operator/postgresql on how to install a PostgreSQL instance. Please follow the section detailing how to install using helm. In this document, a `secret` holding the credentials is created.
 
 
 ## Automated installation
