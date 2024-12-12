@@ -20,14 +20,14 @@ The following table lists the configurable parameters of the Mta chart and their
 **Note**: The *MTA* workflow type functions as an assessment tool, evaluating the provided code repository and suggesting the next workflow to execute for that repository. Currently, there is a correlation between the *MTA* and *Move2Kube* workflow, where *Move2Kube* is recommended by the *MTA*. Consequently, it is necessary to install both to leverage their benefits fully.
 
 ## Workflow application configuration
-Please refer to [the workflow README](https://github.com/parodos-dev/serverless-workflows/blob/v1.2.x/mta-v7.x/README.md#workflow-application-configuration)
+Please refer to [the workflow README](https://github.com/rhdhorchestrator/serverless-workflows/blob/v1.2.x/mta-v7.x/README.md#workflow-application-configuration)
 
 ## Persistence pre-requisites
 If persistence is enabled, you must have a PostgreSQL instance running in the cluster, in the same `namespace` as the workflows.
 
 A `secret` containing the instance credentials must exists as well. 
 
-See https://www.parodos.dev/orchestrator-helm-chart/postgresql on how to install a PostgreSQL instance. Please follow the section detailing how to install using helm. In this document, a `secret` holding the credentials is created.
+See https://www.rhdhorchestrator.io/orchestrator-helm-chart/postgresql on how to install a PostgreSQL instance. Please follow the section detailing how to install using helm. In this document, a `secret` holding the credentials is created.
 
 
 ## Automated installation
@@ -35,7 +35,7 @@ Run the [installation script](install-mta-v7.sh):
 ```console
 ./install-mta-v7.sh
 ```
-You can override the helm repo to use by setting `MTA_HELM_REPO`. By default `orchestrator-workflows/mta-v7` is used and the helm repository `orchestrator-workflows` is installed from `https://parodos.dev/serverless-workflows-config`
+You can override the helm repo to use by setting `MTA_HELM_REPO`. By default `orchestrator-workflows/mta-v7` is used and the helm repository `orchestrator-workflows` is installed from `https://rhdhorchestrator.io/serverless-workflows-config`
 
 To use the local file, set `MTA_HELM_REPO` to `.`:
 ```console
@@ -53,7 +53,7 @@ TARGET_NS=sonataflow-infra
 ### Installation
 - Run 
 ```console
-helm repo add orchestrator-workflows https://parodos.dev/serverless-workflows-config
+helm repo add orchestrator-workflows https://rhdhorchestrator.io/serverless-workflows-config
 helm install mta orchestrator-workflows/mta-v7 -n ${TARGET_NS}
 ```
 

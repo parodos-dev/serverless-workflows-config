@@ -22,7 +22,7 @@ If persistence is enabled, you must have a PostgreSQL instance running in the cl
 
 A `secret` containing the instance credentials must exists as well. 
 
-See https://www.parodos.dev/orchestrator-helm-chart/postgresql on how to install a PostgreSQL instance. Please follow the section detailing how to install using helm. In this document, a `secret` holding the credentials is created.
+See https://www.rhdhorchestrator.io/orchestrator-helm-chart/postgresql on how to install a PostgreSQL instance. Please follow the section detailing how to install using helm. In this document, a `secret` holding the credentials is created.
 
 ## Prerequisites 
 Set `TARGET_NS` to the target namespace:
@@ -32,7 +32,7 @@ TARGET_NS=sonataflow-infra
 ## Installing helm chart 
 
 ```console
-helm repo add orchestrator-workflows https://parodos.dev/serverless-workflows-config
+helm repo add orchestrator-workflows https://rhdhorchestrator.io/serverless-workflows-config
 helm install greeting orchestrator-workflows/greeting -n ${TARGET_NS}
 ```
 

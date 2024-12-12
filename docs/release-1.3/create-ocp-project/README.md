@@ -15,13 +15,13 @@ The following table lists the configurable parameters of the Create OCP project 
 
 ## Workflow application configuration
 
-Please refer to [the workflow README](https://github.com/parodos-dev/serverless-workflows/blob/v1.3.x/create-ocp-project/README.md#workflow-application-configuration)
+Please refer to [the workflow README](https://github.com/rhdhorchestrator/serverless-workflows/blob/v1.3.x/create-ocp-project/README.md#workflow-application-configuration)
 
 ## Pre-requisites
 
 If persistence is enabled, you must have a PostgreSQL instance running in the same `namespace` as the workflows. Typically this is the `sonataflow-infra` namespace.
 
-A Secret containing the PostgreSQL credentials must exist as well. See https://www.parodos.dev/orchestrator-helm-chart/postgresql on how to install a PostgreSQL instance. Please follow the section detailing how to install it using Helm - this will create the necessary secret and credentials.
+A Secret containing the PostgreSQL credentials must exist as well. See https://www.rhdhorchestrator.io/orchestrator-helm-chart/postgresql on how to install a PostgreSQL instance. Please follow the section detailing how to install it using Helm - this will create the necessary secret and credentials.
 
 ## Installation Steps
 
@@ -42,7 +42,7 @@ Gather the following values for environment variables before moving on to the ne
 | Environment variable  | Description | Mandatory | Default value |
 |-----------------------|-------------|-----------|---------------|
 | `BACKSTAGE_NOTIFICATIONS_URL`      | The Backstage server URL for notifications, e.g `https://backstage.myhost.com` | ✅ | |
-| `NOTIFICATIONS_BEARER_TOKEN`      | The authorization bearer token to use to send notifications. This can be found in the Backstage configuration under `app.backend.auth.externalAccess` ([example](https://github.com/parodos-dev/orchestrator-helm-operator/blob/main/docs/release-1.3/existing-rhdh.md#app-config-configmap)) | ✅ | |
+| `NOTIFICATIONS_BEARER_TOKEN`      | The authorization bearer token to use to send notifications. This can be found in the Backstage configuration under `app.backend.auth.externalAccess` ([example](https://github.com/rhdhorchestrator/orchestrator-helm-operator/blob/main/docs/release-1.3/existing-rhdh.md#app-config-configmap)) | ✅ | |
 | `JIRA_URL`      | The Jira server URL, e.g `https://your-instance.atlassian.net` | ✅ | |
 | `JIRA_USERNAME`      | The Jira username, e.g `you@company.com` | ✅ | |
 | `JIRA_API_TOKEN`      | The Jira API token associated with the username. If you're using Jira cloud, you can obtain a token [at this link](https://id.atlassian.com/manage-profile/security/api-tokens). | ✅ | |

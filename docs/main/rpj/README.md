@@ -7,7 +7,7 @@ Helm chart to deploy the rpj workflow.
 
 
 ## Helm Configuration
-The list of the overridable values can be found in our [git repository](https://github.com/parodos-dev/serverless-workflows-config/blob/main/charts/rpj/values.yaml)
+The list of the overridable values can be found in our [git repository](https://github.com/rhdhorchestrator/serverless-workflows-config/blob/main/charts/rpj/values.yaml)
 
 The following table lists the configurable parameters of the RPJ chart and their default values.
 
@@ -16,14 +16,14 @@ The following table lists the configurable parameters of the RPJ chart and their
 
 
 ## Workflow application configuration
-Please refer to [the workflow README](https://github.com/parodos-dev/serverless-workflows/blob/main/workflows/rpj/README.md#workflow-application-configuration)
+Please refer to [the workflow README](https://github.com/rhdhorchestrator/serverless-workflows/blob/main/workflows/rpj/README.md#workflow-application-configuration)
 
 ## Persistence pre-requisites
 If persistence is enabled, you must have a PostgreSQL instance running in the cluster, in the same `namespace` as the workflows.
 
 A `secret` containing the instance credentials must exists as well. 
 
-See https://www.parodos.dev/orchestrator-helm-chart/postgresql on how to install a PostgreSQL instance. Please follow the section detailing how to install using helm. In this document, a `secret` holding the credentials is created.
+See https://www.rhdhorchestrator.io/orchestrator-helm-chart/postgresql on how to install a PostgreSQL instance. Please follow the section detailing how to install using helm. In this document, a `secret` holding the credentials is created.
 
 
 ## Automated installation
@@ -31,7 +31,7 @@ Run the [installation script](install_rpj.sh):
 ```console
 RPJ_TARGET_URL=<URL to RPJ or its proxy application> ./install_rpj.sh
 ```
-You can override the helm repo to use by setting `RPJ_HELM_REPO`. By default `orchestrator-workflows/rpj` is used and the helm repository `orchestrator-workflows` is installed from `https://parodos.dev/serverless-workflows-config`
+You can override the helm repo to use by setting `RPJ_HELM_REPO`. By default `orchestrator-workflows/rpj` is used and the helm repository `orchestrator-workflows` is installed from `https://rhdhorchestrator.io/serverless-workflows-config`
 
 To use the local file, set `RPJ_HELM_REPO` to `.`:
 ```console
@@ -47,7 +47,7 @@ TARGET_NS=sonataflow-infra
 ### Installation
 Run 
 ```console
-helm repo add orchestrator-workflows https://parodos.dev/serverless-workflows-config
+helm repo add orchestrator-workflows https://rhdhorchestrator.io/serverless-workflows-config
 helm install rpj orchestrator-workflows/rpj -n ${TARGET_NS}
 ```
 

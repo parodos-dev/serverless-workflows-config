@@ -29,14 +29,14 @@ To install the workflow from sources directly:
 - Clone the project
 - Choose which workflow to install either by editing `values.yaml` or by providing additional flags to install command, e.g. `--set ${workflow-id}.enabled=true`:
 ```
-git clone git@github.com:parodos-dev/serverless-workflows-config.git
+git clone git@github.com:rhdhorchestrator/serverless-workflows-config.git
 cd serverless-workflows-config
 helm install mta charts/mta
 helm install move2kube charts/move2kube
 
 ```
 
-For installing the workflows from the Helm repository, see further installation steps and detailed explanation for each workflow [here](https://github.com/parodos-dev/serverless-workflows-config/tree/gh-pages?tab=readme-ov-file#installation) or [here](https://www.parodos.dev/serverless-workflows-config/).
+For installing the workflows from the Helm repository, see further installation steps and detailed explanation for each workflow [here](https://github.com/rhdhorchestrator/serverless-workflows-config/tree/gh-pages?tab=readme-ov-file#installation) or [here](https://www.rhdhorchestrator.io/serverless-workflows-config/).
 
 # Development
 To generate `values.schema.json`, next to your `values.yaml` file, run: 
