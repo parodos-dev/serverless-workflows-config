@@ -42,7 +42,7 @@ spec:
         operation: '{ "result": { "completedWith":"success", "message": "VM " + .vm_name + " in namespace "+.vm_namespace + " using image "+ .vm_image +" ready and running.", "outputs":[ { "key":"Console URL", "value": $SECRET.cluster_console_url + "/k8s/ns/" + .vm_namespace + "/kubevirt.io~v1~VirtualMachine/" + .vm_name + "/console/standalone", "format":"link" } ] } }'
         type: expression
       - name: errorVMNotRunningResult
-        operation: '{ "result": { "completedWith":"error", "message": "VM " + .vm_name + " in namespace " + .vm_namespace + " using image " + .vm_image +" not ready after " + (.vmStatusRunning|tostring) + " retries: " + .vm.status } }'
+        operation: '{ "result": { "completedWith":"error", "message": "VM " + .vm_name + " in namespace " + .vm_namespace + " using image " + .vm_image +" not ready after " + (.vmStatusRunning|tostring) + " retries: " + (.vm.status|tostring) } }'
         type: expression
       - name: errorAuthorizationDeniedResult
         operation: '{ "result": { "completedWith":"error", "message": "Authorization denied to create VM " + .vm_name + " in namespace "+.vm_namespace + " using image "+ .vm_image, "outputs":[ { "key":"Jira issue", "value": $SECRET.jira_url + "/jira/servicedesk/projects/" + .projectKey + "/issues/" + .jiraCreateIssueResult.key, "format":"link" }] } }'
@@ -346,7 +346,7 @@ spec:
                 functionRef:
                   arguments:
                     payload:
-                      description: '"VM " + .vm_name + " in namespace " + .vm_namespace + " using image " + .vm_image +" not ready after " + (.vmStatusRunningRetries|tostring) + " retries: " + .vm.status'
+                      description: '"VM " + .vm_name + " in namespace " + .vm_namespace + " using image " + .vm_image +" not ready after " + (.vmStatusRunningRetries|tostring) + " retries: " + (.vm.status|tostring)'
                       severity: high
                       title: '"VM " + .vm_name + " in namespace "+.vm_namespace + " not ready"'
                       topic: Request VM on CNV workflow
@@ -417,7 +417,7 @@ spec:
   podTemplate:
     container:
       resources: {}
-      image: quay.io/orchestrator/serverless-workflow-request-vm-cnv:8cc116b6a74f709d5e401226579ca6976b591ec6
+      image: quay.io/orchestrator/serverless-workflow-request-vm-cnv:e69ebe8103c918fa403d3a5f0a676753eca3d87d
       envFrom:
         - secretRef:
             name: request-vm-cnv-creds
