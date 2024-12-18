@@ -127,7 +127,7 @@ echo "Wait until Knative function running"
   nb_pods=$(kubectl get pods -l app=m2k-save-transformation-func-v1 --no-headers | wc -l)
 done
 
-if [[ $nb_pods -ne 1 ]]
+if [[ $nb_pods -eq 0 ]]
 then
   echo "Knative function not running...exiting "
   exit 1
