@@ -39,10 +39,10 @@ spec:
         operation: .vmStatusRunningRetries=.vmStatusRunningRetries + 1
         type: expression
       - name: successResult
-        operation: '{ "result": { "completedWith":"success", "message": "VM" + .vm_name + " in namespace "+.vm_namespace + " using image "+ .vm_image +" ready and running.", "outputs":[ { "key":"Console URL", "value": $SECRET.cluster_console_url + "/k8s/ns/" + .vm_namespace + "/kubevirt.io~v1~VirtualMachine/" + .vm_name + "/console/standalone", "format":"link" } ] } }'
+        operation: '{ "result": { "completedWith":"success", "message": "VM " + .vm_name + " in namespace "+.vm_namespace + " using image "+ .vm_image +" ready and running.", "outputs":[ { "key":"Console URL", "value": $SECRET.cluster_console_url + "/k8s/ns/" + .vm_namespace + "/kubevirt.io~v1~VirtualMachine/" + .vm_name + "/console/standalone", "format":"link" } ] } }'
         type: expression
       - name: errorVMNotRunningResult
-        operation: '{ "result": { "completedWith":"error", "message": "VM" + .vm_name + " in namespace "+.vm_namespace + " using image "+ .vm_image +" not ready after "+ .vmStatusRunningRetries + " retries: " + .vm.status } }'
+        operation: '{ "result": { "completedWith":"error", "message": "VM " + .vm_name + " in namespace " + .vm_namespace + " using image " + .vm_image +" not ready after " + .vmStatusRunningRetries + " retries: " + .vm.status } }'
         type: expression
       - name: errorAuthorizationDeniedResult
         operation: '{ "result": { "completedWith":"error", "message": "Authorization denied to create VM" + .vm_name + " in namespace "+.vm_namespace + " using image "+ .vm_image, "outputs":[ { "key":"Jira issue", "value": $SECRET.jira_url + "/jira/servicedesk/projects/" + .projectKey + "/issues/" + .jiraCreateIssueResult.key, "format":"link" }] } }'
@@ -85,7 +85,7 @@ spec:
                   link: $SECRET.jira_url + "/jira/servicedesk/projects/" + .projectKey + "/issues/" + .jiraCreateIssueResult.key
                   severity: normal
                   title: '"JIRA ticket created for VM " + .vm_name'
-                  topic: Request CM on CNV workflow
+                  topic: Request VM on CNV workflow
                 recipients:
                   entityRef: .recipients
                   type: entity
@@ -147,7 +147,7 @@ spec:
                       description: '"Authorization granted to create VM" + .vm_name + " in namespace "+.vm_namespace + " using image "+ .vm_image +". A notification will be sent once the VM is ready."'
                       severity: normal
                       title: '"Authorization granted to create VM" + .vm_name + " in namespace "+.vm_namespace'
-                      topic: Request CM on CNV workflow
+                      topic: Request VM on CNV workflow
                     recipients:
                       entityRef: .recipients
                       type: entity
@@ -303,11 +303,11 @@ spec:
                 functionRef:
                   arguments:
                     payload:
-                      description: '"VM" + .vm_name + " in namespace "+.vm_namespace + " using image "+ .vm_image +" ready and running."'
+                      description: '"VM " + .vm_name + " in namespace "+.vm_namespace + " using image "+ .vm_image +" ready and running."'
                       link: $SECRET.cluster_console_url + "/k8s/ns/" + .vm_namespace + "/kubevirt.io~v1~VirtualMachine/" + .vm_name + "/console/standalone"
                       severity: normal
-                      title: '"VM" + .vm_name + " in namespace "+.vm_namespace + " ready"'
-                      topic: Request CM on CNV workflow
+                      title: '"VM " + .vm_name + " in namespace "+.vm_namespace + " ready"'
+                      topic: Request VM on CNV workflow
                     recipients:
                       entityRef: .recipients
                       type: entity
@@ -346,10 +346,10 @@ spec:
                 functionRef:
                   arguments:
                     payload:
-                      description: '"VM" + .vm_name + " in namespace "+.vm_namespace + " using image "+ .vm_image +" not ready after "+ .vmStatusRunningRetries + " retries: " + .vm.status'
+                      description: '"VM " + .vm_name + " in namespace " + .vm_namespace + " using image " + .vm_image +" not ready after " + .vmStatusRunningRetries + " retries: " + .vm.status'
                       severity: high
-                      title: '"VM" + .vm_name + " in namespace "+.vm_namespace + " not ready"'
-                      topic: Request CM on CNV workflow
+                      title: '"VM " + .vm_name + " in namespace "+.vm_namespace + " not ready"'
+                      topic: Request VM on CNV workflow
                     recipients:
                       entityRef: .recipients
                       type: entity
@@ -392,7 +392,7 @@ spec:
                       link: $SECRET.jira_url + "/jira/servicedesk/projects/" + .projectKey + "/issues/" + .jiraCreateIssueResult.key
                       severity: high
                       title: '"Authorization denied to create VM" + .vm_name + " in namespace "+.vm_namespace'
-                      topic: Request CM on CNV workflow
+                      topic: Request VM on CNV workflow
                     recipients:
                       entityRef: .recipients
                       type: entity
@@ -417,7 +417,7 @@ spec:
   podTemplate:
     container:
       resources: {}
-      image: quay.io/orchestrator/serverless-workflow-request-vm-cnv:63211409cca60e07a7a98af0c7abcf823b333940
+      image: quay.io/orchestrator/serverless-workflow-request-vm-cnv:4ff76cec74cea1e3a1f1e6fc425599306e5dc1aa
       envFrom:
         - secretRef:
             name: request-vm-cnv-creds
