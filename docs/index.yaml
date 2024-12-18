@@ -3269,6 +3269,17 @@ entries:
   request-vm-cnv:
   - apiVersion: v2
     appVersion: 1.16.0
+    created: "2024-12-18T11:46:13.101711305Z"
+    description: A Helm chart for the request VM using CNV serverless workflow
+    digest: 69fc2d2161df16890563d3c217251c50ec35e8b849094913dc0329cdeca7bc4c
+    icon: https://raw.githubusercontent.com/rhdhorchestrator/rhdhorchestrator.github.io/main/assets/images/WO_black.svg
+    name: request-vm-cnv
+    type: application
+    urls:
+    - https://github.com/rhdhorchestrator/serverless-workflows-config/releases/download/request-vm-cnv-1.4.0-rc1/request-vm-cnv-1.4.0-rc1.tgz
+    version: 1.4.0-rc1
+  - apiVersion: v2
+    appVersion: 1.16.0
     created: "2024-12-18T09:50:24.924507081Z"
     description: A Helm chart for the request VM using CNV serverless workflow
     digest: e5c249abac6a57a0f679d83cbef6b10b198c5d33fc4babd01821619b57da05d6
@@ -4133,4 +4144,4 @@ entries:
     urls:
     - https://github.com/rgolangh/serverless-workflows-config/releases/download/workflows-0.1.0/workflows-0.1.0.tgz
     version: 0.1.0
-generated: "2024-12-18T10:17:05.873713146Z"
+generated: "2024-12-18T11:46:13.103275428Z"
