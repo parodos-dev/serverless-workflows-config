@@ -45,7 +45,7 @@ spec:
         operation: '{ "result": { "completedWith":"error", "message": "VM " + .vm_name + " in namespace " + .vm_namespace + " using image " + .vm_image +" not ready after " + .vmStatusRunningRetries + " retries: " + .vm.status } }'
         type: expression
       - name: errorAuthorizationDeniedResult
-        operation: '{ "result": { "completedWith":"error", "message": "Authorization denied to create VM" + .vm_name + " in namespace "+.vm_namespace + " using image "+ .vm_image, "outputs":[ { "key":"Jira issue", "value": $SECRET.jira_url + "/jira/servicedesk/projects/" + .projectKey + "/issues/" + .jiraCreateIssueResult.key, "format":"link" }] } }'
+        operation: '{ "result": { "completedWith":"error", "message": "Authorization denied to create VM " + .vm_name + " in namespace "+.vm_namespace + " using image "+ .vm_image, "outputs":[ { "key":"Jira issue", "value": $SECRET.jira_url + "/jira/servicedesk/projects/" + .projectKey + "/issues/" + .jiraCreateIssueResult.key, "format":"link" }] } }'
         type: expression
     start:
       stateName: Open issue on JIRA
@@ -144,9 +144,9 @@ spec:
                 functionRef:
                   arguments:
                     payload:
-                      description: '"Authorization granted to create VM" + .vm_name + " in namespace "+.vm_namespace + " using image "+ .vm_image +". A notification will be sent once the VM is ready."'
+                      description: '"Authorization granted to create VM " + .vm_name + " in namespace "+.vm_namespace + " using image "+ .vm_image +". A notification will be sent once the VM is ready."'
                       severity: normal
-                      title: '"Authorization granted to create VM" + .vm_name + " in namespace "+.vm_namespace'
+                      title: '"Authorization granted to create VM " + .vm_name + " in namespace "+.vm_namespace'
                       topic: Request VM on CNV workflow
                     recipients:
                       entityRef: .recipients
@@ -388,10 +388,10 @@ spec:
                 functionRef:
                   arguments:
                     payload:
-                      description: '"Authorization denied to create VM" + .vm_name + " in namespace "+.vm_namespace + " using image "+ .vm_image '
+                      description: '"Authorization denied to create VM " + .vm_name + " in namespace "+.vm_namespace + " using image "+ .vm_image '
                       link: $SECRET.jira_url + "/jira/servicedesk/projects/" + .projectKey + "/issues/" + .jiraCreateIssueResult.key
                       severity: high
-                      title: '"Authorization denied to create VM" + .vm_name + " in namespace "+.vm_namespace'
+                      title: '"Authorization denied to create VM " + .vm_name + " in namespace "+.vm_namespace'
                       topic: Request VM on CNV workflow
                     recipients:
                       entityRef: .recipients
@@ -417,7 +417,7 @@ spec:
   podTemplate:
     container:
       resources: {}
-      image: quay.io/orchestrator/serverless-workflow-request-vm-cnv:4ff76cec74cea1e3a1f1e6fc425599306e5dc1aa
+      image: quay.io/orchestrator/serverless-workflow-request-vm-cnv:c1989c43998cd6a8bd5ed164d78a99841ea64e48
       envFrom:
         - secretRef:
             name: request-vm-cnv-creds
