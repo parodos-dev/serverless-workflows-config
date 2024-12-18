@@ -45,7 +45,7 @@ spec:
         operation: '{ "result": { "completedWith":"success", "message": "VM " + .vm_name + " in namespace " + .vm_namespace + " updated.", "outputs":[ { "key":"Console URL", "value": $SECRET.cluster_console_url + "/k8s/ns/" + .vm_namespace + "/kubevirt.io~v1~VirtualMachine/" + .vm_name + "/console/standalone", "format":"link" } ] } }'
         type: expression
       - name: errorVMNotRunningResult
-        operation: '{ "result": { "completedWith":"error", "message": "VM " + .vm_name + " in namespace " + .vm_namespace + " not ready after the update after checking" + (.vmStatusRunningRetries|tostring) + " times: " + .vm.status } }'
+        operation: '{ "result": { "completedWith":"error", "message": "VM " + .vm_name + " in namespace " + .vm_namespace + " not ready after the update after checking" + (.vmStatusRunningRetries|tostring) + " times: " + (.vm.status|tostring) } }'
         type: expression
       - name: errorAuthorizationDeniedResult
         operation: '{ "result": { "completedWith":"error", "message": "Authorization denied to update VM " + .vm_name + " in namespace " + .vm_namespace + ". Memory: " + .vm_new_memory + ". CPU cores: " + (.vm_new_cpu_cores|tostring) + ". CPU threads: " + (.vm_new_cpu_threads|tostring) + ". CPU sockets: " + (.vm_new_cpu_sockets|tostring), "outputs":[ { "key":"Jira issue", "value": $SECRET.jira_url + "/jira/servicedesk/projects/" + .projectKey + "/issues/" + .jiraCreateIssueResult.key, "format":"link" }] } }'
@@ -354,7 +354,7 @@ spec:
                 functionRef:
                   arguments:
                     payload:
-                      description: '"VM " + .vm_name + " in namespace " + .vm_namespace + " not ready after the update after checking" + (.vmStatusRunningRetries|tostring) + " times: " + .vm.status'
+                      description: '"VM " + .vm_name + " in namespace " + .vm_namespace + " not ready after the update after checking" + (.vmStatusRunningRetries|tostring) + " times: " + (.vm.status|tostring)'
                       severity: high
                       title: '"VM " + .vm_name + " in namespace " + .vm_namespace + " not ready"'
                       topic: Modify VM Resources workflow
@@ -425,7 +425,7 @@ spec:
   podTemplate:
     container:
       resources: {}
-      image: quay.io/orchestrator/serverless-workflow-modify-vm-resources:8cc116b6a74f709d5e401226579ca6976b591ec6
+      image: quay.io/orchestrator/serverless-workflow-modify-vm-resources:e69ebe8103c918fa403d3a5f0a676753eca3d87d
       envFrom:
         - secretRef:
             name: modify-vm-resources-creds
