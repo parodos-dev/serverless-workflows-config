@@ -820,6 +820,17 @@ entries:
   modify-vm-resources:
   - apiVersion: v2
     appVersion: 1.16.0
+    created: "2024-12-18T11:46:18.656022762Z"
+    description: A Helm chart for the modify VM resources serverless workflow
+    digest: 9b9e49da07235cadedd3068b41cd31fd277c28139e1a9a7bb670761b82ccea83
+    icon: https://raw.githubusercontent.com/rhdhorchestrator/rhdhorchestrator.github.io/main/assets/images/WO_black.svg
+    name: modify-vm-resources
+    type: application
+    urls:
+    - https://github.com/rhdhorchestrator/serverless-workflows-config/releases/download/modify-vm-resources-1.4.0-rc1/modify-vm-resources-1.4.0-rc1.tgz
+    version: 1.4.0-rc1
+  - apiVersion: v2
+    appVersion: 1.16.0
     created: "2024-12-18T09:50:23.833844859Z"
     description: A Helm chart for the modify VM resources serverless workflow
     digest: 7979ca11e7a691ee12878b4635eaa16731457e61528d4b289ba301ddbba43f7c
@@ -4144,4 +4155,4 @@ entries:
     urls:
     - https://github.com/rgolangh/serverless-workflows-config/releases/download/workflows-0.1.0/workflows-0.1.0.tgz
     version: 0.1.0
-generated: "2024-12-18T11:46:13.103275428Z"
+generated: "2024-12-18T11:46:18.65680945Z"
