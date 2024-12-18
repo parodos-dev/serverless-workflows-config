@@ -3,6 +3,17 @@ entries:
   create-ocp-project:
   - apiVersion: v2
     appVersion: 1.16.0
+    created: "2024-12-18T09:17:06.029647707Z"
+    description: A Helm chart for the create OCP project serverless workflow
+    digest: c6501c2554446fedfc87f75499fe107acef4db7045fbb0f0f3e50cc444287164
+    icon: https://raw.githubusercontent.com/rhdhorchestrator/rhdhorchestrator.github.io/main/assets/images/WO_black.svg
+    name: create-ocp-project
+    type: application
+    urls:
+    - https://github.com/rhdhorchestrator/serverless-workflows-config/releases/download/create-ocp-project-1.3.0/create-ocp-project-1.3.0.tgz
+    version: 1.3.0
+  - apiVersion: v2
+    appVersion: 1.16.0
     created: "2024-12-09T10:59:37.314111545Z"
     description: A Helm chart for the create OCP project serverless workflow
     digest: abd9e3c0f3b131d5de661b2770390fb03846c73510b4a7ea7d8de79fe01113e1
@@ -290,6 +301,17 @@ entries:
   extendable-workflow:
   - apiVersion: v2
     appVersion: 1.16.0
+    created: "2024-12-18T09:17:06.144406293Z"
+    description: A Helm chart for the extendable-workflow serverless workflow
+    digest: 1366b302d2c5346a53203f1c6d6b9c7383ea27c645b271c60de9db19dbb14b39
+    icon: https://raw.githubusercontent.com/rhdhorchestrator/rhdhorchestrator.github.io/main/assets/images/WO_black.svg
+    name: extendable-workflow
+    type: application
+    urls:
+    - https://github.com/rhdhorchestrator/serverless-workflows-config/releases/download/extendable-workflow-1.3.0/extendable-workflow-1.3.0.tgz
+    version: 1.3.0
+  - apiVersion: v2
+    appVersion: 1.16.0
     created: "2024-12-09T10:59:26.51696955Z"
     description: A Helm chart for the extendable-workflow serverless workflow
     digest: 7add46d303be2fa7f4122c1e5b67ccbf4d2427074dea0a296fd851a4121bbb8c
@@ -399,6 +421,17 @@ entries:
     - https://github.com/rhdhorchestrator/serverless-workflows-config/releases/download/extendable-workflow-1.3.0-rc1/extendable-workflow-1.3.0-rc1.tgz
     version: 1.3.0-rc1
   greeting:
+  - apiVersion: v2
+    appVersion: 1.16.0
+    created: "2024-12-18T09:17:06.274172429Z"
+    description: A Helm chart for the greeting serverless workflow
+    digest: 5e46bad4eab47f371c5ffb3af55cc37a81fe08a58c75c9fbebf5415102f3939e
+    icon: https://raw.githubusercontent.com/rhdhorchestrator/rhdhorchestrator.github.io/main/assets/images/WO_black.svg
+    name: greeting
+    type: application
+    urls:
+    - https://github.com/rhdhorchestrator/serverless-workflows-config/releases/download/greeting-1.3.0/greeting-1.3.0.tgz
+    version: 1.3.0
   - apiVersion: v2
     appVersion: 1.16.0
     created: "2024-12-05T15:26:35.31783765Z"
@@ -743,6 +776,17 @@ entries:
   modify-vm-resources:
   - apiVersion: v2
     appVersion: 1.16.0
+    created: "2024-12-18T09:17:06.435336094Z"
+    description: A Helm chart for the modify VM resources serverless workflow
+    digest: 160afef1446478e566bbfa95cac878cbf671c91a236d35b8aff76dda03389930
+    icon: https://raw.githubusercontent.com/rhdhorchestrator/rhdhorchestrator.github.io/main/assets/images/WO_black.svg
+    name: modify-vm-resources
+    type: application
+    urls:
+    - https://github.com/rhdhorchestrator/serverless-workflows-config/releases/download/modify-vm-resources-1.3.0/modify-vm-resources-1.3.0.tgz
+    version: 1.3.0
+  - apiVersion: v2
+    appVersion: 1.16.0
     created: "2024-12-12T10:22:02.089124444Z"
     description: A Helm chart for the modify VM resources serverless workflow
     digest: ff91f02274646eca50166147e36aac5c5c7396bb1a9ac7ee32b65656441a25f2
@@ -820,17 +864,6 @@ entries:
     version: 1.3.0-rc4
   - apiVersion: v2
     appVersion: 1.16.0
-    created: "2024-10-30T14:52:35.750936542Z"
-    description: A Helm chart for the modify VM resources serverless workflow
-    digest: 3a01492da57d342116ecafcc7898b140351f7d089d2883a4d36e560c4c7da071
-    icon: https://raw.githubusercontent.com/rhdhorchestrator/rhdhorchestrator.github.io/main/assets/images/WO_black.svg
-    name: modify-vm-resources
-    type: application
-    urls:
-    - https://github.com/rhdhorchestrator/serverless-workflows-config/releases/download/modify-vm-resources-1.3.0-rc3/modify-vm-resources-1.3.0-rc3.tgz
-    version: 1.3.0-rc3
-  - apiVersion: v2
-    appVersion: 1.16.0
     created: "2024-10-30T14:53:18.982162807Z"
     description: A Helm chart for the modify VM resources serverless workflow
     digest: 317372ba31152289059c411bdf090b650d90d483eb0e112a35eb0fa44be0069e
@@ -845,6 +878,17 @@ entries:
     created: "2024-10-17T10:25:18.351181042Z"
     description: A Helm chart for the modify VM resources serverless workflow
     digest: 51554a833ffe245cdeeffc13593135ae554459545be58c998ebf7fc5e1cfaff9
+    icon: https://raw.githubusercontent.com/rhdhorchestrator/rhdhorchestrator.github.io/main/assets/images/WO_black.svg
+    name: modify-vm-resources
+    type: application
+    urls:
+    - https://github.com/rhdhorchestrator/serverless-workflows-config/releases/download/modify-vm-resources-1.3.0-rc3/modify-vm-resources-1.3.0-rc3.tgz
+    version: 1.3.0-rc3
+  - apiVersion: v2
+    appVersion: 1.16.0
+    created: "2024-10-30T14:52:35.750936542Z"
+    description: A Helm chart for the modify VM resources serverless workflow
+    digest: 3a01492da57d342116ecafcc7898b140351f7d089d2883a4d36e560c4c7da071
     icon: https://raw.githubusercontent.com/rhdhorchestrator/rhdhorchestrator.github.io/main/assets/images/WO_black.svg
     name: modify-vm-resources
     type: application
@@ -1028,6 +1072,17 @@ entries:
     - https://github.com/rhdhorchestrator/serverless-workflows-config/releases/download/modify-vm-resources-0.0.1/modify-vm-resources-0.0.1.tgz
     version: 0.0.1
   move2kube:
+  - apiVersion: v2
+    appVersion: 1.16.0
+    created: "2024-12-18T09:17:06.558201617Z"
+    description: 'A Helm chart to deploy the move2kube workflow. '
+    digest: 0db01811d94a7a35fe502a56cd53e6d14f9441cb303260a42c7816c36830cdec
+    icon: https://raw.githubusercontent.com/rhdhorchestrator/rhdhorchestrator.github.io/main/assets/images/WO_black.svg
+    name: move2kube
+    type: application
+    urls:
+    - https://github.com/rhdhorchestrator/serverless-workflows-config/releases/download/move2kube-1.3.0/move2kube-1.3.0.tgz
+    version: 1.3.0
   - apiVersion: v2
     appVersion: 1.16.0
     created: "2024-11-12T08:46:03.798475611Z"
@@ -2188,15 +2243,15 @@ entries:
   mta-v7:
   - apiVersion: v2
     appVersion: 1.16.0
-    created: "2024-12-12T10:42:40.233017024Z"
+    created: "2024-12-18T09:17:06.706453042Z"
     description: A Helm chart for MTA serverless workflow
-    digest: 3654ef7fbf187aab0ffb97cf6588ad687c23587c218dd7e1cadfd53479735176
+    digest: 66ebbb5b14b5b74700b5f4498a379bb43053cd54213991e6f3f3c0f9b3e7a011
     icon: https://raw.githubusercontent.com/rhdhorchestrator/rhdhorchestrator.github.io/main/assets/images/WO_black.svg
     name: mta-v7
     type: application
     urls:
-    - https://github.com/rhdhorchestrator/serverless-workflows-config/releases/download/mta-v7-1.3.0-rc7/mta-v7-1.3.0-rc7.tgz
-    version: 1.3.0-rc7
+    - https://github.com/rhdhorchestrator/serverless-workflows-config/releases/download/mta-v7-1.3.0/mta-v7-1.3.0.tgz
+    version: 1.3.0
   - apiVersion: v2
     appVersion: 1.16.0
     created: "2024-12-09T11:00:06.661938176Z"
@@ -2213,6 +2268,17 @@ entries:
     created: "2024-12-12T10:22:02.683412354Z"
     description: A Helm chart for MTA serverless workflow
     digest: 3f04eb7a5b3b9b7acd40ec5c562bea398661f078d81b18c6f4ad60650f5136ac
+    icon: https://raw.githubusercontent.com/rhdhorchestrator/rhdhorchestrator.github.io/main/assets/images/WO_black.svg
+    name: mta-v7
+    type: application
+    urls:
+    - https://github.com/rhdhorchestrator/serverless-workflows-config/releases/download/mta-v7-1.3.0-rc7/mta-v7-1.3.0-rc7.tgz
+    version: 1.3.0-rc7
+  - apiVersion: v2
+    appVersion: 1.16.0
+    created: "2024-12-12T10:42:40.233017024Z"
+    description: A Helm chart for MTA serverless workflow
+    digest: 3654ef7fbf187aab0ffb97cf6588ad687c23587c218dd7e1cadfd53479735176
     icon: https://raw.githubusercontent.com/rhdhorchestrator/rhdhorchestrator.github.io/main/assets/images/WO_black.svg
     name: mta-v7
     type: application
@@ -2254,9 +2320,9 @@ entries:
     version: 1.3.0-rc4
   - apiVersion: v2
     appVersion: 1.16.0
-    created: "2024-10-30T14:53:19.691921841Z"
+    created: "2024-10-30T14:52:36.323150476Z"
     description: A Helm chart for MTA serverless workflow
-    digest: c4147b8ccc95d19d806d7d08b298510d2124729bc33d7cd96d68fcc33322485d
+    digest: 0dd02c219e636c82adaa5b8715b753461e6d07df9ed0cf091285607e69f32317
     icon: https://raw.githubusercontent.com/rhdhorchestrator/rhdhorchestrator.github.io/main/assets/images/WO_black.svg
     name: mta-v7
     type: application
@@ -2268,17 +2334,6 @@ entries:
     created: "2024-10-17T14:47:01.675988038Z"
     description: A Helm chart for MTA serverless workflow
     digest: ae4c9e933fb03be10ae9ae1f5f4424dc5e0a5560daefd977ef19914a28b497fe
-    icon: https://raw.githubusercontent.com/rhdhorchestrator/rhdhorchestrator.github.io/main/assets/images/WO_black.svg
-    name: mta-v7
-    type: application
-    urls:
-    - https://github.com/rhdhorchestrator/serverless-workflows-config/releases/download/mta-v7-1.3.0-rc3/mta-v7-1.3.0-rc3.tgz
-    version: 1.3.0-rc3
-  - apiVersion: v2
-    appVersion: 1.16.0
-    created: "2024-10-30T14:52:36.323150476Z"
-    description: A Helm chart for MTA serverless workflow
-    digest: 0dd02c219e636c82adaa5b8715b753461e6d07df9ed0cf091285607e69f32317
     icon: https://raw.githubusercontent.com/rhdhorchestrator/rhdhorchestrator.github.io/main/assets/images/WO_black.svg
     name: mta-v7
     type: application
@@ -2301,6 +2356,17 @@ entries:
     created: "2024-10-17T15:44:37.193481629Z"
     description: A Helm chart for MTA serverless workflow
     digest: 23d7e31dc5c187de3660e487618b778acab0eba08f19916bd950dcb5ad2fedd7
+    icon: https://raw.githubusercontent.com/rhdhorchestrator/rhdhorchestrator.github.io/main/assets/images/WO_black.svg
+    name: mta-v7
+    type: application
+    urls:
+    - https://github.com/rhdhorchestrator/serverless-workflows-config/releases/download/mta-v7-1.3.0-rc3/mta-v7-1.3.0-rc3.tgz
+    version: 1.3.0-rc3
+  - apiVersion: v2
+    appVersion: 1.16.0
+    created: "2024-10-30T14:53:19.691921841Z"
+    description: A Helm chart for MTA serverless workflow
+    digest: c4147b8ccc95d19d806d7d08b298510d2124729bc33d7cd96d68fcc33322485d
     icon: https://raw.githubusercontent.com/rhdhorchestrator/rhdhorchestrator.github.io/main/assets/images/WO_black.svg
     name: mta-v7
     type: application
@@ -2541,6 +2607,17 @@ entries:
   mtv-migration:
   - apiVersion: v2
     appVersion: 1.16.0
+    created: "2024-12-18T09:17:06.82880285Z"
+    description: A Helm chart for the MTV Migration serverless workflow
+    digest: df33a9c68d06bfaf74727c0dfc6301282f57a6e07d5248b50124e344ef57d491
+    icon: https://raw.githubusercontent.com/rhdhorchestrator/rhdhorchestrator.github.io/main/assets/images/WO_black.svg
+    name: mtv-migration
+    type: application
+    urls:
+    - https://github.com/rhdhorchestrator/serverless-workflows-config/releases/download/mtv-migration-1.3.0/mtv-migration-1.3.0.tgz
+    version: 1.3.0
+  - apiVersion: v2
+    appVersion: 1.16.0
     created: "2024-12-12T10:22:02.835910569Z"
     description: A Helm chart for the MTV Migration serverless workflow
     digest: 32a4b34c6a74ec18c4ae0865ee7ad3d5c385c6bba08b48c6c72d7da45b621417
@@ -2618,17 +2695,6 @@ entries:
     version: 1.3.0-rc4
   - apiVersion: v2
     appVersion: 1.16.0
-    created: "2024-10-17T10:24:52.2469452Z"
-    description: A Helm chart for the MTV Migration serverless workflow
-    digest: 0a1298e438fa831361fc5059cf28c793a8dce7919ee29b4983f57f879348ce90
-    icon: https://raw.githubusercontent.com/rhdhorchestrator/rhdhorchestrator.github.io/main/assets/images/WO_black.svg
-    name: mtv-migration
-    type: application
-    urls:
-    - https://github.com/rhdhorchestrator/serverless-workflows-config/releases/download/mtv-migration-1.3.0-rc3/mtv-migration-1.3.0-rc3.tgz
-    version: 1.3.0-rc3
-  - apiVersion: v2
-    appVersion: 1.16.0
     created: "2024-10-30T14:53:19.902312388Z"
     description: A Helm chart for the MTV Migration serverless workflow
     digest: 749136d026506169fc737ef623627c66e5ffc68c9fe12d00a2fe3e31f44bd4b6
@@ -2643,6 +2709,17 @@ entries:
     created: "2024-10-30T14:52:36.46968207Z"
     description: A Helm chart for the MTV Migration serverless workflow
     digest: 9743ae81f33985fb4b34ef4a767796095e7d08cce611c54e816943a57d101c59
+    icon: https://raw.githubusercontent.com/rhdhorchestrator/rhdhorchestrator.github.io/main/assets/images/WO_black.svg
+    name: mtv-migration
+    type: application
+    urls:
+    - https://github.com/rhdhorchestrator/serverless-workflows-config/releases/download/mtv-migration-1.3.0-rc3/mtv-migration-1.3.0-rc3.tgz
+    version: 1.3.0-rc3
+  - apiVersion: v2
+    appVersion: 1.16.0
+    created: "2024-10-17T10:24:52.2469452Z"
+    description: A Helm chart for the MTV Migration serverless workflow
+    digest: 0a1298e438fa831361fc5059cf28c793a8dce7919ee29b4983f57f879348ce90
     icon: https://raw.githubusercontent.com/rhdhorchestrator/rhdhorchestrator.github.io/main/assets/images/WO_black.svg
     name: mtv-migration
     type: application
@@ -2806,15 +2883,15 @@ entries:
   mtv-plan:
   - apiVersion: v2
     appVersion: 1.16.0
-    created: "2024-12-12T10:42:40.640234745Z"
+    created: "2024-12-18T09:17:06.952011283Z"
     description: A Helm chart for the MTV Plan serverless assessment workflow
-    digest: fe6b98898cfb1f710374a469f3ab429b982440c51e2db2c6748de76285db633d
+    digest: fc82b88856aac91ad6fd0e36ecb4dc02d6c799369c31f9fe3a6c2af381b1f73f
     icon: https://raw.githubusercontent.com/rhdhorchestrator/rhdhorchestrator.github.io/main/assets/images/WO_black.svg
     name: mtv-plan
     type: application
     urls:
-    - https://github.com/rhdhorchestrator/serverless-workflows-config/releases/download/mtv-plan-1.3.0-rc6/mtv-plan-1.3.0-rc6.tgz
-    version: 1.3.0-rc6
+    - https://github.com/rhdhorchestrator/serverless-workflows-config/releases/download/mtv-plan-1.3.0/mtv-plan-1.3.0.tgz
+    version: 1.3.0
   - apiVersion: v2
     appVersion: 1.16.0
     created: "2024-12-09T11:00:20.461024112Z"
@@ -2831,6 +2908,17 @@ entries:
     created: "2024-12-12T10:22:02.953809423Z"
     description: A Helm chart for the MTV Plan serverless assessment workflow
     digest: a0ad93acc251fef2953837fee8c2b238d93c1596afdbf958e482ff27ed8596cf
+    icon: https://raw.githubusercontent.com/rhdhorchestrator/rhdhorchestrator.github.io/main/assets/images/WO_black.svg
+    name: mtv-plan
+    type: application
+    urls:
+    - https://github.com/rhdhorchestrator/serverless-workflows-config/releases/download/mtv-plan-1.3.0-rc6/mtv-plan-1.3.0-rc6.tgz
+    version: 1.3.0-rc6
+  - apiVersion: v2
+    appVersion: 1.16.0
+    created: "2024-12-12T10:42:40.640234745Z"
+    description: A Helm chart for the MTV Plan serverless assessment workflow
+    digest: fe6b98898cfb1f710374a469f3ab429b982440c51e2db2c6748de76285db633d
     icon: https://raw.githubusercontent.com/rhdhorchestrator/rhdhorchestrator.github.io/main/assets/images/WO_black.svg
     name: mtv-plan
     type: application
@@ -2861,17 +2949,6 @@ entries:
     version: 1.3.0-rc4
   - apiVersion: v2
     appVersion: 1.16.0
-    created: "2024-10-30T14:53:20.106670161Z"
-    description: A Helm chart for the MTV Plan serverless assessment workflow
-    digest: 3f8d9e5f6d3c1d0b88682d01a9a121345a71a8fc33475627d6955a081f2d7d10
-    icon: https://raw.githubusercontent.com/rhdhorchestrator/rhdhorchestrator.github.io/main/assets/images/WO_black.svg
-    name: mtv-plan
-    type: application
-    urls:
-    - https://github.com/rhdhorchestrator/serverless-workflows-config/releases/download/mtv-plan-1.3.0-rc3/mtv-plan-1.3.0-rc3.tgz
-    version: 1.3.0-rc3
-  - apiVersion: v2
-    appVersion: 1.16.0
     created: "2024-10-30T14:52:36.633574946Z"
     description: A Helm chart for the MTV Plan serverless assessment workflow
     digest: 3ca946a8a5942f9053d6f2d3b077a8cde926184ad19784be6259e66654fe6914
@@ -2886,6 +2963,17 @@ entries:
     created: "2024-10-17T10:24:27.700196748Z"
     description: A Helm chart for the MTV Plan serverless assessment workflow
     digest: 2d8ff7134dcbe1644df9526cc02ad6255a1c000dbcf309e39b273f13f0405699
+    icon: https://raw.githubusercontent.com/rhdhorchestrator/rhdhorchestrator.github.io/main/assets/images/WO_black.svg
+    name: mtv-plan
+    type: application
+    urls:
+    - https://github.com/rhdhorchestrator/serverless-workflows-config/releases/download/mtv-plan-1.3.0-rc3/mtv-plan-1.3.0-rc3.tgz
+    version: 1.3.0-rc3
+  - apiVersion: v2
+    appVersion: 1.16.0
+    created: "2024-10-30T14:53:20.106670161Z"
+    description: A Helm chart for the MTV Plan serverless assessment workflow
+    digest: 3f8d9e5f6d3c1d0b88682d01a9a121345a71a8fc33475627d6955a081f2d7d10
     icon: https://raw.githubusercontent.com/rhdhorchestrator/rhdhorchestrator.github.io/main/assets/images/WO_black.svg
     name: mtv-plan
     type: application
@@ -3071,6 +3159,17 @@ entries:
   request-vm-cnv:
   - apiVersion: v2
     appVersion: 1.16.0
+    created: "2024-12-18T09:17:07.095376859Z"
+    description: A Helm chart for the request VM using CNV serverless workflow
+    digest: c8ba00310886eca7f7ce0df9e88fb7dc4c7ae4e746307d045283008d919a5c01
+    icon: https://raw.githubusercontent.com/rhdhorchestrator/rhdhorchestrator.github.io/main/assets/images/WO_black.svg
+    name: request-vm-cnv
+    type: application
+    urls:
+    - https://github.com/rhdhorchestrator/serverless-workflows-config/releases/download/request-vm-cnv-1.3.0/request-vm-cnv-1.3.0.tgz
+    version: 1.3.0
+  - apiVersion: v2
+    appVersion: 1.16.0
     created: "2024-12-12T10:22:03.08891572Z"
     description: A Helm chart for the request VM using CNV serverless workflow
     digest: 63e60546069f2e5d819c03c4068ab8b64036d0ceb6df06bf756d788de1e7c4c9
@@ -3148,17 +3247,6 @@ entries:
     version: 1.3.0-rc4
   - apiVersion: v2
     appVersion: 1.16.0
-    created: "2024-10-30T14:52:36.821879877Z"
-    description: A Helm chart for the request VM using CNV serverless workflow
-    digest: 8967d7c02f11aace4fdd656708e1b2bc776348b82725c7a0a2df0091ba815e76
-    icon: https://raw.githubusercontent.com/rhdhorchestrator/rhdhorchestrator.github.io/main/assets/images/WO_black.svg
-    name: request-vm-cnv
-    type: application
-    urls:
-    - https://github.com/rhdhorchestrator/serverless-workflows-config/releases/download/request-vm-cnv-1.3.0-rc3/request-vm-cnv-1.3.0-rc3.tgz
-    version: 1.3.0-rc3
-  - apiVersion: v2
-    appVersion: 1.16.0
     created: "2024-10-17T10:24:44.759627051Z"
     description: A Helm chart for the request VM using CNV serverless workflow
     digest: b00948c2779b8991e28d2087631dbd2048617d7839e7f3fd5f431804c09dd80a
@@ -3173,6 +3261,17 @@ entries:
     created: "2024-10-30T14:53:20.288686223Z"
     description: A Helm chart for the request VM using CNV serverless workflow
     digest: 2a4f9ea65b1bfa7d2187944e93a703e08fd05e7dc0af96d2d832645bff5027a5
+    icon: https://raw.githubusercontent.com/rhdhorchestrator/rhdhorchestrator.github.io/main/assets/images/WO_black.svg
+    name: request-vm-cnv
+    type: application
+    urls:
+    - https://github.com/rhdhorchestrator/serverless-workflows-config/releases/download/request-vm-cnv-1.3.0-rc3/request-vm-cnv-1.3.0-rc3.tgz
+    version: 1.3.0-rc3
+  - apiVersion: v2
+    appVersion: 1.16.0
+    created: "2024-10-30T14:52:36.821879877Z"
+    description: A Helm chart for the request VM using CNV serverless workflow
+    digest: 8967d7c02f11aace4fdd656708e1b2bc776348b82725c7a0a2df0091ba815e76
     icon: https://raw.githubusercontent.com/rhdhorchestrator/rhdhorchestrator.github.io/main/assets/images/WO_black.svg
     name: request-vm-cnv
     type: application
@@ -3345,6 +3444,17 @@ entries:
     - https://github.com/rhdhorchestrator/serverless-workflows-config/releases/download/request-vm-cnv-0.0.1/request-vm-cnv-0.0.1.tgz
     version: 0.0.1
   rpj:
+  - apiVersion: v2
+    appVersion: 1.16.0
+    created: "2024-12-18T09:17:07.207917397Z"
+    description: A Helm chart for the Report Portal to Jira (RPJ) serverless workflow
+    digest: 05ac389ae709ad4152edbad469cf61a6f125c8ceb553a20688b0fe0e2314848f
+    icon: https://raw.githubusercontent.com/rhdhorchestrator/rhdhorchestrator.github.io/main/assets/images/WO_black.svg
+    name: rpj
+    type: application
+    urls:
+    - https://github.com/rhdhorchestrator/serverless-workflows-config/releases/download/rpj-1.3.0/rpj-1.3.0.tgz
+    version: 1.3.0
   - apiVersion: v2
     appVersion: 1.16.0
     created: "2024-12-09T11:01:57.143227878Z"
@@ -3891,4 +4001,4 @@ entries:
     urls:
     - https://github.com/rgolangh/serverless-workflows-config/releases/download/workflows-0.1.0/workflows-0.1.0.tgz
     version: 0.1.0
-generated: "2024-12-12T10:42:41.072437953Z"
+generated: "2024-12-18T09:17:07.209628257Z"
